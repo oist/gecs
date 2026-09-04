@@ -2,13 +2,9 @@ project:
   type: website
 
 website:
-  title: "Good Enough Computing in Science 👍⚖️🧑‍💻🧪"
-  # navbar: true
-    # left:
-      # - href: index.qmd
-        # text: Home
-      # - about.qmd
-  favicon: images/geek_emoji.jpeg
+  title: "Good Enough Coding in Science"
+  navbar: true
+  favicon: images/gecs-mark.png
   page-footer: by Igors Dubanevics | 2025-2026 | MIT License
 
   sidebar:
@@ -40,7 +36,7 @@ website:
 format:
   html:
     theme:
-      - cosmo
+      - yeti
       - brand
     css: styles.css
     toc: true

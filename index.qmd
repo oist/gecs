@@ -1,5 +1,5 @@
 ---
-title: "Good Enough Computing in Science (GECS)" 
+title: "Good Enough Coding in Science"
 ---
 
 ```{mermaid}
@@ -60,39 +60,52 @@ This course is for researchers who want to learn how to automate repetitive task
 **Time:** Friday 13:00-15:00 \
 **Location:** L3B700 (near-ish the GS counter)
 
-|         |     |                                       | 
-|---------|-----|---------------------------------------|
-| July    | 10  | Version control and Project Structure |
-|         | 17  | Virtual environments                  |
-|         | 24  | Automation                            |        
-|         | 31  | Testing                               |       
+| Date         | Session             |
+|--------------|---------------------|
+| September 11 | Version control     |
+| September 18 | Project structure   |
+| September 25 | Virtual environment |
+| October 2    | Automation          |
+| October 9    | Testing             |
 
 
 ## Getting Started
 
 Make sure to have your computer ready for the course. Please check out the [Setting Up](lessons/setting-up.qmd) section. Those who are not familiar with terminal should also check out the [Terminal](lessons/terminal.qmd) section.
 
-If you need help with configuring your computer for the course or have any questions before the course starts, a special session will be held on the first week.
+If you need help with configuring your computer for the course, come to this one-time setup session before the course starts.
 
-**Date and time:** July 8 Wednesday 12:00-13:00\
-**Location:** C102 (The Cafe Tancha meeting room)\
-
-## Drop-ins
-
-After every session there will be a drop-in the following week. You can come with questions regarding the course or related stuff.
-
-**Date and time:** Wednesday 12:00-13:00\
+**Date and time:** Wednesday, September 9, 12:00-13:00\
 **Location:** C102 (The Cafe Tancha meeting room)\
 
 # Registration
 For official details, see [the Graduate School hosted website](https://groups.oist.jp/grad/event/good-enough-computing-science-gecs-mini-course) on TIDA.
 
-<button class="btn btn-primary" onclick="window.open('https://forms.office.com/r/ZrwJrNN69y', '_blank')">Register Here</button>
+<button class="btn btn-primary" onclick="window.open('https://example.com/registration', '_blank')">Register Here</button>
 
 # People
 
--   Igors Dubanevics Y4 \@KondrashovU
--   Vitoria Yumi Uetuki Nicoleti Y1 \@FukunagaU
+<div style="display: flex; flex-wrap: wrap; gap: 2rem; margin: 1rem 0 2rem;">
+
+<div style="flex: 0 1 180px; text-align: center;">
+
+<img src="images/igors-dubanevics.jpg" alt="Igors Dubanevics" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%;">
+
+**Igors Dubanevics**<br>
+Year 5 · [@igorsdub](https://github.com/igorsdub)
+
+</div>
+
+<div style="flex: 0 1 180px; text-align: center;">
+
+<img src="images/vitoria-yumi-uetuki-nicoleti.jpg" alt="Victoria Yutuki" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%;">
+
+**Victoria Yutuki**<br>
+Year 2 · [@viyuetuki](https://github.com/viyuetuki)
+
+</div>
+
+</div>
 
 # Manifesto
 
