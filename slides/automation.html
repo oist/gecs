@@ -7,8 +7,8 @@
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Good Enough Computing in Science">
   <title>Good Enough Computing in Science 👍⚖️🧑‍💻🧪 – Automation with Make</title>
@@ -18,10 +18,16 @@
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -96,7 +102,7 @@
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-0fde88a82f0356838740f155f1088782.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
   <link rel="stylesheet" href="automation.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
@@ -201,7 +207,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Good Enough Computing in Science 
+Good Enough Computing in Science
 </div>
 </div>
 </div>
@@ -247,9 +253,9 @@ Good Enough Computing in Science
 </section>
 <section id="make-records-the-plan" class="slide level2">
 <h2>Make records the plan</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb1-1"><a></a><span class="co"># Makefile: a small description of the workflow</span></span>
-<span id="cb1-2"><a></a><span class="dv">output-file:</span><span class="dt"> input-file script</span></span>
-<span id="cb1-3"><a></a><span class="er">    </span>command input-file output-file</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb1-1"><a aria-label="1"></a><span class="co"># Makefile: a small description of the workflow</span></span>
+<span id="cb1-2"><a aria-label="2"></a><span class="dv">output-file:</span><span class="dt"> input-file script</span></span>
+<span id="cb1-3"><a aria-label="3"></a><span class="er">    </span>command input-file output-file</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Make reads rules like this to learn:</p>
 <ul>
 <li>which file to create;</li>
@@ -266,8 +272,8 @@ Good Enough Computing in Science
 </section>
 <section id="first-output-draculas-count-table" class="slide level2">
 <h2>First output: Dracula’s count table</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb2-1"><a></a><span class="dv">counts/dracula.tsv:</span><span class="dt"> books/dracula.txt scripts/count_words.py</span></span>
-<span id="cb2-2"><a></a><span class="er">    </span>uv run python scripts/count_words.py books/dracula.txt counts/dracula.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb2-1"><a aria-label="1"></a><span class="dv">counts/dracula.tsv:</span><span class="dt"> books/dracula.txt scripts/count_words.py</span></span>
+<span id="cb2-2"><a aria-label="2"></a><span class="er">    </span>uv run python scripts/count_words.py books/dracula.txt counts/dracula.tsv</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="columns">
 <div class="column">
 <h3 id="target">Target</h3>
@@ -282,9 +288,9 @@ Good Enough Computing in Science
 </section>
 <section id="add-the-final-figure" class="slide level2">
 <h2>Add the final figure</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb3-1"><a></a><span class="dv">figures/dracula.html:</span><span class="dt"> counts/dracula.tsv scripts/plot_counts.py</span></span>
-<span id="cb3-2"><a></a><span class="er">    </span>uv run python scripts/plot_counts.py counts/dracula.tsv figures/dracula.html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a></a><span class="fu">make</span> figures/dracula.html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb3-1"><a aria-label="1"></a><span class="dv">figures/dracula.html:</span><span class="dt"> counts/dracula.tsv scripts/plot_counts.py</span></span>
+<span id="cb3-2"><a aria-label="2"></a><span class="er">    </span>uv run python scripts/plot_counts.py counts/dracula.tsv figures/dracula.html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a aria-label="1"></a><span class="fu">make</span> figures/dracula.html</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Make builds <code>counts/dracula.tsv</code> first when needed, then makes the HTML figure.</p>
 </section>
 <section id="draculas-real-project-graph" class="slide level2">
@@ -308,44 +314,44 @@ Good Enough Computing in Science
 </section>
 <section id="name-shared-commands" class="slide level2">
 <h2>Name shared commands</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb5-1"><a></a><span class="co"># Run every Python command through uv.</span></span>
-<span id="cb5-2"><a></a><span class="dt">PYTHON</span> <span class="ch">:=</span><span class="st"> uv run python</span></span>
-<span id="cb5-3"><a></a></span>
-<span id="cb5-4"><a></a><span class="co"># Name the scripts used by our rules.</span></span>
-<span id="cb5-5"><a></a><span class="dt">COUNT_SCRIPT</span> <span class="ch">:=</span><span class="st"> scripts/count_words.py</span></span>
-<span id="cb5-6"><a></a><span class="dt">PLOT_SCRIPT</span> <span class="ch">:=</span><span class="st"> scripts/plot_counts.py</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb5-1"><a aria-label="1"></a><span class="co"># Run every Python command through uv.</span></span>
+<span id="cb5-2"><a aria-label="2"></a><span class="dt">PYTHON</span> <span class="ch">:=</span><span class="st"> uv run python</span></span>
+<span id="cb5-3"><a aria-label="3"></a></span>
+<span id="cb5-4"><a aria-label="4"></a><span class="co"># Name the scripts used by our rules.</span></span>
+<span id="cb5-5"><a aria-label="5"></a><span class="dt">COUNT_SCRIPT</span> <span class="ch">:=</span><span class="st"> scripts/count_words.py</span></span>
+<span id="cb5-6"><a aria-label="6"></a><span class="dt">PLOT_SCRIPT</span> <span class="ch">:=</span><span class="st"> scripts/plot_counts.py</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Variables make the Dracula rule shorter and keep shared details in one place.</p>
 </section>
 <section id="discover-every-book-without-listing-it-by-hand" class="slide level2">
 <h2>Discover every book without listing it by hand</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb6-1"><a></a><span class="co"># Find every text file already in books/.</span></span>
-<span id="cb6-2"><a></a><span class="dt">BOOK_FILES</span> <span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">wildcard</span><span class="st"> books/*.txt</span><span class="ch">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a></a>$ make print-books</span>
-<span id="cb7-2"><a></a>books/dracula.txt</span>
-<span id="cb7-3"><a></a>books/frankenstein.txt</span>
-<span id="cb7-4"><a></a>books/moby_dick.txt</span>
-<span id="cb7-5"><a></a>books/sherlock_holmes.txt</span>
-<span id="cb7-6"><a></a>…</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb6-1"><a aria-label="1"></a><span class="co"># Find every text file already in books/.</span></span>
+<span id="cb6-2"><a aria-label="2"></a><span class="dt">BOOK_FILES</span> <span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">wildcard</span><span class="st"> books/*.txt</span><span class="ch">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a aria-label="1"></a>$ make print-books</span>
+<span id="cb7-2"><a aria-label="2"></a>books/dracula.txt</span>
+<span id="cb7-3"><a aria-label="3"></a>books/frankenstein.txt</span>
+<span id="cb7-4"><a aria-label="4"></a>books/moby_dick.txt</span>
+<span id="cb7-5"><a aria-label="5"></a>books/sherlock_holmes.txt</span>
+<span id="cb7-6"><a aria-label="6"></a>…</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>wildcard</code> reads the book files that really exist. Add another <code>.txt</code> file and it joins the workflow.</p>
 </section>
 <section id="derive-matching-paths-with-patsubst" class="slide level2">
 <h2>Derive matching paths with <code>patsubst</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb8-1"><a></a><span class="co"># Pattern substitution: replace books/%.txt with counts/%.tsv.</span></span>
-<span id="cb8-2"><a></a><span class="dt">COUNT_FILES</span> <span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">patsubst</span><span class="st"> books/%.txt</span><span class="kw">,</span><span class="st">counts/%.tsv</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">BOOK_FILES</span><span class="ch">))</span></span>
-<span id="cb8-3"><a></a></span>
-<span id="cb8-4"><a></a><span class="co"># The same book names become figure paths.</span></span>
-<span id="cb8-5"><a></a><span class="dt">FIGURE_FILES</span> <span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">patsubst</span><span class="st"> books/%.txt</span><span class="kw">,</span><span class="st">figures/%.html</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">BOOK_FILES</span><span class="ch">))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb8-1"><a aria-label="1"></a><span class="co"># Pattern substitution: replace books/%.txt with counts/%.tsv.</span></span>
+<span id="cb8-2"><a aria-label="2"></a><span class="dt">COUNT_FILES</span> <span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">patsubst</span><span class="st"> books/%.txt</span><span class="kw">,</span><span class="st">counts/%.tsv</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">BOOK_FILES</span><span class="ch">))</span></span>
+<span id="cb8-3"><a aria-label="3"></a></span>
+<span id="cb8-4"><a aria-label="4"></a><span class="co"># The same book names become figure paths.</span></span>
+<span id="cb8-5"><a aria-label="5"></a><span class="dt">FIGURE_FILES</span> <span class="ch">:=</span><span class="st"> </span><span class="ch">$(</span><span class="kw">patsubst</span><span class="st"> books/%.txt</span><span class="kw">,</span><span class="st">figures/%.html</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">BOOK_FILES</span><span class="ch">))</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><code>patsubst</code> means <strong>pattern substitution</strong>. <code>%</code> matches the changing book name, then inserts it into the new path.</p>
 </section>
 <section id="one-rule-shape-works-for-every-book" class="slide level2">
 <h2>One rule shape works for every book</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb9-1"><a></a><span class="co"># Turn any book text file into its matching count table.</span></span>
-<span id="cb9-2"><a></a><span class="dv">counts/%.tsv:</span><span class="dt"> books/%.txt </span><span class="ch">$(</span><span class="dt">COUNT_SCRIPT</span><span class="ch">)</span></span>
-<span id="cb9-3"><a></a><span class="er">    </span><span class="ch">$(</span><span class="dt">PYTHON</span><span class="ch">)</span> <span class="ch">$(</span><span class="dt">COUNT_SCRIPT</span><span class="ch">)</span> <span class="ch">$&lt;</span> <span class="ch">$@</span></span>
-<span id="cb9-4"><a></a></span>
-<span id="cb9-5"><a></a><span class="co"># Turn any count table into its matching HTML figure.</span></span>
-<span id="cb9-6"><a></a><span class="dv">figures/%.html:</span><span class="dt"> counts/%.tsv </span><span class="ch">$(</span><span class="dt">PLOT_SCRIPT</span><span class="ch">)</span></span>
-<span id="cb9-7"><a></a><span class="er">    </span><span class="ch">$(</span><span class="dt">PYTHON</span><span class="ch">)</span> <span class="ch">$(</span><span class="dt">PLOT_SCRIPT</span><span class="ch">)</span> <span class="ch">$&lt;</span> <span class="ch">$@</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource makefile number-lines code-with-copy"><code class="sourceCode makefile"><span id="cb9-1"><a aria-label="1"></a><span class="co"># Turn any book text file into its matching count table.</span></span>
+<span id="cb9-2"><a aria-label="2"></a><span class="dv">counts/%.tsv:</span><span class="dt"> books/%.txt </span><span class="ch">$(</span><span class="dt">COUNT_SCRIPT</span><span class="ch">)</span></span>
+<span id="cb9-3"><a aria-label="3"></a><span class="er">    </span><span class="ch">$(</span><span class="dt">PYTHON</span><span class="ch">)</span> <span class="ch">$(</span><span class="dt">COUNT_SCRIPT</span><span class="ch">)</span> <span class="ch">$&lt;</span> <span class="ch">$@</span></span>
+<span id="cb9-4"><a aria-label="4"></a></span>
+<span id="cb9-5"><a aria-label="5"></a><span class="co"># Turn any count table into its matching HTML figure.</span></span>
+<span id="cb9-6"><a aria-label="6"></a><span class="dv">figures/%.html:</span><span class="dt"> counts/%.tsv </span><span class="ch">$(</span><span class="dt">PLOT_SCRIPT</span><span class="ch">)</span></span>
+<span id="cb9-7"><a aria-label="7"></a><span class="er">    </span><span class="ch">$(</span><span class="dt">PYTHON</span><span class="ch">)</span> <span class="ch">$(</span><span class="dt">PLOT_SCRIPT</span><span class="ch">)</span> <span class="ch">$&lt;</span> <span class="ch">$@</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>$&lt;</code> is the input; <code>$@</code> is the output being built.</li>
 <li>The <code>%</code> in each rule keeps the matching book name.</li>

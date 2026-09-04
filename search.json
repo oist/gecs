@@ -1,5 +1,72 @@
 [
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "flowchart LR\n  A[Data] --&gt; B[Clean] --&gt; C[Analysis] --&gt; D[Results] --&gt; E[Figures] --&gt; F[Paper]\n\n  subgraph GECS[GECS]\n    direction LR\n    B\n    C\n    D\n    E\n  end\n\n  style GECS fill:#eef,stroke:#66f,stroke-width:2px\n\n\n\n\n\n\n\n\n\n\n\n\nflowchart LR\n  subgraph GECS\n    direction TB\n    B1 --&gt; B2 --&gt; B3 --&gt; B1\n  end\n  A(Raw Data) --&gt; GECS --&gt; Z(Paper)"
+  },
+  {
+    "objectID": "lessons/automation.html",
+    "href": "lessons/automation.html",
+    "title": "Automation",
+    "section": "",
+    "text": "This tutorial was adapted from the Automation and Make lesson by The Software Carpentries and reworked for gecs-make.\nPrefer a presentation first? View the Automation slides.\nAutomation turns a one-off analysis into a workflow you can repeat. In this project, we start with books in books/, count their words in counts/, and create interactive plots in figures/.\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    Book[\"books/dracula.txt\"]:::data --&gt; Counts[\"counts/dracula.tsv\"]:::output --&gt; Figure[\"figures/dracula.html\"]:::output\n    CountScript(\"scripts/count_words.py\"):::script -. creates .-&gt; Counts\n    PlotScript(\"scripts/plot_counts.py\"):::script -. creates .-&gt; Figure\n    classDef data fill:#dbeafe,stroke:#2563eb,color:#000\n    classDef output fill:#dcfce7,stroke:#16a34a,color:#000\n    classDef script fill:#fef3c7,stroke:#b45309,color:#000\nWe will first automate Dracula one file at a time. Only after that will we teach Make how to repeat the same workflow for every book.",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#set-up-the-project",
+    "href": "lessons/automation.html#set-up-the-project",
+    "title": "Automation",
+    "section": "Set up the project",
+    "text": "Set up the project\nClone the example project and install its locked dependencies:\ngit clone https://github.com/igorsdub/gecs-make.git\ncd gecs-make\nuv sync\nCheck that GNU Make is available:\nmake --version\nOn macOS, install GNU Make with brew install make if needed; Homebrew may call it gmake. On Ubuntu or WSL, use sudo apt install make.\n\nA first command target\nMake can name an action as well as build a file. Add this to a new Makefile in the project root:\n.PHONY: requirements\nrequirements:\n    uv sync\nNow this familiar setup command also has a Make entry point:\nmake requirements\n\n\n\n\n\n\nNoteWhat does .PHONY mean?\n\n\n\nrequirements is an action, not a file we want to create. .PHONY tells Make to run the recipe even if a file named requirements happens to exist.",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#first-make-a-count-table",
+    "href": "lessons/automation.html#first-make-a-count-table",
+    "title": "Automation",
+    "section": "First: make a count table",
+    "text": "First: make a count table\nAdd this rule below requirements:\ncounts/dracula.tsv: books/dracula.txt scripts/count_words.py\n    uv run python scripts/count_words.py books/dracula.txt counts/dracula.tsv\nRun it with:\nmake counts/dracula.tsv\nThere are three parts to a rule:\n\nTarget — counts/dracula.tsv, the file we want Make to create.\nPrerequisites — books/dracula.txt and scripts/count_words.py, the input book and the code that reads it.\nRecipe — the indented uv run python ... command that creates the target.\n\nBefore running the recipe, Make checks whether the target exists and whether either prerequisite is newer. If the target is missing or out of date, Make runs the recipe. Run the command a second time to see Make skip work that is already current.\n\n\n\n\n\n\nTipCode is an input too\n\n\n\nThe counting script is listed as a prerequisite on purpose. If you change the code, Make rebuilds the count table even when the book itself has not changed.\n\n\n\n\n\n\n\n\nWarningRecipe lines begin with a TAB\n\n\n\nEach recipe line in a Makefile must begin with a literal TAB character, not spaces. Otherwise Make usually reports missing separator.\nIn VS Code, select the recipe lines and use Command Palette → Convert Indentation to Tabs. The example project includes an .editorconfig file that helps compatible editors keep this setting.",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#next-turn-counts-into-a-plot",
+    "href": "lessons/automation.html#next-turn-counts-into-a-plot",
+    "title": "Automation",
+    "section": "Next: turn counts into a plot",
+    "text": "Next: turn counts into a plot\nAdd a second rule:\nfigures/dracula.html: counts/dracula.tsv scripts/plot_counts.py\n    uv run python scripts/plot_counts.py counts/dracula.tsv figures/dracula.html\nNow ask for the final output:\nmake figures/dracula.html\nMake notices that the HTML plot needs the count table. It builds counts/dracula.tsv first if necessary, then runs the plotting recipe. The resulting dependency chain is a directed acyclic graph (DAG): each arrow has a direction, and the workflow cannot loop back on itself.\n\n\n\n\n\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    Book[\"books/dracula.txt\"]:::data --&gt; Counts[\"counts/dracula.tsv\"]:::output --&gt; Figure[\"figures/dracula.html\"]:::output\n    CountScript(\"scripts/count_words.py\"):::script -. prerequisite .-&gt; Counts\n    PlotScript(\"scripts/plot_counts.py\"):::script -. prerequisite .-&gt; Figure\n    classDef data fill:#dbeafe,stroke:#2563eb,color:#000\n    classDef output fill:#dcfce7,stroke:#16a34a,color:#000\n    classDef script fill:#fef3c7,stroke:#b45309,color:#000",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#from-one-book-to-every-book",
+    "href": "lessons/automation.html#from-one-book-to-every-book",
+    "title": "Automation",
+    "section": "From one book to every book",
+    "text": "From one book to every book\nThe two Dracula rules work, but copying them for every title would be tedious. We will generalize the same plan in small pieces.\n\nGive repeated commands names\nAt the top of the Makefile, add variables for the parts we repeat:\nPYTHON := uv run python\nCOUNT_SCRIPT := scripts/count_words.py\nPLOT_SCRIPT := scripts/plot_counts.py\nThen the Dracula recipe can use those names:\n    $(PYTHON) $(COUNT_SCRIPT) books/dracula.txt counts/dracula.tsv\nVariables keep shared information in one place. If the command or script path changes, update it once.\n\n\nFind the books that really exist\nwildcard searches the directory when Make reads the file. Add:\nBOOK_FILES := $(wildcard books/*.txt)\n\n.PHONY: print-books\nprint-books:\n    @printf \"%s\\n\" $(BOOK_FILES)\nTry it:\nmake print-books\nThe leading @ hides the printf command itself, leaving only the filenames in the output.\n\n\nDerive the output filenames\npatsubst transforms every matching book path into another path. Add these variables and the two small inspection targets:\nCOUNT_FILES := $(patsubst books/%.txt,counts/%.tsv,$(BOOK_FILES))\nFIGURE_FILES := $(patsubst books/%.txt,figures/%.html,$(BOOK_FILES))\n\n.PHONY: print-counts print-figures\nprint-counts:\n    @printf \"%s\\n\" $(COUNT_FILES)\n\nprint-figures:\n    @printf \"%s\\n\" $(FIGURE_FILES)\nFor example, patsubst changes books/moby_dick.txt into counts/moby_dick.tsv. Use make print-counts and make print-figures to inspect the lists before building anything.\n\n\nReplace the Dracula rules with pattern rules\nThe % means “the same filename stem.” These two rules work for Dracula, Frankenstein, and any other matching book automatically:\ncounts/%.tsv: books/%.txt $(COUNT_SCRIPT)\n    @mkdir -p $(@D)\n    $(PYTHON) $(COUNT_SCRIPT) $&lt; $@\n\nfigures/%.html: counts/%.tsv $(PLOT_SCRIPT)\n    @mkdir -p $(@D)\n    $(PYTHON) $(PLOT_SCRIPT) $&lt; $@\n$&lt; is the first prerequisite and $@ is the target currently being built. In the first rule, that means “read this book and write this count table.” mkdir -p $(@D) makes sure the output directory exists before the script writes its file.\nFinally, add an all target that depends on every HTML plot:\n.PHONY: all\nall: $(FIGURE_FILES)\nNow Make can build the complete project:\nmake all\nAdd another .txt file to books/ and rerun make all. The file lists and pattern rules pick it up without any new handwritten analysis rule.\n\n\n\n\n\n\nNoteOptional commands and the project graph\n\n\n\n\n\nThe full project Makefile also provides a few convenience targets:\n.PHONY: clean help\n\nclean:\n    rm -f $(COUNT_FILES) $(FIGURE_FILES) $(FIGURE_FILES:.html=.png) figures/workflow.svg\n\nhelp:\n    @printf \"Available targets:\\n\"\n    @printf \"  make requirements           Install locked dependencies with uv sync\\n\"\n    @printf \"  make print-books            List input book files\\n\"\n    @printf \"  make all                    Build HTML plots for all books\\n\"\n    @printf \"  make clean                  Remove generated files\\n\"\nUse make clean to remove generated count tables, plots, companion PNGs, and the workflow graphic. make help prints the main entry points.\nThe optional make dag target uses makefile-graph and Graphviz to render a compact projection of the real project. It shows four representative books so the graph stays readable. Install the graph tool first if necessary:\ngo install github.com/dnaeon/makefile-graph/cmd/makefile-graph@latest\nmake dag\nIn the generated graph, blue rounded boxes are files and gold boxes are Python scripts. The arrows show the data flow from source book through count table to HTML figure.\n\n\n\nProject-generated DAG for four representative books",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#takeaway",
+    "href": "lessons/automation.html#takeaway",
+    "title": "Automation",
+    "section": "Takeaway",
+    "text": "Takeaway\nMake is most useful when your work produces files from other files. First name one output and its inputs. Then use variables, file lists, and pattern rules to apply that same plan to a whole directory of inputs.",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
     "objectID": "lessons/setting-up.html",
     "href": "lessons/setting-up.html",
     "title": "Setting Up",
@@ -77,532 +144,6 @@
     "text": "Tools and platforms\n\nVisual Studio Code\n\nVisual Studio Code Official Website\nVS Code WSL Extension Guide\nVS Code Remote WSL Documentation\nVS Code Terminal Getting Started\n\n\n\nPackage Managers\n\nuv Documentation\nuv Installation Guide\n\n\n\nShell Customization\n\nStarship Shell Prompt\nStarship Presets",
     "crumbs": [
       "Setting Up"
-    ]
-  },
-  {
-    "objectID": "lessons/automation.html",
-    "href": "lessons/automation.html",
-    "title": "Automation",
-    "section": "",
-    "text": "This tutorial was adapted from the Automation and Make lesson by The Software Carpentries and reworked for gecs-make.\nPrefer a presentation first? View the Automation slides.\nAutomation turns a one-off analysis into a workflow you can repeat. In this project, we start with books in books/, count their words in counts/, and create interactive plots in figures/.\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    Book[\"books/dracula.txt\"]:::data --&gt; Counts[\"counts/dracula.tsv\"]:::output --&gt; Figure[\"figures/dracula.html\"]:::output\n    CountScript(\"scripts/count_words.py\"):::script -. creates .-&gt; Counts\n    PlotScript(\"scripts/plot_counts.py\"):::script -. creates .-&gt; Figure\n    classDef data fill:#dbeafe,stroke:#2563eb,color:#000\n    classDef output fill:#dcfce7,stroke:#16a34a,color:#000\n    classDef script fill:#fef3c7,stroke:#b45309,color:#000\nWe will first automate Dracula one file at a time. Only after that will we teach Make how to repeat the same workflow for every book.",
-    "crumbs": [
-      "Automation"
-    ]
-  },
-  {
-    "objectID": "lessons/automation.html#set-up-the-project",
-    "href": "lessons/automation.html#set-up-the-project",
-    "title": "Automation",
-    "section": "Set up the project",
-    "text": "Set up the project\nClone the example project and install its locked dependencies:\ngit clone https://github.com/igorsdub/gecs-make.git\ncd gecs-make\nuv sync\nCheck that GNU Make is available:\nmake --version\nOn macOS, install GNU Make with brew install make if needed; Homebrew may call it gmake. On Ubuntu or WSL, use sudo apt install make.\n\nA first command target\nMake can name an action as well as build a file. Add this to a new Makefile in the project root:\n.PHONY: requirements\nrequirements:\n    uv sync\nNow this familiar setup command also has a Make entry point:\nmake requirements\n\n\n\n\n\n\nNoteWhat does .PHONY mean?\n\n\n\nrequirements is an action, not a file we want to create. .PHONY tells Make to run the recipe even if a file named requirements happens to exist.",
-    "crumbs": [
-      "Automation"
-    ]
-  },
-  {
-    "objectID": "lessons/automation.html#first-make-a-count-table",
-    "href": "lessons/automation.html#first-make-a-count-table",
-    "title": "Automation",
-    "section": "First: make a count table",
-    "text": "First: make a count table\nAdd this rule below requirements:\ncounts/dracula.tsv: books/dracula.txt scripts/count_words.py\n    uv run python scripts/count_words.py books/dracula.txt counts/dracula.tsv\nRun it with:\nmake counts/dracula.tsv\nThere are three parts to a rule:\n\nTarget — counts/dracula.tsv, the file we want Make to create.\nPrerequisites — books/dracula.txt and scripts/count_words.py, the input book and the code that reads it.\nRecipe — the indented uv run python ... command that creates the target.\n\nBefore running the recipe, Make checks whether the target exists and whether either prerequisite is newer. If the target is missing or out of date, Make runs the recipe. Run the command a second time to see Make skip work that is already current.\n\n\n\n\n\n\nTipCode is an input too\n\n\n\nThe counting script is listed as a prerequisite on purpose. If you change the code, Make rebuilds the count table even when the book itself has not changed.\n\n\n\n\n\n\n\n\nWarningRecipe lines begin with a TAB\n\n\n\nEach recipe line in a Makefile must begin with a literal TAB character, not spaces. Otherwise Make usually reports missing separator.\nIn VS Code, select the recipe lines and use Command Palette → Convert Indentation to Tabs. The example project includes an .editorconfig file that helps compatible editors keep this setting.",
-    "crumbs": [
-      "Automation"
-    ]
-  },
-  {
-    "objectID": "lessons/automation.html#next-turn-counts-into-a-plot",
-    "href": "lessons/automation.html#next-turn-counts-into-a-plot",
-    "title": "Automation",
-    "section": "Next: turn counts into a plot",
-    "text": "Next: turn counts into a plot\nAdd a second rule:\nfigures/dracula.html: counts/dracula.tsv scripts/plot_counts.py\n    uv run python scripts/plot_counts.py counts/dracula.tsv figures/dracula.html\nNow ask for the final output:\nmake figures/dracula.html\nMake notices that the HTML plot needs the count table. It builds counts/dracula.tsv first if necessary, then runs the plotting recipe. The resulting dependency chain is a directed acyclic graph (DAG): each arrow has a direction, and the workflow cannot loop back on itself.\n\n\n\n\n\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    Book[\"books/dracula.txt\"]:::data --&gt; Counts[\"counts/dracula.tsv\"]:::output --&gt; Figure[\"figures/dracula.html\"]:::output\n    CountScript(\"scripts/count_words.py\"):::script -. prerequisite .-&gt; Counts\n    PlotScript(\"scripts/plot_counts.py\"):::script -. prerequisite .-&gt; Figure\n    classDef data fill:#dbeafe,stroke:#2563eb,color:#000\n    classDef output fill:#dcfce7,stroke:#16a34a,color:#000\n    classDef script fill:#fef3c7,stroke:#b45309,color:#000",
-    "crumbs": [
-      "Automation"
-    ]
-  },
-  {
-    "objectID": "lessons/automation.html#from-one-book-to-every-book",
-    "href": "lessons/automation.html#from-one-book-to-every-book",
-    "title": "Automation",
-    "section": "From one book to every book",
-    "text": "From one book to every book\nThe two Dracula rules work, but copying them for every title would be tedious. We will generalize the same plan in small pieces.\n\nGive repeated commands names\nAt the top of the Makefile, add variables for the parts we repeat:\nPYTHON := uv run python\nCOUNT_SCRIPT := scripts/count_words.py\nPLOT_SCRIPT := scripts/plot_counts.py\nThen the Dracula recipe can use those names:\n    $(PYTHON) $(COUNT_SCRIPT) books/dracula.txt counts/dracula.tsv\nVariables keep shared information in one place. If the command or script path changes, update it once.\n\n\nFind the books that really exist\nwildcard searches the directory when Make reads the file. Add:\nBOOK_FILES := $(wildcard books/*.txt)\n\n.PHONY: print-books\nprint-books:\n    @printf \"%s\\n\" $(BOOK_FILES)\nTry it:\nmake print-books\nThe leading @ hides the printf command itself, leaving only the filenames in the output.\n\n\nDerive the output filenames\npatsubst transforms every matching book path into another path. Add these variables and the two small inspection targets:\nCOUNT_FILES := $(patsubst books/%.txt,counts/%.tsv,$(BOOK_FILES))\nFIGURE_FILES := $(patsubst books/%.txt,figures/%.html,$(BOOK_FILES))\n\n.PHONY: print-counts print-figures\nprint-counts:\n    @printf \"%s\\n\" $(COUNT_FILES)\n\nprint-figures:\n    @printf \"%s\\n\" $(FIGURE_FILES)\nFor example, patsubst changes books/moby_dick.txt into counts/moby_dick.tsv. Use make print-counts and make print-figures to inspect the lists before building anything.\n\n\nReplace the Dracula rules with pattern rules\nThe % means “the same filename stem.” These two rules work for Dracula, Frankenstein, and any other matching book automatically:\ncounts/%.tsv: books/%.txt $(COUNT_SCRIPT)\n    @mkdir -p $(@D)\n    $(PYTHON) $(COUNT_SCRIPT) $&lt; $@\n\nfigures/%.html: counts/%.tsv $(PLOT_SCRIPT)\n    @mkdir -p $(@D)\n    $(PYTHON) $(PLOT_SCRIPT) $&lt; $@\n$&lt; is the first prerequisite and $@ is the target currently being built. In the first rule, that means “read this book and write this count table.” mkdir -p $(@D) makes sure the output directory exists before the script writes its file.\nFinally, add an all target that depends on every HTML plot:\n.PHONY: all\nall: $(FIGURE_FILES)\nNow Make can build the complete project:\nmake all\nAdd another .txt file to books/ and rerun make all. The file lists and pattern rules pick it up without any new handwritten analysis rule.\n\n\n\n\n\n\nNoteOptional commands and the project graph\n\n\n\n\n\nThe full project Makefile also provides a few convenience targets:\n.PHONY: clean help\n\nclean:\n    rm -f $(COUNT_FILES) $(FIGURE_FILES) $(FIGURE_FILES:.html=.png) figures/workflow.svg\n\nhelp:\n    @printf \"Available targets:\\n\"\n    @printf \"  make requirements           Install locked dependencies with uv sync\\n\"\n    @printf \"  make print-books            List input book files\\n\"\n    @printf \"  make all                    Build HTML plots for all books\\n\"\n    @printf \"  make clean                  Remove generated files\\n\"\nUse make clean to remove generated count tables, plots, companion PNGs, and the workflow graphic. make help prints the main entry points.\nThe optional make dag target uses makefile-graph and Graphviz to render a compact projection of the real project. It shows four representative books so the graph stays readable. Install the graph tool first if necessary:\ngo install github.com/dnaeon/makefile-graph/cmd/makefile-graph@latest\nmake dag\nIn the generated graph, blue rounded boxes are files and gold boxes are Python scripts. The arrows show the data flow from source book through count table to HTML figure.\n\n\n\nProject-generated DAG for four representative books",
-    "crumbs": [
-      "Automation"
-    ]
-  },
-  {
-    "objectID": "lessons/automation.html#takeaway",
-    "href": "lessons/automation.html#takeaway",
-    "title": "Automation",
-    "section": "Takeaway",
-    "text": "Takeaway\nMake is most useful when your work produces files from other files. First name one output and its inputs. Then use variables, file lists, and pattern rules to apply that same plan to a whole directory of inputs.",
-    "crumbs": [
-      "Automation"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html",
-    "href": "lessons/testing.html",
-    "title": "Testing",
-    "section": "",
-    "text": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.\nBrian W. Kernighan\nTesting gives us a way to check that code behaves as expected. In this lesson we will use pytest with the gecs-venv book-analysis project.\nThe basic development loop is:\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"primaryColor\": \"#dbeafe\", \"primaryBorderColor\": \"#2563eb\", \"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    A(Write code):::step edge1@==&gt; B(Run tests):::step\n    edge1@{ animate: slow }\n    B edge2@==&gt; C(Read failures):::step\n    edge2@{ animate: slow }\n    C edge3@==&gt; D(Fix code):::step\n    edge3@{ animate: slow }\n    D edge4@==&gt; A\n    edge4@{ animate: slow }\n    classDef step fill:#cfe9e5,stroke:transparent,color:#000\nIt is a big expectation to adhere to this loop, but it is a good goal. Let’s start by writing a few tests for the existing code.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#work-on-a-branch",
-    "href": "lessons/testing.html#work-on-a-branch",
-    "title": "Testing",
-    "section": "Work on a branch",
-    "text": "Work on a branch\nBefore changing the project, create a new Git branch called testing. A branch gives you a separate line of work, so you can experiment without changing the existing code on main.\nFirst, clone the example repository and open it in VS Code:\ngit clone https://github.com/igorsdub/gecs-venv\ncd gecs-venv\ncode .\nIn VS Code:\n\nOpen the Source Control panel.\nSelect the current branch name, usually main, in the Source Control view or status bar.\nChoose Create new branch.\nEnter testing and press Enter.\n\nYou can also open the Command Palette with Cmd/Ctrl+Shift+P, type Git: Create Branch, and select that command. Enter testing when VS Code asks for the branch name.\n\n\n\n\n\n\nNoteThe terminal alternative\n\n\n\n\n\nFrom the gecs-venv directory, run:\ngit switch -c testing\ngit branch --show-current\nThe second command should print testing.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#set-up-the-project",
-    "href": "lessons/testing.html#set-up-the-project",
-    "title": "Testing",
-    "section": "Set up the project",
-    "text": "Set up the project\nThe project contains books, analysis scripts, and generated word-count files and plots:\nbooks/                         input novels\nscripts/count_words.py         extracts and counts words\nscripts/get_summary.py         prints book metadata\nscripts/plot_counts.py         creates plots\nscripts/run_book_analysis.py   combines the workflow\nThe project uses a virtual environment to isolate its dependencies. We will use the uv command from the gecs-venv project to manage the environment. If you have not intialized the environment yet, run:\nuv sync\nRight now, we only missing pytest for testing. Add pytest for development:\nuv add --dev pytest\nuv run runs commands inside the project environment:\nuv run pytest",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#unit-tests",
-    "href": "lessons/testing.html#unit-tests",
-    "title": "Testing",
-    "section": "Unit tests",
-    "text": "Unit tests\nA unit test checks one small piece of behavior on its own. Each script in this project contains one or more units, such as a function that extracts words or writes a count file. We can write several tests for each unit.\nThe first units we will test are:\n\nextract_words() in count_words.py;\ncount_word_frequencies() in count_words.py; and\nparse_counts_file() in plot_counts.py.\n\nThe relationship looks like this:\n\n\n\n\n\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"primaryColor\": \"#ecfdf5\", \"primaryBorderColor\": \"#16a34a\", \"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    C[count_words.py]:::unit --&gt; T[tests/test_count_words.py]:::unit\n    P[plot_counts.py]:::unit --&gt; U[tests/test_plot_counts.py]:::unit\n    T --&gt; T1[lowercasing]:::unit\n    T --&gt; T2[punctuation]:::unit\n    T --&gt; T3[file output]:::unit\n    U --&gt; U1[count-file parsing]:::unit\n    classDef unit fill:#e6dff1,stroke:transparent,color:#000",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#test-driven-development",
-    "href": "lessons/testing.html#test-driven-development",
-    "title": "Testing",
-    "section": "Test-driven development",
-    "text": "Test-driven development\n\nSmash first, analyze later.\nDating advice from a CERN researcher\n\nThis is also a useful way to think about test-driven development, or TDD. Before writing the implementation, write a test that describes the behavior you want. The test should fail at first because the code does not do that thing yet. Then write the smallest amount of code needed to make the test pass.\nwrite a failing test → write code → run the test → improve the code\nFor example, the current regular expression does not support accented words. Write a test for the behavior we would like to add:\nfrom scripts.count_words import extract_words\n\n\ndef test_extract_words_handles_accented_words():\n    assert extract_words(\"café\") == [\"café\"]\nAdd this test to tests/test_count_words.py and run it. It should fail because the current pattern only matches ASCII letters and numbers. That failure is useful: it tells us what behavior to implement. After the test passes, we can improve the implementation while keeping the test as a safety net.\nNow return to the simpler tests below. They describe behavior that the current implementation already supports.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#write-a-first-test",
-    "href": "lessons/testing.html#write-a-first-test",
-    "title": "Testing",
-    "section": "Write a first test",
-    "text": "Write a first test\nThe extract_words() function turns text into lowercase words:\nimport re\n\n\ndef extract_words(text):\n    return re.findall(r\"\\b[a-z0-9]+\\b\", text.lower())\nCreate a tests directory and a file named tests/test_count_words.py:\nfrom scripts.count_words import extract_words\n\n\ndef test_extract_words_lowercases_text():\n    result = extract_words(\"The QUICK brown fox\")\n\n    assert result == [\"the\", \"quick\", \"brown\", \"fox\"]\nThe regular expression explains what the function accepts:\n\ntext.lower() makes matching case-insensitive;\n\\b identifies word boundaries; and\n[a-z0-9]+ matches one or more ASCII letters or numbers.\n\nBecause the pattern uses ASCII letters, it does not currently handle accented words such as café. That is a limitation we can document or fix later.\nThe assert statement compares the result with the behavior we expect. Pytest finds files named test_*.py and functions named test_* automatically.\nRun the test from the repository root:\nuv run pytest\nTry changing one expected word and run the test again. The failure report shows where the test failed and compares the actual and expected values. Restore the correct expectation afterward.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#test-file-output-safely",
-    "href": "lessons/testing.html#test-file-output-safely",
-    "title": "Testing",
-    "section": "Test file output safely",
-    "text": "Test file output safely\ncount_word_frequencies() reads a book and writes a count file. A test should not overwrite a real file in counts/. The pytest tmp_path fixture gives each test a fresh temporary directory.\nAdd this test to tests/test_count_words.py:\nfrom scripts.count_words import count_word_frequencies\n\n\ndef test_count_word_frequencies_writes_sorted_counts(tmp_path):\n    input_path = tmp_path / \"example.txt\"\n    output_path = tmp_path / \"example.tsv\"\n    input_path.write_text(\"Red blue red!\", encoding=\"utf-8\")\n\n    count_word_frequencies(input_path, output_path)\n\n    assert output_path.read_text(encoding=\"utf-8\") == (\n        \"      2 red\\n\"\n        \"      1 blue\\n\"\n    )\nThe test creates its own input file, runs the function, and checks the generated output. The temporary directory is removed after the test.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#test-several-examples",
-    "href": "lessons/testing.html#test-several-examples",
-    "title": "Testing",
-    "section": "Test several examples",
-    "text": "Test several examples\nSometimes one function should work for several different inputs. Instead of writing a separate test function for every example, give pytest a list of examples:\nimport pytest\n\nfrom scripts.count_words import extract_words\n\n\n@pytest.mark.parametrize(\n    (\"text\", \"expected\"),\n    [\n        (\"HELLO\", [\"hello\"]),\n        (\"one, two\", [\"one\", \"two\"]),\n        (\"version 3\", [\"version\", \"3\"]),\n    ],\n)\ndef test_extract_words_examples(text, expected):\n    assert extract_words(text) == expected\nPytest runs this test once for each row. If one example fails, pytest identifies that example in the failure report.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#test-another-unit",
-    "href": "lessons/testing.html#test-another-unit",
-    "title": "Testing",
-    "section": "Test another unit",
-    "text": "Test another unit\nThe plotting script has a parse_counts_file() function that reads a count file. It can be tested without opening a browser or creating a plot.\nCreate tests/test_plot_counts.py:\nfrom scripts.plot_counts import parse_counts_file\n\n\ndef test_parse_counts_file_reads_counts(tmp_path):\n    counts_path = tmp_path / \"counts.tsv\"\n    counts_path.write_text(\n        \"      4 the\\n\"\n        \"      2 book\\n\",\n        encoding=\"utf-8\",\n    )\n\n    words, counts = parse_counts_file(counts_path)\n\n    assert words == [\"the\", \"book\"]\n    assert counts == [4, 2]\nNow we have several tests for individual units. They are fast and help us find which part of the project has a problem.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#integration-testing",
-    "href": "lessons/testing.html#integration-testing",
-    "title": "Testing",
-    "section": "Integration testing",
-    "text": "Integration testing\nUnit tests check individual pieces. For example, count_word_frequencies() is tested as part of count_words.py, and parse_counts_file() is tested as part of plot_counts.py.\nAn integration test checks that the two scripts work together: the counting script creates a count file, and the plotting script uses that file to create a figure.\n\n\n\n\n\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"primaryColor\": \"#fff7ed\", \"primaryBorderColor\": \"#ea580c\", \"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    U1[Unit test 1]:::part --&gt; S1\n    U2[Unit test 2]:::part --&gt; S2\n    U1 ~~~ U2\n    subgraph integration[Integration test]\n        S1[Script 1]:::part --&gt;|Script 1 output| S2[Script 2]:::part\n    end\n    classDef part fill:#f2d6c9,stroke:transparent,color:#000\n\n\n\n\n\n\n\n\n\n\n\n\nThe diagram is misaligning the unit tests but I could not fix it 😢.\n\n\n\nThe unit tests sit outside the Integration test box and check one script each. The Integration test evaluates both scripts together, with the output of Script 1 becoming the input to Script 2.\nCreate tests/test_workflow.py:\nfrom scripts.count_words import count_word_frequencies\nfrom scripts.plot_counts import plot_word_counts\n\n\ndef test_small_book_workflow(tmp_path):\n    book_path = tmp_path / \"mini_book.txt\"\n    counts_path = tmp_path / \"counts\" / \"mini_book.tsv\"\n    figure_path = tmp_path / \"figures\" / \"mini_book.html\"\n    book_path.write_text(\"The cat sat. The cat slept.\", encoding=\"utf-8\")\n    counts_path.parent.mkdir()\n    figure_path.parent.mkdir()\n\n    count_word_frequencies(book_path, counts_path)\n    plot_word_counts(counts_path, figure_path)\n\n    assert counts_path.exists()\n    assert figure_path.exists()\n    assert figure_path.with_suffix(\".png\").exists()\nThis test follows the same path as the real workflow: book → count file → plot. It calls plot_word_counts(), which uses Altair for the interactive HTML chart and vl-convert-python for PNG export, so it does not require a locally available browser.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#run-the-tests",
-    "href": "lessons/testing.html#run-the-tests",
-    "title": "Testing",
-    "section": "Run the tests",
-    "text": "Run the tests\nUse these commands from the repository root:\n# Run every test\nuv run pytest\n\n# Run one test file\nuv run pytest tests/test_count_words.py\n\n# Run tests with a matching name\nuv run pytest -k extract_words\n\n# Show each test name\nuv run pytest -v\nThe important habit is to run the tests whenever you change the code. Tests make the development loop visible and help protect the behavior of the analysis.\nWhen all tests pass, the testing branch is ready to be committed and reviewed.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#wrapping-up",
-    "href": "lessons/testing.html#wrapping-up",
-    "title": "Testing",
-    "section": "Wrapping up",
-    "text": "Wrapping up\nSave the work on the testing branch and ask for it to be reviewed before it becomes part of main.\nIn VS Code:\n\nOpen Source Control and review the changes.\nEnter a message such as Add pytest examples and select Commit.\nSelect Publish Branch or Sync Changes to push testing to GitHub.\nOpen the repository on GitHub and choose Compare & pull request.\nSet main as the base branch and testing as the compare branch.\nDescribe the lesson changes, then create the pull request.\n\nThe final shape of the work is:\n\n\n\n\n\n%%{init: {\"theme\": \"base\", \"themeVariables\": {\"git0\": \"#2563eb\", \"git1\": \"#db2777\", \"gitBranchLabel0\": \"#ffffff\", \"gitBranchLabel1\": \"#ffffff\", \"commitLabelColor\": \"#111827\", \"commitLabelBackground\": \"#f8fafc\"}}}%%\ngitGraph LR:\n    commit id: \"start\" tag: \"main\"\n    commit id: \"setup\"\n    branch testing\n    commit id: \"tests\"\n    commit id: \"fixes\" type: HIGHLIGHT\n    checkout main\n    commit id: \"main-work\"\n    merge testing\n\n\n\n\n\n\nThe pink testing branch contains the new work. The pull request reviews that work, and the merge commit brings it back into the blue main branch.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/testing.html#summary",
-    "href": "lessons/testing.html#summary",
-    "title": "Testing",
-    "section": "Summary",
-    "text": "Summary\nPytest tests are ordinary Python functions with names beginning with test_. Assertions describe expected behavior, tmp_path provides safe temporary files, and one test can be run with several examples.\nFor this project, begin by testing individual functions. Then add an integration test to check that count_words.py creates the count-file output consumed by plot_counts.py.",
-    "crumbs": [
-      "Testing"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html",
-    "href": "lessons/terminal.html",
-    "title": "Terminal",
-    "section": "",
-    "text": "“Graphical user interfaces make easy tasks easy, while command line interfaces make difficult tasks possible.”\nWilliam Shotts, The Linux Command Line: A Complete Introduction\nIf there is one software skill you had to learn, it would be working with a terminal. It is ubiquitous! It has been around since 1970s and is likely to stay, unlike other tools. Thus, investing your time learning how to use it properly is worth it.",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#moving-between-directories",
-    "href": "lessons/terminal.html#moving-between-directories",
-    "title": "Terminal",
-    "section": "Moving between directories",
-    "text": "Moving between directories\nTo move to a different directory, use the cd (change directory) command:\ncd /usr\npwd\nYou’re now in the /usr directory. Notice how pwd shows a different path. You can use both absolute paths (starting from the root /) and relative paths (starting from your current location).\nSome useful shortcuts for relative paths:\n\ncd . - stay in the current directory\ncd .. - go up one level to the parent directory\ncd - - go back to the previous directory\ncd ~ - go to your home directory\ncd (with no arguments) - also goes to your home directory\n\nTry these out:\ncd ..\npwd\ncd -\npwd\ncd ~\npwd",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#listing-directory-contents",
-    "href": "lessons/terminal.html#listing-directory-contents",
-    "title": "Terminal",
-    "section": "Listing directory contents",
-    "text": "Listing directory contents\nTo see what’s in your current directory, use the ls (list) command:\nls\nThis shows the files and directories in your current location. You can also list the contents of a specific directory without changing to it:\nls /usr\nls ~",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#viewing-file-contents",
-    "href": "lessons/terminal.html#viewing-file-contents",
-    "title": "Terminal",
-    "section": "Viewing file contents",
-    "text": "Viewing file contents\nTo see the contents of a file, you can use the cat (concatenate) command:\ncat /etc/hostname\nThis displays the contents of the file directly in the terminal.\nFor larger files, you might want to use a pager to view them one screen at a time. The less command is perfect for this:\nless /etc/profile\nInside less, you can use arrow keys to scroll, Page Up/Page Down for larger jumps, and q to quit.",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#options-and-arguments",
-    "href": "lessons/terminal.html#options-and-arguments",
-    "title": "Terminal",
-    "section": "Options and arguments",
-    "text": "Options and arguments\nMost commands accept options (also called flags or switches) and arguments. The general format is:\ncommand -options arguments\nOptions typically start with a hyphen (-) or double hyphen (--). Let’s see this in action:\nls -l\nThe -l option shows a “long” listing with more details. Try:\nls -t\nThe -t option sorts files by modification time. You can combine multiple options:\nls -lt\nThis combines -l and -t to show details sorted by time.",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#important-rules",
-    "href": "lessons/terminal.html#important-rules",
-    "title": "Terminal",
-    "section": "Important rules",
-    "text": "Important rules\n\n\n\n\n\n\nTry to avoid any spaces in your directory and file names. Shell interprets space as separator between options or arguments. Space in names will most likely break programs, producing errors.\nYou can use spaces by including names in parentheses or quotes, but that’s an unnecessary complication.\n\n\n\n\n\n\n\n\n\nCommands are case sensitive. ls is not the same as LS, Ls, or lS. Try it yourself!",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#directories",
-    "href": "lessons/terminal.html#directories",
-    "title": "Terminal",
-    "section": "Directories",
-    "text": "Directories\nLets create our first object using the terminal. While in your home directory ~, type:\nmkdir oist\nCheck with ls what happened. mkdir stands for make directory.\nLooks nice! Let’s go inside.\ncd oist\nAnd, check check it out.\nls\nKind of boring here. There is nothing inside. Let’s make some more directories inside.\nmkdir lab1 lab2 lab3 lab4 lab5\nThere’s something a little different about that command. So far we’ve only seen commands that work on their own (cd, pwd) or that have a single item afterwards (cd -, cd ~/Desktop/). But this time we’ve added five things after the mkdir command. Those things are referred to as parameters or arguments, and different commands can accept different numbers of arguments. The mkdir command expects at least one argument, whereas the cd command can work with zero or one, but no more. See what happens when you try to pass the wrong number of parameters to a command:\nmkdir\ncd /etc/ ~/Desktop/\nNotice that mkdir created all the folders in one directory. It didn’t create lab3/ inside lab2/ inside lab1/, or any other nested structure. But sometimes it’s handy to be able to do exactly that, and mkdir does have a way:\nmkdir -p lab4/levelE/48\nls\nYou can try to run without -p and see which error message you get.\nmkdir lab5/levelD/23\nI find this behaviour annoying. The same goes for creating files in non-existent subdirectories but I am sure there is a good reason behind such restriction.\ncd lab4\nls\ncd levelE\nls\ncd ../..\nThe “-p” that we used is called an option or a switch (in this case it means “create the parent directories, too”). Options are used to modify the way in which a command operates, allowing a single command to behave in a variety of different ways. Unfortunately, due to quirks of history and human nature, options can take different forms in different commands. You’ll often see them as single characters preceded by a hyphen (as in this case), or as longer words preceded by two hyphens. The single character form allows for multiple options to be combined, though not all commands will accept that. And to confuse matters further, some commands don’t clearly identify their options at all, whether or not something is an option is dictated purely by the order of the arguments! You don’t need to worry about all the possibilities, just know that options exist and they can take several different forms. For example the following all mean exactly the same thing:\n# These commands are equivalent\nmkdir --parents --verbose lab5/levelDE\nmkdir -p --verbose lab5/levelDE\nmkdir -p -v lab5/levelDE\nmkdir -pv lab5/levelDE",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#files",
-    "href": "lessons/terminal.html#files",
-    "title": "Terminal",
-    "section": "Files",
-    "text": "Files\nMany labs, right? Can we keep a log of them? ls just printed them but can we store this command output in a file? That’s where redirecton comes into play.\nSuppose we wanted to capture the output of that command as a text file that we can look at or manipulate further. All we need to do is to add the greater-than character (“&gt;”) to the end of our command line, followed by the name of the file to write to:\nls &gt; lab.log\nThis time there’s nothing printed to the screen, because the output is being redirected to our file instead. If you just run ls on its own you should see that the lab.log file has been created. We can use the cat command to look at its content:\ncat lab.log\nOkay, so it’s not exactly what was displayed on the screen previously, but it contains all the same data, and it’s in a more useful format for further processing.\nLet’s look at another command, echo:\necho \"VISION, CHALLENGES, INNOVATION\"\nYes, echo just prints its arguments back out again (hence the name). But combine it with a redirect, and you’ve got a way to easily create small files. Let’s redirect these words into a file that will represent the Prof. Sydney Brenner statue located at the Center Court.\n\n\n\nDr. Brenner’s statue presented by Okinawa Prefecture and the Council for Promotion of OIST https://www.oist.jp/image/dr-sydney-brenners-statue\n\n\necho \"VISION, CHALLENGES, INNOVATION\" &gt; sydney_brenner.statue\ncat sydney_brenner.statue\n\n\n\n\n\n\nImportantFile extension\n\n\n\nLinux-type systems do not care about file extensions. Files can have no extensions at all and be absolutely fine. Try redirecting the words output to file named sydney_brenner and see if you can inspect it.\n\n\nWe have one statue but why stop here? It is not improbable that Prof. Svante Pääbo will get his statute at OIST in the future. For his statue engraving we will choose something more personal.\necho \"I really wanted to discover mummies, like Indiana Jones.\" &gt; svante_paabo.statue\ncat svante_paabo.statue\nHowever, cat is more than just a file viewer - its name comes from ‘concatenate’, meaning “to link together”. If you pass more than one filename to cat it will output each of them, one after the other, as a single block of text:\ncat sydney_brenner.statue svante_paabo.statue\nWhere you want to pass multiple file names to a single command, there are some useful shortcuts that can save you a lot of typing if the files have similar names. A question mark (“?”) can be used to indicate “any single character” within the file name. An asterisk (“*”) can be used to indicate “zero or more characters”. These are sometimes referred to as “wildcard” characters. A couple of examples might help, the following commands all do the same thing:\ncat sydney_brenner.statue svante_paabo.statue\ncat *.statue\nThat is where file extension .statue that we came up with is useful. We can match all statue files no matter how many there are. lab.log has been omitted. This simple syntax makes selective manipulation of files an easy task.\n\n\n\n\n\n\nAs you might have guessed, this capability also means that you need to escape file names with “?” or “*” characters in them, too. It’s usually better to avoid any punctuation in file names if you want to manipulate them from the command line.\n\n\n\nWe have not used ? character above. A somewhat artificial example with our current setup would be to list only the lab directories and their subdirectories:\nls lab?\nThus we only look at what is inside the directories that start with “lab”.\nGoing back to the statues. Let’s join all our files together into a single new file, then view it:\ncat *.statue &gt; nobel_motivation.txt\ncat nobel_motivation.txt\nWhat do you think will happen if we run those two commands a second time? Will the computer complain, because the file already exists? Will it append the text to the file, so it contains two copies? Or will it replace it entirely? Give it a try to see what happens, but to avoid typing the commands again you can use the Up Arrow and Down Arrow keys to move back and forth through the history of commands you’ve used. Press the Up Arrow a couple of times to get to the first cat and press Enter to run it, then do the same again to get to the second.\nAs you can see, the file looks the same. That’s not because it’s been left untouched, but because the shell clears out all the content of the file before it writes the output of your cat command into it. Because of this, you should be extra careful when using redirection to make sure that you don’t accidentally overwrite a file you need. If you do want to append to, rather than replace, the content of the files, double up on the greater-than character “&gt;&gt;”:\ncat *.statue &gt;&gt; nobel_motivation.txt\necho 'I want my statue too!' &gt;&gt; nobel_motivation.txt\ncat nobel_motivation.txt\nRepeat the first cat and the echo a few more times, using the Up Arrow for convenience until your text document is so large that it won’t all fit in the terminal at once when you use cat to display it. In order to see the whole file we now need to use a different program, called a pager (because it displays your file one “page” at a time). The standard pager of old was called more, because it puts a line of text at the bottom of each page that says “–More–” to indicate that you haven’t read everything yet. These days there’s a far better pager that you should use instead: because it replaces more, the programmers decided to call it less.\nless nobel_motivation.txt\nWhen viewing a file through less you can use the Up Arrow, Down Arrow, Page Up, Page Down, Home and End keys to move through your file. Give them a try to see the difference between them. When you’ve finished viewing your file, press q to quit less and return to the command line.\n\n\n\n\n\n\nTipGood naming practice\n\n\n\nWhen you consider both case sensitivity and escaping, a good rule of thumb is to keep your file names all lower case, with only letters, numbers, underscores and hyphens. For files there’s usually also a dot and a few characters on the end to indicate the type of file it is (referred to as the “file extension”). This guideline may seem restrictive, but if you end up using the command line with any frequency you’ll be glad you stuck to this pattern.\n\n\nIf we want to move Sydney to show him the latest lab, Lab 5, how do we do that? Also, is the file we created created empty? How can we check that? ls will not work. We will see how files can be manipulated in the next section.",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#renaming-files",
-    "href": "lessons/terminal.html#renaming-files",
-    "title": "Terminal",
-    "section": "Renaming files",
-    "text": "Renaming files\nThe mv command doesn’t just move files between directories—it’s also used to rename them. When you move a file to the same directory but give it a new name, you’re effectively renaming it.\nFor example, let’s rename one of our statue files:\nmv sydney_brenner.statue brenner_sydney.statue\ncat brenner_sydney.statue\nThe file has been renamed, not moved to a different location.",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#copying-files",
-    "href": "lessons/terminal.html#copying-files",
-    "title": "Terminal",
-    "section": "Copying files",
-    "text": "Copying files\nSometimes you want to create a duplicate of a file. This is where the cp (copy) command comes in:\ncp brenner_sydney.statue sydney_brenner.statue\nls *.statue\nYou now have two files: the original and the last-name-first copy. The cp command can also work with directories, but you need to use an option to do so. To copy an entire directory and all its contents, use the -r option (which stands for “recursive”):\ncp -r lab4 lab0\nls\nThis creates a complete copy of lab4/ and all the files inside it, called lab0/.",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#deleting-files-and-directories",
-    "href": "lessons/terminal.html#deleting-files-and-directories",
-    "title": "Terminal",
-    "section": "Deleting files and directories",
-    "text": "Deleting files and directories\nTo remove files, use the rm (remove) command. Be careful with this—once deleted, files are generally gone for good!\nrm brenner_sydney.statue\nls *.statue\nTo be honest, there is only one Lab0. To remove a directory, add the -r option:\nrm -r lab0\nls\n\n\n\n\n\n\nCautionWarning: rm is permanent\n\n\n\nUnlike moving files to a trash or recycle bin on a graphical interface, rm permanently deletes files. There is no undo! Always double-check your command before pressing Enter.",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#downloading-files-from-the-web",
-    "href": "lessons/terminal.html#downloading-files-from-the-web",
-    "title": "Terminal",
-    "section": "Downloading files from the web",
-    "text": "Downloading files from the web\nAnother powerful command you encountered during the setup process is curl (Client URL). It’s used to transfer data from or to a server, often for downloading files or scripts from the internet:\ncurl -fsSL https://pixi.sh/install.sh | sh\nThis command downloads the Pixi installation script and pipes it directly to sh (the shell) for execution. Let’s break down the options:\n\n-f - Fail silently on server errors\n-s - Silent mode (don’t show progress)\n-S - Show errors even in silent mode\n-L - Follow redirects if the URL has moved\n\nYou can also use curl to download files and save them:\ncurl -O https://example.com/file.txt\nThe -O option saves the file with its original name.\n\n\n\n\n\n\nBe cautious when piping downloaded scripts directly to a shell interpreter (| sh or | bash). Only do this with scripts from trusted sources, as they will execute with your user privileges. During setup, you used this method with official installation scripts from Pixi and Starship.",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#reloading-configuration-files",
-    "href": "lessons/terminal.html#reloading-configuration-files",
-    "title": "Terminal",
-    "section": "Reloading configuration files",
-    "text": "Reloading configuration files\nWhen you modify configuration files like .bashrc or .zshrc, the changes won’t take effect until you start a new terminal session. However, you can reload the configuration without closing your terminal using the source command:\nsource ~/.bashrc\nOr for Zsh users:\nsource ~/.zshrc\nThis reads and executes the commands from the specified file in your current shell session. You used this command during setup to activate Pixi after installation.\n\n\n\n\n\n\nYou can view the contents of your configuration files using cat ~/.bashrc or less ~/.bashrc to see what customizations you’ve made.\n\n\n\nAs you progress through more advanced topics, you’ll encounter many more hidden files and directories. Configuration files, cache directories, and version control metadata (like .git/) all use the dot-prefix convention. This naming strategy keeps your file system organized and separates system/application configuration from your regular working files. In future lessons, we’ll explore how these hidden files and directories make it very convenient to manage complex configurations without cluttering your workspace.",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#terminology",
-    "href": "lessons/terminal.html#terminology",
-    "title": "Terminal",
-    "section": "Terminology",
-    "text": "Terminology\nAny terminology is confusing until you repeat it many times. Starting from the left in the figure below, terminal or more properly terminal emulator is a text-based input/output program that communicates with your computer. You type commands in a command line or a command line interface (CLI). The command is passed to shell which is a command line interpreter (confusingly, it can be abbreviated as CLI as well, but thankfully no one does that). Next, shell talks to operating system (OS). OS is agnostic to hardware and could be run on different physical machines. At the core of any OS is kernel. Finally, kernel talks to the hardware (CPU, GPU, RAM, disk, etc.).\nOnly reason I give this detail that some times people use these terms interchangeably.\n\n\n\n\n\nflowchart LR\n    H[Hardware]\n\n    subgraph OS[Operating System]\n        K[Kernel]\n    end\n\n    S[Shell]\n\n    subgraph T[Terminal]\n        C[Command Line]\n    end\n\n    T --- S --- OS --- H\n\n    %% Single hue (blue), different lightness\n    classDef l1 fill:#eaf2fb,stroke:transparent,color:#000\n    classDef l2 fill:#d0e2f2,stroke:transparent,color:#000\n    classDef l3 fill:#9ecae1,stroke:transparent,color:#000\n    classDef l4 fill:#6baed6,stroke:transparent,color:#000\n\n    %% Apply styles\n    class H l1\n    class OS l2\n    class K l4\n    class S l2\n    class T l2\n    class C l4\n\n    %% Remove subgraph borders\n    style OS fill:#d0e2f2,stroke-width:0px\n    style T fill:#d0e2f2,stroke-width:0px",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "lessons/terminal.html#a-brief-history-of-operating-systems",
-    "href": "lessons/terminal.html#a-brief-history-of-operating-systems",
-    "title": "Terminal",
-    "section": "A brief history of operating systems",
-    "text": "A brief history of operating systems\nWhen you look at most operating systems, you see that most of them stem from UNIX. Then they branch into derivatives like Linux, which is the most prominent “child”. Windows, on the other hand, is isolated from UNIX and only the recent introduction of WSL allowed it to use UNIX-based tools with ease.\n\n\n\nEvolution of operating systems, its kernels, and distributions. https://www.reddit.com/r/coolguides/comments/k1lopj/os_family_tree/",
-    "crumbs": [
-      "Terminal"
-    ]
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "flowchart LR\n  A[Data] --&gt; B[Clean] --&gt; C[Analysis] --&gt; D[Results] --&gt; E[Figures] --&gt; F[Paper]\n\n  subgraph GECS[GECS]\n    direction LR\n    B\n    C\n    D\n    E\n  end\n\n  style GECS fill:#eef,stroke:#66f,stroke-width:2px\n\n\n\n\n\n\n\n\n\n\n\n\nflowchart LR\n  subgraph GECS\n    direction TB\n    B1 --&gt; B2 --&gt; B3 --&gt; B1\n  end\n  A(Raw Data) --&gt; GECS --&gt; Z(Paper)"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Good Enough Computing in Science (GECS)",
-    "section": "",
-    "text": "flowchart LR\nA[Experiment] --&gt; B[Data]\n\n%% Parallel paths (layout only)\nsubgraph Reproducible\ndirection TB\nC(**GECS**)\nend\n\nsubgraph Irreproducible\ndirection TB\nE[Ad hoc]\nend\n\nB edge1@==&gt; C\nedge1@{ animate: slow }\nC edge2@==&gt; G[Results]\nedge2@{ animate: slow }\n\nB -.-&gt; E\nE -.-x G\n\n%% Node styles\nclassDef gecs fill:#cfe9e5,stroke:transparent,color:#000\nclassDef adhoc fill:#eeeeee,stroke:transparent,color:#000\nclassDef neutral fill:#f7f7f7,stroke:transparent,color:#000\nclassDef results fill:#e6dff1,stroke:transparent,color:#000\n\n%% Apply styles\nclass C gecs\nclass E adhoc\nclass A,B neutral\nclass G results\n\n%% Make subgraphs invisible\nstyle Reproducible fill:transparent,stroke-width:0px\nstyle Irreproducible fill:transparent,stroke-width:0px",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#getting-started",
-    "href": "index.html#getting-started",
-    "title": "Good Enough Computing in Science (GECS)",
-    "section": "Getting Started",
-    "text": "Getting Started\nMake sure to have your computer ready for the course. Please check out the Setting Up section. Those who are not familiar with terminal should also check out the Terminal section.\nIf you need help with configuring your computer for the course or have any questions before the course starts, a special session will be held on the first week.\nDate and time: July 8 Wednesday 12:00-13:00\nLocation: C102 (The Cafe Tancha meeting room)",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#drop-ins",
-    "href": "index.html#drop-ins",
-    "title": "Good Enough Computing in Science (GECS)",
-    "section": "Drop-ins",
-    "text": "Drop-ins\nAfter every session there will be a drop-in the following week. You can come with questions regarding the course or related stuff.\nDate and time: Wednesday 12:00-13:00\nLocation: C102 (The Cafe Tancha meeting room)",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#acknowledgements",
-    "href": "index.html#acknowledgements",
-    "title": "Good Enough Computing in Science (GECS)",
-    "section": "Acknowledgements",
-    "text": "Acknowledgements\nArthur Turrell, Greg Wilson and The Carpentries, Justin Bois, Richard McElreath, and the MulQuaBio collective.",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "index.html#references",
-    "href": "index.html#references",
-    "title": "Good Enough Computing in Science (GECS)",
-    "section": "References",
-    "text": "References\n\n“Good artists copy, great artists steal.”\n— Pablo Picasso\n\n\nCoding for Economists by Arthur Turrell\nPython for Data Science by Arthur Turrell\nbootcamp by Justin Bois\nResearch Software Engineering with Python by The Carpentries\nThe Multilingual Quantitative Biologist by the MulQuaBio collective",
-    "crumbs": [
-      "Home"
-    ]
-  },
-  {
-    "objectID": "slides/automation.html#automation-makes-analysis-repeatable",
-    "href": "slides/automation.html#automation-makes-analysis-repeatable",
-    "title": "Automation with Make",
-    "section": "Automation makes analysis repeatable",
-    "text": "Automation makes analysis repeatable\nWe want a workflow that we can run again:\n\nfor a new input file;\nafter changing the code; and\nwithout remembering every command by hand."
-  },
-  {
-    "objectID": "slides/automation.html#one-giant-script-hides-the-workflow",
-    "href": "slides/automation.html#one-giant-script-hides-the-workflow",
-    "title": "Automation with Make",
-    "section": "One giant script hides the workflow",
-    "text": "One giant script hides the workflow\n\n\n\n\nIntermediate results disappear.\nFailures are harder to locate.\nChanging one step means reading a large program."
-  },
-  {
-    "objectID": "slides/automation.html#save-the-steps-that-matter",
-    "href": "slides/automation.html#save-the-steps-that-matter",
-    "title": "Automation with Make",
-    "section": "Save the steps that matter",
-    "text": "Save the steps that matter\nSplit work into small scripts and files that can be checked independently.\n\n\n\nEach output is a checkpoint: inspect it, test it, or reuse it."
-  },
-  {
-    "objectID": "slides/automation.html#modular-workflows-leave-two-questions",
-    "href": "slides/automation.html#modular-workflows-leave-two-questions",
-    "title": "Automation with Make",
-    "section": "Modular workflows leave two questions",
-    "text": "Modular workflows leave two questions\n\nNew data arrives. How do we run the same workflow for the new file?\nCode changes. Must we rerun everything, or only the affected part?"
-  },
-  {
-    "objectID": "slides/automation.html#make-records-the-plan",
-    "href": "slides/automation.html#make-records-the-plan",
-    "title": "Automation with Make",
-    "section": "Make records the plan",
-    "text": "Make records the plan\n# Makefile: a small description of the workflow\noutput-file: input-file script\n    command input-file output-file\nMake reads rules like this to learn:\n\nwhich file to create;\nwhich files it depends on; and\nwhich command creates it."
-  },
-  {
-    "objectID": "slides/automation.html#our-book-workflow",
-    "href": "slides/automation.html#our-book-workflow",
-    "title": "Automation with Make",
-    "section": "Our book workflow",
-    "text": "Our book workflow\ngecs-make turns books into count tables and interactive figures."
-  },
-  {
-    "objectID": "slides/automation.html#first-output-draculas-count-table",
-    "href": "slides/automation.html#first-output-draculas-count-table",
-    "title": "Automation with Make",
-    "section": "First output: Dracula’s count table",
-    "text": "First output: Dracula’s count table\ncounts/dracula.tsv: books/dracula.txt scripts/count_words.py\n    uv run python scripts/count_words.py books/dracula.txt counts/dracula.tsv\n\n\nTarget\nThe file to create.\n\nPrerequisites\nThe input data and code it needs.\n\nRecipe\nThe tab-indented command that creates the target."
-  },
-  {
-    "objectID": "slides/automation.html#add-the-final-figure",
-    "href": "slides/automation.html#add-the-final-figure",
-    "title": "Automation with Make",
-    "section": "Add the final figure",
-    "text": "Add the final figure\nfigures/dracula.html: counts/dracula.tsv scripts/plot_counts.py\n    uv run python scripts/plot_counts.py counts/dracula.tsv figures/dracula.html\nmake figures/dracula.html\nMake builds counts/dracula.tsv first when needed, then makes the HTML figure."
-  },
-  {
-    "objectID": "slides/automation.html#draculas-real-project-graph",
-    "href": "slides/automation.html#draculas-real-project-graph",
-    "title": "Automation with Make",
-    "section": "Dracula’s real project graph",
-    "text": "Dracula’s real project graph\nThe graph comes from the project’s Make rules, not from a hand-drawn diagram.\n\nDracula DAG generated by makefile-graph"
-  },
-  {
-    "objectID": "slides/automation.html#a-changed-book-or-counting-script-rebuilds-downstream-work",
-    "href": "slides/automation.html#a-changed-book-or-counting-script-rebuilds-downstream-work",
-    "title": "Automation with Make",
-    "section": "A changed book or counting script rebuilds downstream work",
-    "text": "A changed book or counting script rebuilds downstream work\n\n\n\nThe count table is no longer trustworthy, so Make rebuilds it and every output that depends on it."
-  },
-  {
-    "objectID": "slides/automation.html#a-changed-plotting-script-starts-later",
-    "href": "slides/automation.html#a-changed-plotting-script-starts-later",
-    "title": "Automation with Make",
-    "section": "A changed plotting script starts later",
-    "text": "A changed plotting script starts later\n\n\n\nThe count table stays current. Only the figure needs to be made again."
-  },
-  {
-    "objectID": "slides/automation.html#name-shared-commands",
-    "href": "slides/automation.html#name-shared-commands",
-    "title": "Automation with Make",
-    "section": "Name shared commands",
-    "text": "Name shared commands\n# Run every Python command through uv.\nPYTHON := uv run python\n\n# Name the scripts used by our rules.\nCOUNT_SCRIPT := scripts/count_words.py\nPLOT_SCRIPT := scripts/plot_counts.py\nVariables make the Dracula rule shorter and keep shared details in one place."
-  },
-  {
-    "objectID": "slides/automation.html#discover-every-book-without-listing-it-by-hand",
-    "href": "slides/automation.html#discover-every-book-without-listing-it-by-hand",
-    "title": "Automation with Make",
-    "section": "Discover every book without listing it by hand",
-    "text": "Discover every book without listing it by hand\n# Find every text file already in books/.\nBOOK_FILES := $(wildcard books/*.txt)\n$ make print-books\nbooks/dracula.txt\nbooks/frankenstein.txt\nbooks/moby_dick.txt\nbooks/sherlock_holmes.txt\n…\nwildcard reads the book files that really exist. Add another .txt file and it joins the workflow."
-  },
-  {
-    "objectID": "slides/automation.html#derive-matching-paths-with-patsubst",
-    "href": "slides/automation.html#derive-matching-paths-with-patsubst",
-    "title": "Automation with Make",
-    "section": "Derive matching paths with patsubst",
-    "text": "Derive matching paths with patsubst\n# Pattern substitution: replace books/%.txt with counts/%.tsv.\nCOUNT_FILES := $(patsubst books/%.txt,counts/%.tsv,$(BOOK_FILES))\n\n# The same book names become figure paths.\nFIGURE_FILES := $(patsubst books/%.txt,figures/%.html,$(BOOK_FILES))\npatsubst means pattern substitution. % matches the changing book name, then inserts it into the new path."
-  },
-  {
-    "objectID": "slides/automation.html#one-rule-shape-works-for-every-book",
-    "href": "slides/automation.html#one-rule-shape-works-for-every-book",
-    "title": "Automation with Make",
-    "section": "One rule shape works for every book",
-    "text": "One rule shape works for every book\n# Turn any book text file into its matching count table.\ncounts/%.tsv: books/%.txt $(COUNT_SCRIPT)\n    $(PYTHON) $(COUNT_SCRIPT) $&lt; $@\n\n# Turn any count table into its matching HTML figure.\nfigures/%.html: counts/%.tsv $(PLOT_SCRIPT)\n    $(PYTHON) $(PLOT_SCRIPT) $&lt; $@\n\n$&lt; is the input; $@ is the output being built.\nThe % in each rule keeps the matching book name."
-  },
-  {
-    "objectID": "slides/automation.html#the-project-workflow-in-full",
-    "href": "slides/automation.html#the-project-workflow-in-full",
-    "title": "Automation with Make",
-    "section": "The project workflow in full",
-    "text": "The project workflow in full\nThe same rules describe every book and every dependency in the project.\n\nFour-book DAG generated by makefile-graph"
-  },
-  {
-    "objectID": "slides/automation.html#why-use-make",
-    "href": "slides/automation.html#why-use-make",
-    "title": "Automation with Make",
-    "section": "Why use Make",
-    "text": "Why use Make\n\nAutomated order: no need to remember the steps.\nReproducibility: someone else can run the same project command.\nModularity: scripts and intermediate outputs stay understandable.\nSelective rebuilding: timestamps identify what must run again."
-  },
-  {
-    "objectID": "lessons/vs-code.html",
-    "href": "lessons/vs-code.html",
-    "title": "VS Code",
-    "section": "",
-    "text": "In this tutorial you will get familiar with the functionality of VS Code. A powerful IDE as it is, VS Code has a lot of features. However, even if you know the basics it will get you a long way. This tutorial is heavily based on the official Tutorial: Get started with Visual Studio Code.\n\nStart Up\n\nOpen Visual Studio Code. Then open a folder with File &gt; Open Folder… or Cmd+O. On Linux/WSL users, you will first have to start a remote WSL session. With the WSL extension installed, you will see a new Status bar item at the far left.\n\nThe Remote Status bar item can quickly show you in which context VS Code is running (local or remote) and clicking on the item will bring up the WSL extension commands.\n\n\n\n\n\n\n\nAlternatively, WSL users can open their Linux terminal, create a directory in their Linux distribution file system, change their directory and open it in VS Code WSL remote with code .:\ncd\nmkdir vscode101\ncd vscode101\ncode .\nNote the . in front of code. You need to tell VS Code what you are opening. Later, we will see that you can open any file or directory with this command.\n\n\n\nSelect New Folder and create a new folder named vscode101. Then select Select Folder (Open on macOS) to open the folder in VS Code.\nOn the Workspace Trust dialog, select Yes, I trust the authors to enable all features in the workspace. If you do not see this dialog, then you probably have already opened this area before.\n\n\n\n\n\n\nWorkspace Trust lets you decide whether code in your project folder can be executed by VS Code. When you download code from the internet, you should first review it to make sure it’s safe to run. Get more info about Workspace Trust.\n\n\n\n\n\n\nYou should now see the Explorer view on the left, showing the name of the folder. Alongside terminal commands like ls, tree, and other commands, you can use the Explorer view to view and manage the files and folders in your workspace.\n\n\n\n\n\n\n\nWhen you open a folder in VS Code, VS Code can restore the UI state for that folder, such as the open files, the active view, and the layout of the editor. You can also configure settings that only apply to that folder, or define debug configurations. Get more info about workspaces.\n\n\n\n\nVS Code now considers the folder you’ve opened a workspace. You can also use code . in your terminal, especially for WSL users, to start a WSL remote session.\n\n\nInterface and Layout\n\nSidebar\nCode editor\nTerminal\n\n\n\nSettings\n\nAutosave\nWord wrap\nTheme customization\nGECS profile configuration\n\n\n\nSearching and Replacing\n\nSearch in a file\nSearch across files\n\n\n\nShortcuts\n\nLayout: Cmd+B for the Sidebar, Ctrl+` for the Terminal\nCode editor: Cmd+D for selecting the expression, Opt+Up/Down to move a line, Opt+Shift+F to format a document\nGeneral: Cmd+Shift+P for the Command Palette, Cmd+P for the File and Open Editors search bar\n\n\n\nReferences\n\nhttps://code.visualstudio.com/docs/getstarted/getting-started\nhttps://code.visualstudio.com/docs/remote/wsl-tutorial",
-    "crumbs": [
-      "VS Code"
     ]
   },
   {
@@ -886,6 +427,66 @@
     ]
   },
   {
+    "objectID": "lessons/vs-code.html",
+    "href": "lessons/vs-code.html",
+    "title": "VS Code",
+    "section": "",
+    "text": "In this tutorial you will get familiar with the functionality of VS Code. A powerful IDE as it is, VS Code has a lot of features. However, even if you know the basics it will get you a long way. This tutorial is heavily based on the official Tutorial: Get started with Visual Studio Code.\n\nStart Up\n\nOpen Visual Studio Code. Then open a folder with File &gt; Open Folder… or Cmd+O. On Linux/WSL users, you will first have to start a remote WSL session. With the WSL extension installed, you will see a new Status bar item at the far left.\n\nThe Remote Status bar item can quickly show you in which context VS Code is running (local or remote) and clicking on the item will bring up the WSL extension commands.\n\n\n\n\n\n\n\nAlternatively, WSL users can open their Linux terminal, create a directory in their Linux distribution file system, change their directory and open it in VS Code WSL remote with code .:\ncd\nmkdir vscode101\ncd vscode101\ncode .\nNote the . in front of code. You need to tell VS Code what you are opening. Later, we will see that you can open any file or directory with this command.\n\n\n\nSelect New Folder and create a new folder named vscode101. Then select Select Folder (Open on macOS) to open the folder in VS Code.\nOn the Workspace Trust dialog, select Yes, I trust the authors to enable all features in the workspace. If you do not see this dialog, then you probably have already opened this area before.\n\n\n\n\n\n\nWorkspace Trust lets you decide whether code in your project folder can be executed by VS Code. When you download code from the internet, you should first review it to make sure it’s safe to run. Get more info about Workspace Trust.\n\n\n\n\n\n\nYou should now see the Explorer view on the left, showing the name of the folder. Alongside terminal commands like ls, tree, and other commands, you can use the Explorer view to view and manage the files and folders in your workspace.\n\n\n\n\n\n\n\nWhen you open a folder in VS Code, VS Code can restore the UI state for that folder, such as the open files, the active view, and the layout of the editor. You can also configure settings that only apply to that folder, or define debug configurations. Get more info about workspaces.\n\n\n\n\nVS Code now considers the folder you’ve opened a workspace. You can also use code . in your terminal, especially for WSL users, to start a WSL remote session.\n\n\nInterface and Layout\n\nSidebar\nCode editor\nTerminal\n\n\n\nSettings\n\nAutosave\nWord wrap\nTheme customization\nGECS profile configuration\n\n\n\nSearching and Replacing\n\nSearch in a file\nSearch across files\n\n\n\nShortcuts\n\nLayout: Cmd+B for the Sidebar, Ctrl+` for the Terminal\nCode editor: Cmd+D for selecting the expression, Opt+Up/Down to move a line, Opt+Shift+F to format a document\nGeneral: Cmd+Shift+P for the Command Palette, Cmd+P for the File and Open Editors search bar\n\n\n\nReferences\n\nhttps://code.visualstudio.com/docs/getstarted/getting-started\nhttps://code.visualstudio.com/docs/remote/wsl-tutorial",
+    "crumbs": [
+      "VS Code"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Good Enough Computing in Science (GECS)",
+    "section": "",
+    "text": "flowchart LR\nA[Experiment] --&gt; B[Data]\n\n%% Parallel paths (layout only)\nsubgraph Reproducible\ndirection TB\nC(**GECS**)\nend\n\nsubgraph Irreproducible\ndirection TB\nE[Ad hoc]\nend\n\nB edge1@==&gt; C\nedge1@{ animate: slow }\nC edge2@==&gt; G[Results]\nedge2@{ animate: slow }\n\nB -.-&gt; E\nE -.-x G\n\n%% Node styles\nclassDef gecs fill:#cfe9e5,stroke:transparent,color:#000\nclassDef adhoc fill:#eeeeee,stroke:transparent,color:#000\nclassDef neutral fill:#f7f7f7,stroke:transparent,color:#000\nclassDef results fill:#e6dff1,stroke:transparent,color:#000\n\n%% Apply styles\nclass C gecs\nclass E adhoc\nclass A,B neutral\nclass G results\n\n%% Make subgraphs invisible\nstyle Reproducible fill:transparent,stroke-width:0px\nstyle Irreproducible fill:transparent,stroke-width:0px",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#getting-started",
+    "href": "index.html#getting-started",
+    "title": "Good Enough Computing in Science (GECS)",
+    "section": "Getting Started",
+    "text": "Getting Started\nMake sure to have your computer ready for the course. Please check out the Setting Up section. Those who are not familiar with terminal should also check out the Terminal section.\nIf you need help with configuring your computer for the course or have any questions before the course starts, a special session will be held on the first week.\nDate and time: July 8 Wednesday 12:00-13:00\nLocation: C102 (The Cafe Tancha meeting room)",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#drop-ins",
+    "href": "index.html#drop-ins",
+    "title": "Good Enough Computing in Science (GECS)",
+    "section": "Drop-ins",
+    "text": "Drop-ins\nAfter every session there will be a drop-in the following week. You can come with questions regarding the course or related stuff.\nDate and time: Wednesday 12:00-13:00\nLocation: C102 (The Cafe Tancha meeting room)",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#acknowledgements",
+    "href": "index.html#acknowledgements",
+    "title": "Good Enough Computing in Science (GECS)",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nArthur Turrell, Greg Wilson and The Carpentries, Justin Bois, Richard McElreath, and the MulQuaBio collective.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#references",
+    "href": "index.html#references",
+    "title": "Good Enough Computing in Science (GECS)",
+    "section": "References",
+    "text": "References\n\n“Good artists copy, great artists steal.”\n— Pablo Picasso\n\n\nCoding for Economists by Arthur Turrell\nPython for Data Science by Arthur Turrell\nbootcamp by Justin Bois\nResearch Software Engineering with Python by The Carpentries\nThe Multilingual Quantitative Biologist by the MulQuaBio collective",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
     "objectID": "lessons/virtual-environments.html",
     "href": "lessons/virtual-environments.html",
     "title": "Virtual Environments",
@@ -1086,6 +687,286 @@
     ]
   },
   {
+    "objectID": "lessons/testing.html",
+    "href": "lessons/testing.html",
+    "title": "Testing",
+    "section": "",
+    "text": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.\nBrian W. Kernighan\nTesting gives us a way to check that code behaves as expected. In this lesson we will use pytest with the gecs-venv book-analysis project.\nThe basic development loop is:\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"primaryColor\": \"#dbeafe\", \"primaryBorderColor\": \"#2563eb\", \"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    A(Write code):::step edge1@==&gt; B(Run tests):::step\n    edge1@{ animate: slow }\n    B edge2@==&gt; C(Read failures):::step\n    edge2@{ animate: slow }\n    C edge3@==&gt; D(Fix code):::step\n    edge3@{ animate: slow }\n    D edge4@==&gt; A\n    edge4@{ animate: slow }\n    classDef step fill:#cfe9e5,stroke:transparent,color:#000\nIt is a big expectation to adhere to this loop, but it is a good goal. Let’s start by writing a few tests for the existing code.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#work-on-a-branch",
+    "href": "lessons/testing.html#work-on-a-branch",
+    "title": "Testing",
+    "section": "Work on a branch",
+    "text": "Work on a branch\nBefore changing the project, create a new Git branch called testing. A branch gives you a separate line of work, so you can experiment without changing the existing code on main.\nFirst, clone the example repository and open it in VS Code:\ngit clone https://github.com/igorsdub/gecs-venv\ncd gecs-venv\ncode .\nIn VS Code:\n\nOpen the Source Control panel.\nSelect the current branch name, usually main, in the Source Control view or status bar.\nChoose Create new branch.\nEnter testing and press Enter.\n\nYou can also open the Command Palette with Cmd/Ctrl+Shift+P, type Git: Create Branch, and select that command. Enter testing when VS Code asks for the branch name.\n\n\n\n\n\n\nNoteThe terminal alternative\n\n\n\n\n\nFrom the gecs-venv directory, run:\ngit switch -c testing\ngit branch --show-current\nThe second command should print testing.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#set-up-the-project",
+    "href": "lessons/testing.html#set-up-the-project",
+    "title": "Testing",
+    "section": "Set up the project",
+    "text": "Set up the project\nThe project contains books, analysis scripts, and generated word-count files and plots:\nbooks/                         input novels\nscripts/count_words.py         extracts and counts words\nscripts/get_summary.py         prints book metadata\nscripts/plot_counts.py         creates plots\nscripts/run_book_analysis.py   combines the workflow\nThe project uses a virtual environment to isolate its dependencies. We will use the uv command from the gecs-venv project to manage the environment. If you have not intialized the environment yet, run:\nuv sync\nRight now, we only missing pytest for testing. Add pytest for development:\nuv add --dev pytest\nuv run runs commands inside the project environment:\nuv run pytest",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#unit-tests",
+    "href": "lessons/testing.html#unit-tests",
+    "title": "Testing",
+    "section": "Unit tests",
+    "text": "Unit tests\nA unit test checks one small piece of behavior on its own. Each script in this project contains one or more units, such as a function that extracts words or writes a count file. We can write several tests for each unit.\nThe first units we will test are:\n\nextract_words() in count_words.py;\ncount_word_frequencies() in count_words.py; and\nparse_counts_file() in plot_counts.py.\n\nThe relationship looks like this:\n\n\n\n\n\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"primaryColor\": \"#ecfdf5\", \"primaryBorderColor\": \"#16a34a\", \"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    C[count_words.py]:::unit --&gt; T[tests/test_count_words.py]:::unit\n    P[plot_counts.py]:::unit --&gt; U[tests/test_plot_counts.py]:::unit\n    T --&gt; T1[lowercasing]:::unit\n    T --&gt; T2[punctuation]:::unit\n    T --&gt; T3[file output]:::unit\n    U --&gt; U1[count-file parsing]:::unit\n    classDef unit fill:#e6dff1,stroke:transparent,color:#000",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#test-driven-development",
+    "href": "lessons/testing.html#test-driven-development",
+    "title": "Testing",
+    "section": "Test-driven development",
+    "text": "Test-driven development\n\nSmash first, analyze later.\nDating advice from a CERN researcher\n\nThis is also a useful way to think about test-driven development, or TDD. Before writing the implementation, write a test that describes the behavior you want. The test should fail at first because the code does not do that thing yet. Then write the smallest amount of code needed to make the test pass.\nwrite a failing test → write code → run the test → improve the code\nFor example, the current regular expression does not support accented words. Write a test for the behavior we would like to add:\nfrom scripts.count_words import extract_words\n\n\ndef test_extract_words_handles_accented_words():\n    assert extract_words(\"café\") == [\"café\"]\nAdd this test to tests/test_count_words.py and run it. It should fail because the current pattern only matches ASCII letters and numbers. That failure is useful: it tells us what behavior to implement. After the test passes, we can improve the implementation while keeping the test as a safety net.\nNow return to the simpler tests below. They describe behavior that the current implementation already supports.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#write-a-first-test",
+    "href": "lessons/testing.html#write-a-first-test",
+    "title": "Testing",
+    "section": "Write a first test",
+    "text": "Write a first test\nThe extract_words() function turns text into lowercase words:\nimport re\n\n\ndef extract_words(text):\n    return re.findall(r\"\\b[a-z0-9]+\\b\", text.lower())\nCreate a tests directory and a file named tests/test_count_words.py:\nfrom scripts.count_words import extract_words\n\n\ndef test_extract_words_lowercases_text():\n    result = extract_words(\"The QUICK brown fox\")\n\n    assert result == [\"the\", \"quick\", \"brown\", \"fox\"]\nThe regular expression explains what the function accepts:\n\ntext.lower() makes matching case-insensitive;\n\\b identifies word boundaries; and\n[a-z0-9]+ matches one or more ASCII letters or numbers.\n\nBecause the pattern uses ASCII letters, it does not currently handle accented words such as café. That is a limitation we can document or fix later.\nThe assert statement compares the result with the behavior we expect. Pytest finds files named test_*.py and functions named test_* automatically.\nRun the test from the repository root:\nuv run pytest\nTry changing one expected word and run the test again. The failure report shows where the test failed and compares the actual and expected values. Restore the correct expectation afterward.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#test-file-output-safely",
+    "href": "lessons/testing.html#test-file-output-safely",
+    "title": "Testing",
+    "section": "Test file output safely",
+    "text": "Test file output safely\ncount_word_frequencies() reads a book and writes a count file. A test should not overwrite a real file in counts/. The pytest tmp_path fixture gives each test a fresh temporary directory.\nAdd this test to tests/test_count_words.py:\nfrom scripts.count_words import count_word_frequencies\n\n\ndef test_count_word_frequencies_writes_sorted_counts(tmp_path):\n    input_path = tmp_path / \"example.txt\"\n    output_path = tmp_path / \"example.tsv\"\n    input_path.write_text(\"Red blue red!\", encoding=\"utf-8\")\n\n    count_word_frequencies(input_path, output_path)\n\n    assert output_path.read_text(encoding=\"utf-8\") == (\n        \"      2 red\\n\"\n        \"      1 blue\\n\"\n    )\nThe test creates its own input file, runs the function, and checks the generated output. The temporary directory is removed after the test.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#test-several-examples",
+    "href": "lessons/testing.html#test-several-examples",
+    "title": "Testing",
+    "section": "Test several examples",
+    "text": "Test several examples\nSometimes one function should work for several different inputs. Instead of writing a separate test function for every example, give pytest a list of examples:\nimport pytest\n\nfrom scripts.count_words import extract_words\n\n\n@pytest.mark.parametrize(\n    (\"text\", \"expected\"),\n    [\n        (\"HELLO\", [\"hello\"]),\n        (\"one, two\", [\"one\", \"two\"]),\n        (\"version 3\", [\"version\", \"3\"]),\n    ],\n)\ndef test_extract_words_examples(text, expected):\n    assert extract_words(text) == expected\nPytest runs this test once for each row. If one example fails, pytest identifies that example in the failure report.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#test-another-unit",
+    "href": "lessons/testing.html#test-another-unit",
+    "title": "Testing",
+    "section": "Test another unit",
+    "text": "Test another unit\nThe plotting script has a parse_counts_file() function that reads a count file. It can be tested without opening a browser or creating a plot.\nCreate tests/test_plot_counts.py:\nfrom scripts.plot_counts import parse_counts_file\n\n\ndef test_parse_counts_file_reads_counts(tmp_path):\n    counts_path = tmp_path / \"counts.tsv\"\n    counts_path.write_text(\n        \"      4 the\\n\"\n        \"      2 book\\n\",\n        encoding=\"utf-8\",\n    )\n\n    words, counts = parse_counts_file(counts_path)\n\n    assert words == [\"the\", \"book\"]\n    assert counts == [4, 2]\nNow we have several tests for individual units. They are fast and help us find which part of the project has a problem.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#integration-testing",
+    "href": "lessons/testing.html#integration-testing",
+    "title": "Testing",
+    "section": "Integration testing",
+    "text": "Integration testing\nUnit tests check individual pieces. For example, count_word_frequencies() is tested as part of count_words.py, and parse_counts_file() is tested as part of plot_counts.py.\nAn integration test checks that the two scripts work together: the counting script creates a count file, and the plotting script uses that file to create a figure.\n\n\n\n\n\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"primaryColor\": \"#fff7ed\", \"primaryBorderColor\": \"#ea580c\", \"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    U1[Unit test 1]:::part --&gt; S1\n    U2[Unit test 2]:::part --&gt; S2\n    U1 ~~~ U2\n    subgraph integration[Integration test]\n        S1[Script 1]:::part --&gt;|Script 1 output| S2[Script 2]:::part\n    end\n    classDef part fill:#f2d6c9,stroke:transparent,color:#000\n\n\n\n\n\n\n\n\n\n\n\n\nThe diagram is misaligning the unit tests but I could not fix it 😢.\n\n\n\nThe unit tests sit outside the Integration test box and check one script each. The Integration test evaluates both scripts together, with the output of Script 1 becoming the input to Script 2.\nCreate tests/test_workflow.py:\nfrom scripts.count_words import count_word_frequencies\nfrom scripts.plot_counts import plot_word_counts\n\n\ndef test_small_book_workflow(tmp_path):\n    book_path = tmp_path / \"mini_book.txt\"\n    counts_path = tmp_path / \"counts\" / \"mini_book.tsv\"\n    figure_path = tmp_path / \"figures\" / \"mini_book.html\"\n    book_path.write_text(\"The cat sat. The cat slept.\", encoding=\"utf-8\")\n    counts_path.parent.mkdir()\n    figure_path.parent.mkdir()\n\n    count_word_frequencies(book_path, counts_path)\n    plot_word_counts(counts_path, figure_path)\n\n    assert counts_path.exists()\n    assert figure_path.exists()\n    assert figure_path.with_suffix(\".png\").exists()\nThis test follows the same path as the real workflow: book → count file → plot. It calls plot_word_counts(), which uses Altair for the interactive HTML chart and vl-convert-python for PNG export, so it does not require a locally available browser.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#run-the-tests",
+    "href": "lessons/testing.html#run-the-tests",
+    "title": "Testing",
+    "section": "Run the tests",
+    "text": "Run the tests\nUse these commands from the repository root:\n# Run every test\nuv run pytest\n\n# Run one test file\nuv run pytest tests/test_count_words.py\n\n# Run tests with a matching name\nuv run pytest -k extract_words\n\n# Show each test name\nuv run pytest -v\nThe important habit is to run the tests whenever you change the code. Tests make the development loop visible and help protect the behavior of the analysis.\nWhen all tests pass, the testing branch is ready to be committed and reviewed.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#wrapping-up",
+    "href": "lessons/testing.html#wrapping-up",
+    "title": "Testing",
+    "section": "Wrapping up",
+    "text": "Wrapping up\nSave the work on the testing branch and ask for it to be reviewed before it becomes part of main.\nIn VS Code:\n\nOpen Source Control and review the changes.\nEnter a message such as Add pytest examples and select Commit.\nSelect Publish Branch or Sync Changes to push testing to GitHub.\nOpen the repository on GitHub and choose Compare & pull request.\nSet main as the base branch and testing as the compare branch.\nDescribe the lesson changes, then create the pull request.\n\nThe final shape of the work is:\n\n\n\n\n\n%%{init: {\"theme\": \"base\", \"themeVariables\": {\"git0\": \"#2563eb\", \"git1\": \"#db2777\", \"gitBranchLabel0\": \"#ffffff\", \"gitBranchLabel1\": \"#ffffff\", \"commitLabelColor\": \"#111827\", \"commitLabelBackground\": \"#f8fafc\"}}}%%\ngitGraph LR:\n    commit id: \"start\" tag: \"main\"\n    commit id: \"setup\"\n    branch testing\n    commit id: \"tests\"\n    commit id: \"fixes\" type: HIGHLIGHT\n    checkout main\n    commit id: \"main-work\"\n    merge testing\n\n\n\n\n\n\nThe pink testing branch contains the new work. The pull request reviews that work, and the merge commit brings it back into the blue main branch.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#summary",
+    "href": "lessons/testing.html#summary",
+    "title": "Testing",
+    "section": "Summary",
+    "text": "Summary\nPytest tests are ordinary Python functions with names beginning with test_. Assertions describe expected behavior, tmp_path provides safe temporary files, and one test can be run with several examples.\nFor this project, begin by testing individual functions. Then add an integration test to check that count_words.py creates the count-file output consumed by plot_counts.py.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html",
+    "href": "lessons/terminal.html",
+    "title": "Terminal",
+    "section": "",
+    "text": "“Graphical user interfaces make easy tasks easy, while command line interfaces make difficult tasks possible.”\nWilliam Shotts, The Linux Command Line: A Complete Introduction\nIf there is one software skill you had to learn, it would be working with a terminal. It is ubiquitous! It has been around since 1970s and is likely to stay, unlike other tools. Thus, investing your time learning how to use it properly is worth it.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#moving-between-directories",
+    "href": "lessons/terminal.html#moving-between-directories",
+    "title": "Terminal",
+    "section": "Moving between directories",
+    "text": "Moving between directories\nTo move to a different directory, use the cd (change directory) command:\ncd /usr\npwd\nYou’re now in the /usr directory. Notice how pwd shows a different path. You can use both absolute paths (starting from the root /) and relative paths (starting from your current location).\nSome useful shortcuts for relative paths:\n\ncd . - stay in the current directory\ncd .. - go up one level to the parent directory\ncd - - go back to the previous directory\ncd ~ - go to your home directory\ncd (with no arguments) - also goes to your home directory\n\nTry these out:\ncd ..\npwd\ncd -\npwd\ncd ~\npwd",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#listing-directory-contents",
+    "href": "lessons/terminal.html#listing-directory-contents",
+    "title": "Terminal",
+    "section": "Listing directory contents",
+    "text": "Listing directory contents\nTo see what’s in your current directory, use the ls (list) command:\nls\nThis shows the files and directories in your current location. You can also list the contents of a specific directory without changing to it:\nls /usr\nls ~",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#viewing-file-contents",
+    "href": "lessons/terminal.html#viewing-file-contents",
+    "title": "Terminal",
+    "section": "Viewing file contents",
+    "text": "Viewing file contents\nTo see the contents of a file, you can use the cat (concatenate) command:\ncat /etc/hostname\nThis displays the contents of the file directly in the terminal.\nFor larger files, you might want to use a pager to view them one screen at a time. The less command is perfect for this:\nless /etc/profile\nInside less, you can use arrow keys to scroll, Page Up/Page Down for larger jumps, and q to quit.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#options-and-arguments",
+    "href": "lessons/terminal.html#options-and-arguments",
+    "title": "Terminal",
+    "section": "Options and arguments",
+    "text": "Options and arguments\nMost commands accept options (also called flags or switches) and arguments. The general format is:\ncommand -options arguments\nOptions typically start with a hyphen (-) or double hyphen (--). Let’s see this in action:\nls -l\nThe -l option shows a “long” listing with more details. Try:\nls -t\nThe -t option sorts files by modification time. You can combine multiple options:\nls -lt\nThis combines -l and -t to show details sorted by time.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#important-rules",
+    "href": "lessons/terminal.html#important-rules",
+    "title": "Terminal",
+    "section": "Important rules",
+    "text": "Important rules\n\n\n\n\n\n\nTry to avoid any spaces in your directory and file names. Shell interprets space as separator between options or arguments. Space in names will most likely break programs, producing errors.\nYou can use spaces by including names in parentheses or quotes, but that’s an unnecessary complication.\n\n\n\n\n\n\n\n\n\nCommands are case sensitive. ls is not the same as LS, Ls, or lS. Try it yourself!",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#directories",
+    "href": "lessons/terminal.html#directories",
+    "title": "Terminal",
+    "section": "Directories",
+    "text": "Directories\nLets create our first object using the terminal. While in your home directory ~, type:\nmkdir oist\nCheck with ls what happened. mkdir stands for make directory.\nLooks nice! Let’s go inside.\ncd oist\nAnd, check check it out.\nls\nKind of boring here. There is nothing inside. Let’s make some more directories inside.\nmkdir lab1 lab2 lab3 lab4 lab5\nThere’s something a little different about that command. So far we’ve only seen commands that work on their own (cd, pwd) or that have a single item afterwards (cd -, cd ~/Desktop/). But this time we’ve added five things after the mkdir command. Those things are referred to as parameters or arguments, and different commands can accept different numbers of arguments. The mkdir command expects at least one argument, whereas the cd command can work with zero or one, but no more. See what happens when you try to pass the wrong number of parameters to a command:\nmkdir\ncd /etc/ ~/Desktop/\nNotice that mkdir created all the folders in one directory. It didn’t create lab3/ inside lab2/ inside lab1/, or any other nested structure. But sometimes it’s handy to be able to do exactly that, and mkdir does have a way:\nmkdir -p lab4/levelE/48\nls\nYou can try to run without -p and see which error message you get.\nmkdir lab5/levelD/23\nI find this behaviour annoying. The same goes for creating files in non-existent subdirectories but I am sure there is a good reason behind such restriction.\ncd lab4\nls\ncd levelE\nls\ncd ../..\nThe “-p” that we used is called an option or a switch (in this case it means “create the parent directories, too”). Options are used to modify the way in which a command operates, allowing a single command to behave in a variety of different ways. Unfortunately, due to quirks of history and human nature, options can take different forms in different commands. You’ll often see them as single characters preceded by a hyphen (as in this case), or as longer words preceded by two hyphens. The single character form allows for multiple options to be combined, though not all commands will accept that. And to confuse matters further, some commands don’t clearly identify their options at all, whether or not something is an option is dictated purely by the order of the arguments! You don’t need to worry about all the possibilities, just know that options exist and they can take several different forms. For example the following all mean exactly the same thing:\n# These commands are equivalent\nmkdir --parents --verbose lab5/levelDE\nmkdir -p --verbose lab5/levelDE\nmkdir -p -v lab5/levelDE\nmkdir -pv lab5/levelDE",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#files",
+    "href": "lessons/terminal.html#files",
+    "title": "Terminal",
+    "section": "Files",
+    "text": "Files\nMany labs, right? Can we keep a log of them? ls just printed them but can we store this command output in a file? That’s where redirecton comes into play.\nSuppose we wanted to capture the output of that command as a text file that we can look at or manipulate further. All we need to do is to add the greater-than character (“&gt;”) to the end of our command line, followed by the name of the file to write to:\nls &gt; lab.log\nThis time there’s nothing printed to the screen, because the output is being redirected to our file instead. If you just run ls on its own you should see that the lab.log file has been created. We can use the cat command to look at its content:\ncat lab.log\nOkay, so it’s not exactly what was displayed on the screen previously, but it contains all the same data, and it’s in a more useful format for further processing.\nLet’s look at another command, echo:\necho \"VISION, CHALLENGES, INNOVATION\"\nYes, echo just prints its arguments back out again (hence the name). But combine it with a redirect, and you’ve got a way to easily create small files. Let’s redirect these words into a file that will represent the Prof. Sydney Brenner statue located at the Center Court.\n\n\n\nDr. Brenner’s statue presented by Okinawa Prefecture and the Council for Promotion of OIST https://www.oist.jp/image/dr-sydney-brenners-statue\n\n\necho \"VISION, CHALLENGES, INNOVATION\" &gt; sydney_brenner.statue\ncat sydney_brenner.statue\n\n\n\n\n\n\nImportantFile extension\n\n\n\nLinux-type systems do not care about file extensions. Files can have no extensions at all and be absolutely fine. Try redirecting the words output to file named sydney_brenner and see if you can inspect it.\n\n\nWe have one statue but why stop here? It is not improbable that Prof. Svante Pääbo will get his statute at OIST in the future. For his statue engraving we will choose something more personal.\necho \"I really wanted to discover mummies, like Indiana Jones.\" &gt; svante_paabo.statue\ncat svante_paabo.statue\nHowever, cat is more than just a file viewer - its name comes from ‘concatenate’, meaning “to link together”. If you pass more than one filename to cat it will output each of them, one after the other, as a single block of text:\ncat sydney_brenner.statue svante_paabo.statue\nWhere you want to pass multiple file names to a single command, there are some useful shortcuts that can save you a lot of typing if the files have similar names. A question mark (“?”) can be used to indicate “any single character” within the file name. An asterisk (“*”) can be used to indicate “zero or more characters”. These are sometimes referred to as “wildcard” characters. A couple of examples might help, the following commands all do the same thing:\ncat sydney_brenner.statue svante_paabo.statue\ncat *.statue\nThat is where file extension .statue that we came up with is useful. We can match all statue files no matter how many there are. lab.log has been omitted. This simple syntax makes selective manipulation of files an easy task.\n\n\n\n\n\n\nAs you might have guessed, this capability also means that you need to escape file names with “?” or “*” characters in them, too. It’s usually better to avoid any punctuation in file names if you want to manipulate them from the command line.\n\n\n\nWe have not used ? character above. A somewhat artificial example with our current setup would be to list only the lab directories and their subdirectories:\nls lab?\nThus we only look at what is inside the directories that start with “lab”.\nGoing back to the statues. Let’s join all our files together into a single new file, then view it:\ncat *.statue &gt; nobel_motivation.txt\ncat nobel_motivation.txt\nWhat do you think will happen if we run those two commands a second time? Will the computer complain, because the file already exists? Will it append the text to the file, so it contains two copies? Or will it replace it entirely? Give it a try to see what happens, but to avoid typing the commands again you can use the Up Arrow and Down Arrow keys to move back and forth through the history of commands you’ve used. Press the Up Arrow a couple of times to get to the first cat and press Enter to run it, then do the same again to get to the second.\nAs you can see, the file looks the same. That’s not because it’s been left untouched, but because the shell clears out all the content of the file before it writes the output of your cat command into it. Because of this, you should be extra careful when using redirection to make sure that you don’t accidentally overwrite a file you need. If you do want to append to, rather than replace, the content of the files, double up on the greater-than character “&gt;&gt;”:\ncat *.statue &gt;&gt; nobel_motivation.txt\necho 'I want my statue too!' &gt;&gt; nobel_motivation.txt\ncat nobel_motivation.txt\nRepeat the first cat and the echo a few more times, using the Up Arrow for convenience until your text document is so large that it won’t all fit in the terminal at once when you use cat to display it. In order to see the whole file we now need to use a different program, called a pager (because it displays your file one “page” at a time). The standard pager of old was called more, because it puts a line of text at the bottom of each page that says “–More–” to indicate that you haven’t read everything yet. These days there’s a far better pager that you should use instead: because it replaces more, the programmers decided to call it less.\nless nobel_motivation.txt\nWhen viewing a file through less you can use the Up Arrow, Down Arrow, Page Up, Page Down, Home and End keys to move through your file. Give them a try to see the difference between them. When you’ve finished viewing your file, press q to quit less and return to the command line.\n\n\n\n\n\n\nTipGood naming practice\n\n\n\nWhen you consider both case sensitivity and escaping, a good rule of thumb is to keep your file names all lower case, with only letters, numbers, underscores and hyphens. For files there’s usually also a dot and a few characters on the end to indicate the type of file it is (referred to as the “file extension”). This guideline may seem restrictive, but if you end up using the command line with any frequency you’ll be glad you stuck to this pattern.\n\n\nIf we want to move Sydney to show him the latest lab, Lab 5, how do we do that? Also, is the file we created created empty? How can we check that? ls will not work. We will see how files can be manipulated in the next section.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#renaming-files",
+    "href": "lessons/terminal.html#renaming-files",
+    "title": "Terminal",
+    "section": "Renaming files",
+    "text": "Renaming files\nThe mv command doesn’t just move files between directories—it’s also used to rename them. When you move a file to the same directory but give it a new name, you’re effectively renaming it.\nFor example, let’s rename one of our statue files:\nmv sydney_brenner.statue brenner_sydney.statue\ncat brenner_sydney.statue\nThe file has been renamed, not moved to a different location.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#copying-files",
+    "href": "lessons/terminal.html#copying-files",
+    "title": "Terminal",
+    "section": "Copying files",
+    "text": "Copying files\nSometimes you want to create a duplicate of a file. This is where the cp (copy) command comes in:\ncp brenner_sydney.statue sydney_brenner.statue\nls *.statue\nYou now have two files: the original and the last-name-first copy. The cp command can also work with directories, but you need to use an option to do so. To copy an entire directory and all its contents, use the -r option (which stands for “recursive”):\ncp -r lab4 lab0\nls\nThis creates a complete copy of lab4/ and all the files inside it, called lab0/.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#deleting-files-and-directories",
+    "href": "lessons/terminal.html#deleting-files-and-directories",
+    "title": "Terminal",
+    "section": "Deleting files and directories",
+    "text": "Deleting files and directories\nTo remove files, use the rm (remove) command. Be careful with this—once deleted, files are generally gone for good!\nrm brenner_sydney.statue\nls *.statue\nTo be honest, there is only one Lab0. To remove a directory, add the -r option:\nrm -r lab0\nls\n\n\n\n\n\n\nCautionWarning: rm is permanent\n\n\n\nUnlike moving files to a trash or recycle bin on a graphical interface, rm permanently deletes files. There is no undo! Always double-check your command before pressing Enter.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#downloading-files-from-the-web",
+    "href": "lessons/terminal.html#downloading-files-from-the-web",
+    "title": "Terminal",
+    "section": "Downloading files from the web",
+    "text": "Downloading files from the web\nAnother powerful command you encountered during the setup process is curl (Client URL). It’s used to transfer data from or to a server, often for downloading files or scripts from the internet:\ncurl -fsSL https://pixi.sh/install.sh | sh\nThis command downloads the Pixi installation script and pipes it directly to sh (the shell) for execution. Let’s break down the options:\n\n-f - Fail silently on server errors\n-s - Silent mode (don’t show progress)\n-S - Show errors even in silent mode\n-L - Follow redirects if the URL has moved\n\nYou can also use curl to download files and save them:\ncurl -O https://example.com/file.txt\nThe -O option saves the file with its original name.\n\n\n\n\n\n\nBe cautious when piping downloaded scripts directly to a shell interpreter (| sh or | bash). Only do this with scripts from trusted sources, as they will execute with your user privileges. During setup, you used this method with official installation scripts from Pixi and Starship.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#reloading-configuration-files",
+    "href": "lessons/terminal.html#reloading-configuration-files",
+    "title": "Terminal",
+    "section": "Reloading configuration files",
+    "text": "Reloading configuration files\nWhen you modify configuration files like .bashrc or .zshrc, the changes won’t take effect until you start a new terminal session. However, you can reload the configuration without closing your terminal using the source command:\nsource ~/.bashrc\nOr for Zsh users:\nsource ~/.zshrc\nThis reads and executes the commands from the specified file in your current shell session. You used this command during setup to activate Pixi after installation.\n\n\n\n\n\n\nYou can view the contents of your configuration files using cat ~/.bashrc or less ~/.bashrc to see what customizations you’ve made.\n\n\n\nAs you progress through more advanced topics, you’ll encounter many more hidden files and directories. Configuration files, cache directories, and version control metadata (like .git/) all use the dot-prefix convention. This naming strategy keeps your file system organized and separates system/application configuration from your regular working files. In future lessons, we’ll explore how these hidden files and directories make it very convenient to manage complex configurations without cluttering your workspace.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#terminology",
+    "href": "lessons/terminal.html#terminology",
+    "title": "Terminal",
+    "section": "Terminology",
+    "text": "Terminology\nAny terminology is confusing until you repeat it many times. Starting from the left in the figure below, terminal or more properly terminal emulator is a text-based input/output program that communicates with your computer. You type commands in a command line or a command line interface (CLI). The command is passed to shell which is a command line interpreter (confusingly, it can be abbreviated as CLI as well, but thankfully no one does that). Next, shell talks to operating system (OS). OS is agnostic to hardware and could be run on different physical machines. At the core of any OS is kernel. Finally, kernel talks to the hardware (CPU, GPU, RAM, disk, etc.).\nOnly reason I give this detail that some times people use these terms interchangeably.\n\n\n\n\n\nflowchart LR\n    H[Hardware]\n\n    subgraph OS[Operating System]\n        K[Kernel]\n    end\n\n    S[Shell]\n\n    subgraph T[Terminal]\n        C[Command Line]\n    end\n\n    T --- S --- OS --- H\n\n    %% Single hue (blue), different lightness\n    classDef l1 fill:#eaf2fb,stroke:transparent,color:#000\n    classDef l2 fill:#d0e2f2,stroke:transparent,color:#000\n    classDef l3 fill:#9ecae1,stroke:transparent,color:#000\n    classDef l4 fill:#6baed6,stroke:transparent,color:#000\n\n    %% Apply styles\n    class H l1\n    class OS l2\n    class K l4\n    class S l2\n    class T l2\n    class C l4\n\n    %% Remove subgraph borders\n    style OS fill:#d0e2f2,stroke-width:0px\n    style T fill:#d0e2f2,stroke-width:0px",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#a-brief-history-of-operating-systems",
+    "href": "lessons/terminal.html#a-brief-history-of-operating-systems",
+    "title": "Terminal",
+    "section": "A brief history of operating systems",
+    "text": "A brief history of operating systems\nWhen you look at most operating systems, you see that most of them stem from UNIX. Then they branch into derivatives like Linux, which is the most prominent “child”. Windows, on the other hand, is isolated from UNIX and only the recent introduction of WSL allowed it to use UNIX-based tools with ease.\n\n\n\nEvolution of operating systems, its kernels, and distributions. https://www.reddit.com/r/coolguides/comments/k1lopj/os_family_tree/",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
     "objectID": "lessons/project-structure.html",
     "href": "lessons/project-structure.html",
     "title": "Project Structure",
@@ -1174,5 +1055,124 @@
     "crumbs": [
       "Project Structure"
     ]
+  },
+  {
+    "objectID": "slides/automation.html#automation-makes-analysis-repeatable",
+    "href": "slides/automation.html#automation-makes-analysis-repeatable",
+    "title": "Automation with Make",
+    "section": "Automation makes analysis repeatable",
+    "text": "Automation makes analysis repeatable\nWe want a workflow that we can run again:\n\nfor a new input file;\nafter changing the code; and\nwithout remembering every command by hand."
+  },
+  {
+    "objectID": "slides/automation.html#one-giant-script-hides-the-workflow",
+    "href": "slides/automation.html#one-giant-script-hides-the-workflow",
+    "title": "Automation with Make",
+    "section": "One giant script hides the workflow",
+    "text": "One giant script hides the workflow\n\n\n\n\nIntermediate results disappear.\nFailures are harder to locate.\nChanging one step means reading a large program."
+  },
+  {
+    "objectID": "slides/automation.html#save-the-steps-that-matter",
+    "href": "slides/automation.html#save-the-steps-that-matter",
+    "title": "Automation with Make",
+    "section": "Save the steps that matter",
+    "text": "Save the steps that matter\nSplit work into small scripts and files that can be checked independently.\n\n\n\nEach output is a checkpoint: inspect it, test it, or reuse it."
+  },
+  {
+    "objectID": "slides/automation.html#modular-workflows-leave-two-questions",
+    "href": "slides/automation.html#modular-workflows-leave-two-questions",
+    "title": "Automation with Make",
+    "section": "Modular workflows leave two questions",
+    "text": "Modular workflows leave two questions\n\nNew data arrives. How do we run the same workflow for the new file?\nCode changes. Must we rerun everything, or only the affected part?"
+  },
+  {
+    "objectID": "slides/automation.html#make-records-the-plan",
+    "href": "slides/automation.html#make-records-the-plan",
+    "title": "Automation with Make",
+    "section": "Make records the plan",
+    "text": "Make records the plan\n# Makefile: a small description of the workflow\noutput-file: input-file script\n    command input-file output-file\nMake reads rules like this to learn:\n\nwhich file to create;\nwhich files it depends on; and\nwhich command creates it."
+  },
+  {
+    "objectID": "slides/automation.html#our-book-workflow",
+    "href": "slides/automation.html#our-book-workflow",
+    "title": "Automation with Make",
+    "section": "Our book workflow",
+    "text": "Our book workflow\ngecs-make turns books into count tables and interactive figures."
+  },
+  {
+    "objectID": "slides/automation.html#first-output-draculas-count-table",
+    "href": "slides/automation.html#first-output-draculas-count-table",
+    "title": "Automation with Make",
+    "section": "First output: Dracula’s count table",
+    "text": "First output: Dracula’s count table\ncounts/dracula.tsv: books/dracula.txt scripts/count_words.py\n    uv run python scripts/count_words.py books/dracula.txt counts/dracula.tsv\n\n\nTarget\nThe file to create.\n\nPrerequisites\nThe input data and code it needs.\n\nRecipe\nThe tab-indented command that creates the target."
+  },
+  {
+    "objectID": "slides/automation.html#add-the-final-figure",
+    "href": "slides/automation.html#add-the-final-figure",
+    "title": "Automation with Make",
+    "section": "Add the final figure",
+    "text": "Add the final figure\nfigures/dracula.html: counts/dracula.tsv scripts/plot_counts.py\n    uv run python scripts/plot_counts.py counts/dracula.tsv figures/dracula.html\nmake figures/dracula.html\nMake builds counts/dracula.tsv first when needed, then makes the HTML figure."
+  },
+  {
+    "objectID": "slides/automation.html#draculas-real-project-graph",
+    "href": "slides/automation.html#draculas-real-project-graph",
+    "title": "Automation with Make",
+    "section": "Dracula’s real project graph",
+    "text": "Dracula’s real project graph\nThe graph comes from the project’s Make rules, not from a hand-drawn diagram.\n\nDracula DAG generated by makefile-graph"
+  },
+  {
+    "objectID": "slides/automation.html#a-changed-book-or-counting-script-rebuilds-downstream-work",
+    "href": "slides/automation.html#a-changed-book-or-counting-script-rebuilds-downstream-work",
+    "title": "Automation with Make",
+    "section": "A changed book or counting script rebuilds downstream work",
+    "text": "A changed book or counting script rebuilds downstream work\n\n\n\nThe count table is no longer trustworthy, so Make rebuilds it and every output that depends on it."
+  },
+  {
+    "objectID": "slides/automation.html#a-changed-plotting-script-starts-later",
+    "href": "slides/automation.html#a-changed-plotting-script-starts-later",
+    "title": "Automation with Make",
+    "section": "A changed plotting script starts later",
+    "text": "A changed plotting script starts later\n\n\n\nThe count table stays current. Only the figure needs to be made again."
+  },
+  {
+    "objectID": "slides/automation.html#name-shared-commands",
+    "href": "slides/automation.html#name-shared-commands",
+    "title": "Automation with Make",
+    "section": "Name shared commands",
+    "text": "Name shared commands\n# Run every Python command through uv.\nPYTHON := uv run python\n\n# Name the scripts used by our rules.\nCOUNT_SCRIPT := scripts/count_words.py\nPLOT_SCRIPT := scripts/plot_counts.py\nVariables make the Dracula rule shorter and keep shared details in one place."
+  },
+  {
+    "objectID": "slides/automation.html#discover-every-book-without-listing-it-by-hand",
+    "href": "slides/automation.html#discover-every-book-without-listing-it-by-hand",
+    "title": "Automation with Make",
+    "section": "Discover every book without listing it by hand",
+    "text": "Discover every book without listing it by hand\n# Find every text file already in books/.\nBOOK_FILES := $(wildcard books/*.txt)\n$ make print-books\nbooks/dracula.txt\nbooks/frankenstein.txt\nbooks/moby_dick.txt\nbooks/sherlock_holmes.txt\n…\nwildcard reads the book files that really exist. Add another .txt file and it joins the workflow."
+  },
+  {
+    "objectID": "slides/automation.html#derive-matching-paths-with-patsubst",
+    "href": "slides/automation.html#derive-matching-paths-with-patsubst",
+    "title": "Automation with Make",
+    "section": "Derive matching paths with patsubst",
+    "text": "Derive matching paths with patsubst\n# Pattern substitution: replace books/%.txt with counts/%.tsv.\nCOUNT_FILES := $(patsubst books/%.txt,counts/%.tsv,$(BOOK_FILES))\n\n# The same book names become figure paths.\nFIGURE_FILES := $(patsubst books/%.txt,figures/%.html,$(BOOK_FILES))\npatsubst means pattern substitution. % matches the changing book name, then inserts it into the new path."
+  },
+  {
+    "objectID": "slides/automation.html#one-rule-shape-works-for-every-book",
+    "href": "slides/automation.html#one-rule-shape-works-for-every-book",
+    "title": "Automation with Make",
+    "section": "One rule shape works for every book",
+    "text": "One rule shape works for every book\n# Turn any book text file into its matching count table.\ncounts/%.tsv: books/%.txt $(COUNT_SCRIPT)\n    $(PYTHON) $(COUNT_SCRIPT) $&lt; $@\n\n# Turn any count table into its matching HTML figure.\nfigures/%.html: counts/%.tsv $(PLOT_SCRIPT)\n    $(PYTHON) $(PLOT_SCRIPT) $&lt; $@\n\n$&lt; is the input; $@ is the output being built.\nThe % in each rule keeps the matching book name."
+  },
+  {
+    "objectID": "slides/automation.html#the-project-workflow-in-full",
+    "href": "slides/automation.html#the-project-workflow-in-full",
+    "title": "Automation with Make",
+    "section": "The project workflow in full",
+    "text": "The project workflow in full\nThe same rules describe every book and every dependency in the project.\n\nFour-book DAG generated by makefile-graph"
+  },
+  {
+    "objectID": "slides/automation.html#why-use-make",
+    "href": "slides/automation.html#why-use-make",
+    "title": "Automation with Make",
+    "section": "Why use Make",
+    "text": "Why use Make\n\nAutomated order: no need to remember the steps.\nReproducibility: someone else can run the same project command.\nModularity: scripts and intermediate outputs stay understandable.\nSelective rebuilding: timestamps identify what must run again."
   }
 ]
