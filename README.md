@@ -1,8 +1,11 @@
-# Good Enough Computing in Science (GECS)<br><small>Mini Course at OIST
+# Good Enough Coding in Science (GECS)
+
+![Terminal animation spelling out Good Enough Coding in Science](images/gecs-terminal.gif)
 
 GECS (pron. "geeks") introduces software development into scientific research project workflow. The course is taught at OIST as a Mini Course.
 
 ## Website
+
 [https://oist.github.io/gecs](https://oist.github.io/gecs)
 Built with [Quarto](https://quarto.org/docs/websites/) and hosted with [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site).
 
