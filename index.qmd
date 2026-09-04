@@ -1,6 +1,12 @@
----
-title: "Good Enough Coding in Science"
----
+![](images/gecs-terminal.gif)
+
+# Aim
+
+To provide an overview of core software development practices that support efficient research project management and its reproducibility.
+
+# Description
+
+Less time for programming, more time for science. This mini course introduces the basics of software development. In two hours, sessions, we cover tools and practices that are used by researchers to manage their projects effectively. You will not learn how to write a specific code, but the way to think about your code from bird’s eye view. The course is designed to be language agnostic, but we will use Python for practical examples. 
 
 ```{mermaid}
 flowchart LR
@@ -43,13 +49,6 @@ style Irreproducible fill:transparent,stroke-width:0px
 
 ```
 
-# Aim
-
-To provide an overview of core software development practices that support efficient research project management and its reproducibility.
-
-# Description
-
-Less time for programming, more time for science. This mini course introduces the basics of software development. In two hours, sessions, we cover tools and practices that are used by researchers to manage their projects effectively. You will not learn how to write a specific code, but the way to think about your code from bird’s eye view. The course is designed to be language agnostic, but we will use Python for practical examples. 
 
 # Target Audience
 
