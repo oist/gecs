@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Good Enough Computing in Science (GECS) Mini Course at OIST – Good&lt;br&gt;Enough&lt;br&gt;Computing&lt;br&gt;in Science&lt;br&gt;👍⚖️🧑‍💻🧪</title>
+<title>Good Enough Computing in Science (GECS) – Good Enough Computing in Science 👍⚖️🧑‍💻🧪</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,6 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./images/geek_emoji.jpeg" rel="icon" type="image/jpeg">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
@@ -101,7 +102,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Good<br>Enough<br>Computing<br>in Science<br>👍⚖️🧑‍💻🧪</a> 
+      <a href="./">Good Enough Computing in Science 👍⚖️🧑‍💻🧪</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -119,44 +120,50 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./00_setting_up.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">0. Setting Up</span></a>
+  <a href="./lessons/setting-up.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Setting Up</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./01_command_line_interface.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">1. Command Line Interface</span></a>
+  <a href="./lessons/terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Terminal</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./02_virtual_environements.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">2. Virtual Environments</span></a>
+  <a href="./lessons/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version Control</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./03_project_structure.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">3. Project Structure</span></a>
+  <a href="./lessons/project-structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Project Structure</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./04_version_control.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">4. Version Control</span></a>
+  <a href="./lessons/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Virtual Environments</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./05_testing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">5. Testing</span></a>
+  <a href="./lessons/testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Testing</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./06_automation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">6. Automation</span></a>
+  <a href="./lessons/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Automation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./lessons/vs-code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VS Code</span></a>
   </div>
 </li>
     </ul>
@@ -170,17 +177,22 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#aim" id="toc-aim" class="nav-link active" data-scroll-target="#aim">Aim</a></li>
-  <li><a href="#descrition" id="toc-descrition" class="nav-link" data-scroll-target="#descrition">Descrition</a></li>
-  <li><a href="#what-this-course-is-not" id="toc-what-this-course-is-not" class="nav-link" data-scroll-target="#what-this-course-is-not">What this course is NOT?</a></li>
+  <li><a href="#description" id="toc-description" class="nav-link" data-scroll-target="#description">Description</a></li>
+  <li><a href="#target-audience" id="toc-target-audience" class="nav-link" data-scroll-target="#target-audience">Target Audience</a></li>
   <li><a href="#schedule" id="toc-schedule" class="nav-link" data-scroll-target="#schedule">Schedule</a>
   <ul class="collapse">
-  <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up">Setting up</a></li>
+  <li><a href="#getting-started" id="toc-getting-started" class="nav-link" data-scroll-target="#getting-started">Getting Started</a></li>
+  <li><a href="#drop-ins" id="toc-drop-ins" class="nav-link" data-scroll-target="#drop-ins">Drop-ins</a></li>
   </ul></li>
+  <li><a href="#registration" id="toc-registration" class="nav-link" data-scroll-target="#registration">Registration</a></li>
   <li><a href="#people" id="toc-people" class="nav-link" data-scroll-target="#people">People</a></li>
-  <li><a href="#target-audience" id="toc-target-audience" class="nav-link" data-scroll-target="#target-audience">Target audience</a></li>
   <li><a href="#manifesto" id="toc-manifesto" class="nav-link" data-scroll-target="#manifesto">Manifesto</a></li>
-  <li><a href="#aknowledgements" id="toc-aknowledgements" class="nav-link" data-scroll-target="#aknowledgements">Aknowledgements</a></li>
+  <li><a href="#what-this-course-is-not" id="toc-what-this-course-is-not" class="nav-link" data-scroll-target="#what-this-course-is-not">What this course is NOT?</a></li>
+  <li><a href="#inspiration-credits" id="toc-inspiration-credits" class="nav-link" data-scroll-target="#inspiration-credits">Inspiration &amp; Credits</a>
+  <ul class="collapse">
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -189,7 +201,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Good Enough Computing in Science (GECS)<br><small>Mini Course at OIST</small></h1>
+<h1 class="title">Good Enough Computing in Science (GECS)</h1>
 </div>
 
 
@@ -222,18 +234,16 @@ end
 
 subgraph Irreproducible
 direction TB
-E[Ad-hoc]
+E[Ad hoc]
 end
 
-B --&gt; C
-B --&gt; E
+B edge1@==&gt; C
+edge1@{ animate: slow }
+C edge2@==&gt; G[Results]
+edge2@{ animate: slow }
 
-C --&gt; G[Results]
-E --&gt; G
-
-%% Emphasize GECS edges
-linkStyle 1 stroke-width:4px
-linkStyle 3 stroke-width:4px
+B -.-&gt; E
+E -.-x G
 
 %% Node styles
 classDef gecs fill:#cfe9e5,stroke:transparent,color:#000
@@ -261,102 +271,110 @@ style Irreproducible fill:transparent,stroke-width:0px
 <h1>Aim</h1>
 <p>To provide an overview of core software development practices that support efficient research project management and its reproducibility.</p>
 </section>
-<section id="descrition" class="level1">
-<h1>Descrition</h1>
-<p>Less time for programming, more time for science (and your other stuff).</p>
+<section id="description" class="level1">
+<h1>Description</h1>
+<p>Less time for programming, more time for science. This mini course introduces the basics of software development. In two hours, sessions, we cover tools and practices that are used by researchers to manage their projects effectively. You will not learn how to write a specific code, but the way to think about your code from bird’s eye view. The course is designed to be language agnostic, but we will use Python for practical examples.</p>
 </section>
-<section id="what-this-course-is-not" class="level1">
-<h1>What this course is NOT?</h1>
-<ul>
-<li>Introduction to a specific programming language (e.g., Python, Bash, etc.)</li>
-<li>Numerical simulations/modeling course</li>
-<li>High Performance Computing (HPC) training</li>
-</ul>
+<section id="target-audience" class="level1">
+<h1>Target Audience</h1>
+<p>This course is for researchers who want to learn how to automate repetitive tasks in data analysis. Some prior programming experience is helpful but not required.</p>
 </section>
 <section id="schedule" class="level1">
 <h1>Schedule</h1>
-<p><strong>Time:</strong> 10:00-12:00 (Fridays)<br>
-<strong>Location:</strong> L3B700 (near the GS counter)</p>
+<p><strong>Time:</strong> Friday 13:00-15:00<br>
+<strong>Location:</strong> L3B700 (near-ish the GS counter)</p>
 <table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Part 1</th>
-<th></th>
-<th></th>
-<th>Part 2</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
 <tbody>
 <tr class="odd">
-<td>January</td>
-<td>16</td>
-<td>Terminal</td>
-<td>March</td>
-<td>6</td>
-<td>Version Control</td>
+<td>July</td>
+<td>10</td>
+<td>Version control and Project Structure</td>
 </tr>
 <tr class="even">
 <td></td>
-<td>23</td>
-<td>Virtual Environments</td>
-<td></td>
-<td>13</td>
-<td>Testing</td>
+<td>17</td>
+<td>Virtual environments</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>30</td>
-<td>Project Structure</td>
-<td></td>
-<td>27</td>
+<td>24</td>
 <td>Automation</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>31</td>
+<td>Testing</td>
 </tr>
 </tbody>
 </table>
-<section id="setting-up" class="level2">
-<h2 class="anchored" data-anchor-id="setting-up">Setting up</h2>
-<p>If you need help with configuring your computer for the course, a seession will be held on January 14 Wednesday at the Cafe Private Room during the lunchtime, 12:00-13:00. See <a href="00_setting-up.qmd">Setting up</a> section.</p>
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started">Getting Started</h2>
+<p>Make sure to have your computer ready for the course. Please check out the <a href="./lessons/setting-up.html">Setting Up</a> section. Those who are not familiar with terminal should also check out the <a href="./lessons/terminal.html">Terminal</a> section.</p>
+<p>If you need help with configuring your computer for the course or have any questions before the course starts, a special session will be held on the first week.</p>
+<p><strong>Date and time:</strong> July 8 Wednesday 12:00-13:00<br>
+<strong>Location:</strong> C102 (The Cafe Tancha meeting room)<br>
+</p>
 </section>
+<section id="drop-ins" class="level2">
+<h2 class="anchored" data-anchor-id="drop-ins">Drop-ins</h2>
+<p>After every session there will be a drop-in the following week. You can come with questions regarding the course or related stuff.</p>
+<p><strong>Date and time:</strong> Wednesday 12:00-13:00<br>
+<strong>Location:</strong> C102 (The Cafe Tancha meeting room)<br>
+</p>
+</section>
+</section>
+<section id="registration" class="level1">
+<h1>Registration</h1>
+<p>For official details, see <a href="https://groups.oist.jp/grad/event/good-enough-computing-science-gecs-mini-course">the Graduate School hosted website</a> on TIDA.</p>
+<button class="btn btn-primary" onclick="window.open('https://forms.office.com/r/ZrwJrNN69y', '_blank')">
+Register Here
+</button>
 </section>
 <section id="people" class="level1">
 <h1>People</h1>
 <ul>
-<li>Igors Dubanevics Y4 @ESBU</li>
-<li>Pin Ju Chou Y1 @CNEU</li>
+<li>Igors Dubanevics Y4 @KondrashovU</li>
+<li>Vitoria Yumi Uetuki Nicoleti Y1 @FukunagaU</li>
 </ul>
-</section>
-<section id="target-audience" class="level1">
-<h1>Target audience</h1>
-<p>This course is for researchers who want to learn how to automate repetitive tasks in data analysis. Some prior programming experience is helpful but not required.</p>
 </section>
 <section id="manifesto" class="level1">
 <h1>Manifesto</h1>
 <blockquote class="blockquote">
 <p>“Teach a course you want to attend.”</p>
-<p>adapted from Austin Kleon’s <a href="https://austinkleon.com/2008/12/18/a-manifesto-write-the-book-you-want-to-read/">“A MANIFESTO: WRITE THE BOOK YOU WANT TO READ”</a></p>
+<p>adapted from Austin Kleon, <em>Steal Like an Artist</em></p>
 </blockquote>
-<p>As cheese as it sounds, we are learinig from you (probably more at this point) that you will learn from this course. Stupid question permission is granted. Suggestions, tips, and corrections are welcome!</p>
+<p>We will learn from you more than you will learn from us at this course. Stupid question permission is granted. Suggestions, tips, and corrections are welcome!</p>
 </section>
-<section id="aknowledgements" class="level1">
-<h1>Aknowledgements</h1>
-<p>Arthur Turrell, Greg Wilson and The Carpentries, Justin Bois, Richard McElreath.</p>
+<section id="what-this-course-is-not" class="level1">
+<h1>What this course is NOT?</h1>
+<ul>
+<li>Introduction to a specific programming language (e.g., Python, R, etc.)</li>
+<li>Numerical simulations/modeling course</li>
+<li>High Performance Computing (HPC) training</li>
+</ul>
 </section>
-<section id="references" class="level1">
-<h1>References</h1>
+<section id="inspiration-credits" class="level1">
+<h1>Inspiration &amp; Credits</h1>
+<section id="acknowledgements" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h2>
+<p>Arthur Turrell, Greg Wilson and The Carpentries, Justin Bois, Richard McElreath, and the MulQuaBio collective.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
 <blockquote class="blockquote">
 <p>“Good artists copy, great artists steal.”</p>
 <p>— Pablo Picasso</p>
 </blockquote>
 <ul>
 <li><a href="https://aeturrell.github.io/coding-for-economists">Coding for Economists</a> by Arthur Turrell</li>
-<li><a href="https://aeturrell.github.io/python4DS">Pyhton for Data Science</a> by Arthur Turrell</li>
+<li><a href="https://aeturrell.github.io/python4DS">Python for Data Science</a> by Arthur Turrell</li>
 <li><a href="https://justinbois.github.io/bootcamp">bootcamp</a> by Justin Bois</li>
-<li><a href="https://third-bit.com/py-rse">Research Software Engineering with Python</a> by The Carpentries <!-- - [BE/Bi 103](https://bebi103a.github.io/) by Justin Bois --></li>
+<li><a href="https://third-bit.com/py-rse">Research Software Engineering with Python</a> by The Carpentries</li>
+<li><a href="https://mulquabio.github.io/MQB">The Multilingual Quantitative Biologist</a> by the MulQuaBio collective</li>
 </ul>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -433,7 +451,7 @@ style Irreproducible fill:transparent,stroke-width:0px
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/oist\.github\.io\/gecs\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -767,7 +785,7 @@ style Irreproducible fill:transparent,stroke-width:0px
       &nbsp;
     </div>   
     <div class="nav-footer-center">
-<p>by Igors Dubanevics | 2025 | MIT License</p>
+<p>by Igors Dubanevics | 2025-2026 | MIT License</p>
 </div>
     <div class="nav-footer-right">
       &nbsp;

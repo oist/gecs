@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>About – Good Enough Computing in Science 👍⚖️🧑‍💻🧪</title>
+<title>Project Structure – Good Enough Computing in Science 👍⚖️🧑‍💻🧪</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +20,63 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./images/geek_emoji.jpeg" rel="icon" type="image/jpeg">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/geek_emoji.jpeg" rel="icon" type="image/jpeg">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -69,13 +104,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<meta name="mermaid-theme" content="neutral">
-<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
-<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
-<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-sidebar floating quarto-light">
@@ -87,9 +118,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
-      Good Enough Computing in Science 👍⚖️🧑‍💻🧪
-      </li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lessons/project-structure.html">Project Structure</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -104,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">Good Enough Computing in Science 👍⚖️🧑‍💻🧪</a> 
+      <a href="../">Good Enough Computing in Science 👍⚖️🧑‍💻🧪</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -116,55 +145,55 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Home</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lessons/setting-up.html" class="sidebar-item-text sidebar-link">
+  <a href="../lessons/setting-up.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Setting Up</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lessons/terminal.html" class="sidebar-item-text sidebar-link">
+  <a href="../lessons/terminal.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Terminal</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lessons/version-control.html" class="sidebar-item-text sidebar-link">
+  <a href="../lessons/version-control.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Version Control</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lessons/project-structure.html" class="sidebar-item-text sidebar-link">
+  <a href="../lessons/project-structure.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Project Structure</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lessons/virtual-environments.html" class="sidebar-item-text sidebar-link">
+  <a href="../lessons/virtual-environments.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Virtual Environments</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lessons/testing.html" class="sidebar-item-text sidebar-link">
+  <a href="../lessons/testing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Testing</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lessons/automation.html" class="sidebar-item-text sidebar-link">
+  <a href="../lessons/automation.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Automation</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./lessons/vs-code.html" class="sidebar-item-text sidebar-link">
+  <a href="../lessons/vs-code.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">VS Code</span></a>
   </div>
 </li>
@@ -173,15 +202,35 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#learning-objectives" id="toc-learning-objectives" class="nav-link active" data-scroll-target="#learning-objectives">Learning objectives</a></li>
+  <li><a href="#lost-book-project" id="toc-lost-book-project" class="nav-link" data-scroll-target="#lost-book-project">Lost Book Project</a>
+  <ul class="collapse">
+  <li><a href="#messy-project" id="toc-messy-project" class="nav-link" data-scroll-target="#messy-project">Messy project</a></li>
+  <li><a href="#structured-project" id="toc-structured-project" class="nav-link" data-scroll-target="#structured-project">Structured project</a></li>
+  </ul></li>
+  <li><a href="#tips" id="toc-tips" class="nav-link" data-scroll-target="#tips">Tips</a>
+  <ul class="collapse">
+  <li><a href="#directory-structure" id="toc-directory-structure" class="nav-link" data-scroll-target="#directory-structure">Directory structure</a></li>
+  <li><a href="#naming-files-and-directories" id="toc-naming-files-and-directories" class="nav-link" data-scroll-target="#naming-files-and-directories">Naming files and directories</a></li>
+  <li><a href="#readme" id="toc-readme" class="nav-link" data-scroll-target="#readme">README</a></li>
+  <li><a href="#project-template" id="toc-project-template" class="nav-link" data-scroll-target="#project-template">Project template</a></li>
+  <li><a href="#project-organization-checklist" id="toc-project-organization-checklist" class="nav-link" data-scroll-target="#project-organization-checklist">Project organization checklist</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About</h1>
+<h1 class="title">Project Structure</h1>
 </div>
 
 
@@ -198,50 +247,165 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
-  A[Data] --&gt; B[Clean] --&gt; C[Analysis] --&gt; D[Results] --&gt; E[Figures] --&gt; F[Paper]
+<blockquote class="blockquote">
+<p>If you get hit by a bus today, will your colleagues be able to run your project tomorrow?</p>
+<p><a href="https://en.wikipedia.org/wiki/Bus_factor">The Bus Factor</a></p>
+</blockquote>
+<p>Software projects can be messy. Imagine joining a lab and receiving a project folder left by a previous postdoc. It might look something like this:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/paste-44.png" class="img-fluid figure-img"></p>
+<figcaption>https://datacarpentry.github.io/rr-organization1/fig/files_messy_tidy.png</figcaption>
+</figure>
+</div>
+<p>OK, probably not as extreme. Still, newcomers to data science often put everything into a single folder: data, scripts, figures, and tables. That can work if you only need to run an analysis once and no one else will ever need to repeat it, including yourself. That is rarely true in research, whether in academia or industry. In this lesson, we will look at practical ways to help colleagues—and your future self—understand and run a project. Let’s get organized.</p>
+<section id="learning-objectives" class="level2">
+<h2 class="anchored" data-anchor-id="learning-objectives">Learning objectives</h2>
+<p>By the end of this lesson, you should be able to:</p>
+<ul>
+<li>recognize common problems in an unstructured project;</li>
+<li>organize files into meaningful directories;</li>
+<li>apply consistent, portable naming conventions; and</li>
+<li>create a README that enables someone else to run the project.</li>
+</ul>
+</section>
+<section id="lost-book-project" class="level1">
+<h1>Lost Book Project</h1>
+<p>We will compare two versions of the same project—a messy version and a structured version—to see what works and what does not in the short and long term.</p>
+<section id="messy-project" class="level2">
+<h2 class="anchored" data-anchor-id="messy-project">Messy project</h2>
+<pre class="text"><code>.
+├── analysis.sh
+├── book1.txt
+├── book102.txt
+├── book2.txt
+├── book3.txt
+├── book5.txt
+├── book55.txt
+├── book79.txt
+├── plot.sh
+└── summary.sh</code></pre>
+<p>First, try to make sense of what the project is about and how to use it.</p>
+<p><a href="https://github.com/igorsdub/gecs-messy-project">Open the messy project on GitHub</a></p>
+<p>You can inspect the files directly on GitHub, or clone the repository if you want to run the scripts locally:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/igorsdub/gecs-messy-project.git</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Open the cloned directory with VS Code (<code>Cmd+O</code>). Before reading the explanation below, inspect the files and try to answer these questions:</p>
+<ul>
+<li>What is this project trying to do?</li>
+<li>Which files are inputs, scripts, and outputs?</li>
+<li>In what order should the scripts be run?</li>
+<li>What would make this project difficult for a colleague to continue?</li>
+</ul>
+</section>
+<section id="structured-project" class="level2">
+<h2 class="anchored" data-anchor-id="structured-project">Structured project</h2>
+<pre class="text"><code>.
+├── books                           &lt;-- Text files of books used for analysis
+│   ├── dracula.txt
+│   ├── frankenstein.txt
+│   ├── jane_eyre.txt
+│   ├── moby_dick.txt
+│   ├── README.md                   &lt;-- README for the book files
+│   ├── sense_and_sensibility.txt
+│   ├── sherlock_holmes.txt
+│   └── time_machine.txt
+├── counts                          &lt;-- Word count .tsv data
+├── figures                         &lt;-- Bar plots of word counts
+├── README.md                       &lt;-- README for the project
+└── scripts                         &lt;-- Scripts directory
+    ├── count_words.sh              &lt;-- Counts occurrences of a word in books
+    ├── get_summary.sh              &lt;-- Gets a book summary
+    └── plot_counts.sh              &lt;-- Plots count histogram in terminal window</code></pre>
+<p>This is the same project, but organized.</p>
+<p><a href="https://github.com/igorsdub/gecs-project-structure">Open the structured project on GitHub</a></p>
+<p>Compare this repository with the messy version. Look for improvements in directory names, file names, documentation, and the separation of inputs, scripts, and generated outputs. If you cloned the messy project, clone this repository as well and open both directories in VS Code.</p>
+</section>
+</section>
+<section id="tips" class="level1">
+<h1>Tips</h1>
+<section id="directory-structure" class="level2">
+<h2 class="anchored" data-anchor-id="directory-structure">Directory structure</h2>
+<p>Here is a minimal directory structure adapted from <a href="https://github.com/bvreede/good-enough-project">bvreede on GitHub</a>. More elaborate structures exist, but this is a useful starting point for many projects.</p>
+<p>The directory structure distinguishes three kinds of folders:</p>
+<ul>
+<li><p>Read-only (RO): not edited by either code or researcher. For example, <code>raw_data</code> should preserve the original data exactly as received.</p></li>
+<li><p>Human-writeable (HW): edited by the researcher only, such as scripts and project documentation.</p></li>
+<li><p>Project-generated (PG): folders generated when running the code. These folders can be deleted or emptied and should be completely reconstituted when the project is run again.</p></li>
+</ul>
+<pre class="text"><code>.
+├── README.md          &lt;- Description and how to run the project (HW)
+├── requirements.txt   &lt;- Python package requirements (HW)
+├── environment.yml    &lt;- Optional environment specification (HW)
+├── processed_data     &lt;- Processed data ready for analysis (PG)
+├── raw_data           &lt;- The original, immutable data dump (RO)
+├── scripts            &lt;- Scripts for this project (HW)
+└── results            &lt;- Project results: tables, figures, etc. (PG) </code></pre>
+</section>
+<section id="naming-files-and-directories" class="level2">
+<h2 class="anchored" data-anchor-id="naming-files-and-directories">Naming files and directories</h2>
+<p>Jenny Bryan from <a href="https://carpentries.org/">The Carpentries</a> has shared <a href="https://speakerdeck.com/jennybc/how-to-name-files">online slides</a> showing how to name—and how not to name—files and directories. The presentation can be summarized as follows.</p>
+<ul>
+<li><p>KISS (<em>Keep It Simple Stupid</em>): use simple and consistent file names</p>
+<ul>
+<li><p>Machine readable</p></li>
+<li><p>Human readable</p></li>
+<li><p>Orders well in a directory</p></li>
+</ul></li>
+<li><p>Avoid special characters and spaces where possible, especially if files will be used across different operating systems or tools.</p></li>
+<li><p>Use YYYY-MM-DD date format</p></li>
+<li><p>Use <code>-</code> to delimit words and <code>_</code> to delimit sections</p>
+<ul>
+<li>i.e.&nbsp;<code>2019-01-19_my-data.csv</code></li>
+</ul></li>
+<li><p>Left-pad numbers</p>
+<ul>
+<li><p>i.e.&nbsp;<code>01_my-data.csv</code> vs <code>1_my-data.csv</code></p></li>
+<li><p>If you don’t, file orders get messed up when you get to double-digits</p></li>
+</ul></li>
+</ul>
+<p>You can use a variation of the above as long as you are consistent within a project.</p>
+</section>
+<section id="readme" class="level2">
+<h2 class="anchored" data-anchor-id="readme">README</h2>
+<p><code>README</code>, or <code>README.md</code> since <a href="https://en.wikipedia.org/wiki/Markdown">Markdown</a> is widely used for project documentation, is one of the most important files in your project. It enables new users—and your future self—to understand and run the project without a considerable struggle.</p>
+<p>A useful README should explain:</p>
+<ul>
+<li>the purpose of the project;</li>
+<li>how to install or activate the required environment;</li>
+<li>how to run the analysis;</li>
+<li>what inputs the project expects;</li>
+<li>where it writes tables, figures, and other outputs; and</li>
+<li>who created or maintains the project.</li>
+</ul>
+<p><a href="https://www.makeareadme.com/">Make a README</a> does a great job in conveying this message in a single webpage. Check it out!</p>
+</section>
+<section id="project-template" class="level2">
+<h2 class="anchored" data-anchor-id="project-template">Project template</h2>
+<p>Instead of creating project directory with all its supplementary files, software developers came up with a boilerplate structure that can be created in minutes. <a href="https://cookiecutter-data-science.drivendata.org/">Cookie Cutter Data Science</a> project is one of those. Although, the default template is aimed towards machine learning / data science researchers, you can find a simpler one shared by other researchers <a href="https://github.com/aeturrell/cookiecutter-research-project/tree/main">online</a>. Another option, to create your own template that suits your needs.</p>
+<p><img src="../images/paste-2.gif" class="img-fluid"></p>
+<p>Also, check out their <a href="https://cookiecutter-data-science.drivendata.org/opinions/">Opinions page</a> for project management tips. For reproducibility, record the software environment in a file such as <code>requirements.txt</code>, <code>environment.yml</code>, or a lockfile such as <code>uv.lock</code> or <code>poetry.lock</code>.</p>
+</section>
+<section id="project-organization-checklist" class="level2">
+<h2 class="anchored" data-anchor-id="project-organization-checklist">Project organization checklist</h2>
+<p>Before sharing a project, check that:</p>
+<ul>
+<li>the README explains the purpose, setup, inputs, commands, and outputs;</li>
+<li>raw data is clearly separated from processed data and is not overwritten;</li>
+<li>scripts are grouped in one place and can be run in a clear order;</li>
+<li>generated results can be deleted and recreated; and</li>
+<li>file and directory names are simple, descriptive, and consistent.</li>
+</ul>
+</section>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<ul>
+<li><a href="https://datacarpentry.github.io/rr-organization1/" class="uri">https://datacarpentry.github.io/rr-organization1/</a></li>
+<li><a href="https://bookdown.org/arnold_c/repro-research/2-3-how-to-name-files-and-directories.html" class="uri">https://bookdown.org/arnold_c/repro-research/2-3-how-to-name-files-and-directories.html</a></li>
+</ul>
 
-  subgraph GECS[GECS]
-    direction LR
-    B
-    C
-    D
-    E
-  end
 
-  style GECS fill:#eef,stroke:#66f,stroke-width:2px
-
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<div class="cell" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
-  subgraph GECS
-    direction TB
-    B1 --&gt; B2 --&gt; B3 --&gt; B1
-  end
-  A(Raw Data) --&gt; GECS --&gt; Z(Paper)
-
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

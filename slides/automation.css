@@ -1,0 +1,50 @@
+.reveal .slides section {
+  padding: 0.25em 0.75em;
+}
+
+.reveal .slides h2 {
+  margin-bottom: 0.45em;
+}
+
+.reveal .diagram-large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 40vh;
+  height: 46vh;
+  margin: 0;
+}
+
+.reveal .diagram-large p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.reveal .diagram-large img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.reveal .columns {
+  align-items: center;
+}
+
+.reveal .sourceCode,
+.reveal pre.sourceCode {
+  font-size: 0.98em;
+  line-height: 1.32;
+}
+
+.reveal .sourceCode {
+  width: 92%;
+  margin: 0.55em auto;
+}

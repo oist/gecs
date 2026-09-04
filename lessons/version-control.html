@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Version Control – Good Enough Computing in Science 👍⚖️🧑‍💻🧪</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/geek_emoji.jpeg" rel="icon" type="image/jpeg">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lessons/version-control.html">Version Control</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Good Enough Computing in Science 👍⚖️🧑‍💻🧪</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/setting-up.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Setting Up</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/terminal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Terminal</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/version-control.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Version Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/project-structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Project Structure</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Virtual Environments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Testing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Automation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/vs-code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VS Code</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#automated-version-control" id="toc-automated-version-control" class="nav-link" data-scroll-target="#automated-version-control">Automated Version Control</a></li>
+  <li><a href="#setting-up" id="toc-setting-up" class="nav-link" data-scroll-target="#setting-up">Setting Up</a>
+  <ul class="collapse">
+  <li><a href="#creating-github-account" id="toc-creating-github-account" class="nav-link" data-scroll-target="#creating-github-account">Creating GitHub account</a></li>
+  <li><a href="#installing-git" id="toc-installing-git" class="nav-link" data-scroll-target="#installing-git">Installing Git</a></li>
+  <li><a href="#setting-up-git" id="toc-setting-up-git" class="nav-link" data-scroll-target="#setting-up-git">Setting up Git</a></li>
+  </ul></li>
+  <li><a href="#creating-a-repository" id="toc-creating-a-repository" class="nav-link" data-scroll-target="#creating-a-repository">Creating a Repository</a>
+  <ul class="collapse">
+  <li><a href="#places-to-create-git-repositories" id="toc-places-to-create-git-repositories" class="nav-link" data-scroll-target="#places-to-create-git-repositories">Places to create Git repositories</a></li>
+  </ul></li>
+  <li><a href="#tracking-changes" id="toc-tracking-changes" class="nav-link" data-scroll-target="#tracking-changes">Tracking Changes</a>
+  <ul class="collapse">
+  <li><a href="#commit-message" id="toc-commit-message" class="nav-link" data-scroll-target="#commit-message">Commit message</a></li>
+  <li><a href="#committing-multiple-files" id="toc-committing-multiple-files" class="nav-link" data-scroll-target="#committing-multiple-files">Committing multiple files</a></li>
+  </ul></li>
+  <li><a href="#exploring-history" id="toc-exploring-history" class="nav-link" data-scroll-target="#exploring-history">Exploring History</a>
+  <ul class="collapse">
+  <li><a href="#compare-your-current-file-to-the-last-commit" id="toc-compare-your-current-file-to-the-last-commit" class="nav-link" data-scroll-target="#compare-your-current-file-to-the-last-commit">Compare your current file to the last commit</a></li>
+  <li><a href="#view-earlier-commits" id="toc-view-earlier-commits" class="nav-link" data-scroll-target="#view-earlier-commits">View earlier commits</a></li>
+  <li><a href="#recovering-older-versions-of-a-file" id="toc-recovering-older-versions-of-a-file" class="nav-link" data-scroll-target="#recovering-older-versions-of-a-file">Recovering older versions of a file</a></li>
+  <li><a href="#getting-rid-of-staged-changes" id="toc-getting-rid-of-staged-changes" class="nav-link" data-scroll-target="#getting-rid-of-staged-changes">Getting rid of staged changes</a></li>
+  <li><a href="#explore-and-summarize-histories" id="toc-explore-and-summarize-histories" class="nav-link" data-scroll-target="#explore-and-summarize-histories">Explore and summarize histories</a></li>
+  </ul></li>
+  <li><a href="#ignoring-things" id="toc-ignoring-things" class="nav-link" data-scroll-target="#ignoring-things">Ignoring Things</a>
+  <ul class="collapse">
+  <li><a href="#log-files" id="toc-log-files" class="nav-link" data-scroll-target="#log-files">Log files</a></li>
+  </ul></li>
+  <li><a href="#remotes-in-github" id="toc-remotes-in-github" class="nav-link" data-scroll-target="#remotes-in-github">Remotes in GitHub</a>
+  <ul class="collapse">
+  <li><a href="#creating-a-remote-repository" id="toc-creating-a-remote-repository" class="nav-link" data-scroll-target="#creating-a-remote-repository">Creating a remote repository</a></li>
+  <li><a href="#understanding-remotes" id="toc-understanding-remotes" class="nav-link" data-scroll-target="#understanding-remotes">Understanding remotes</a></li>
+  <li><a href="#pushing-local-changes-to-a-remote" id="toc-pushing-local-changes-to-a-remote" class="nav-link" data-scroll-target="#pushing-local-changes-to-a-remote">Pushing local changes to a remote</a></li>
+  <li><a href="#github-view-of-history" id="toc-github-view-of-history" class="nav-link" data-scroll-target="#github-view-of-history">GitHub view of history</a></li>
+  <li><a href="#push-vs.-commit" id="toc-push-vs.-commit" class="nav-link" data-scroll-target="#push-vs.-commit">Push vs.&nbsp;commit</a></li>
+  </ul></li>
+  <li><a href="#collaborating" id="toc-collaborating" class="nav-link" data-scroll-target="#collaborating">Collaborating</a>
+  <ul class="collapse">
+  <li><a href="#create-and-publish-your-quarto-website" id="toc-create-and-publish-your-quarto-website" class="nav-link" data-scroll-target="#create-and-publish-your-quarto-website">Create and publish your Quarto website</a></li>
+  <li><a href="#fork-your-partners-repository" id="toc-fork-your-partners-repository" class="nav-link" data-scroll-target="#fork-your-partners-repository">Fork your partner’s repository</a></li>
+  <li><a href="#clone-your-fork" id="toc-clone-your-fork" class="nav-link" data-scroll-target="#clone-your-fork">Clone your fork</a></li>
+  <li><a href="#make-changes-to-your-partners-website" id="toc-make-changes-to-your-partners-website" class="nav-link" data-scroll-target="#make-changes-to-your-partners-website">Make changes to your partner’s website</a></li>
+  <li><a href="#open-a-pull-request-for-review" id="toc-open-a-pull-request-for-review" class="nav-link" data-scroll-target="#open-a-pull-request-for-review">Open a pull request for review</a></li>
+  <li><a href="#review-approve-or-request-changes" id="toc-review-approve-or-request-changes" class="nav-link" data-scroll-target="#review-approve-or-request-changes">Review, approve, or request changes</a></li>
+  <li><a href="#merge-the-approved-changes-and-pull-them-locally" id="toc-merge-the-approved-changes-and-pull-them-locally" class="nav-link" data-scroll-target="#merge-the-approved-changes-and-pull-them-locally">Merge the approved changes and pull them locally</a></li>
+  <li><a href="#what-to-notice" id="toc-what-to-notice" class="nav-link" data-scroll-target="#what-to-notice">What to notice</a></li>
+  </ul></li>
+  <li><a href="#conflicts" id="toc-conflicts" class="nav-link" data-scroll-target="#conflicts">Conflicts</a>
+  <ul class="collapse">
+  <li><a href="#resolving-conflicts-in-vs-code" id="toc-resolving-conflicts-in-vs-code" class="nav-link" data-scroll-target="#resolving-conflicts-in-vs-code">Resolving conflicts in VS Code</a></li>
+  <li><a href="#understanding-the-conflict-markers" id="toc-understanding-the-conflict-markers" class="nav-link" data-scroll-target="#understanding-the-conflict-markers">Understanding the conflict markers</a></li>
+  </ul></li>
+  <li><a href="#licensing" id="toc-licensing" class="nav-link" data-scroll-target="#licensing">Licensing</a></li>
+  <li><a href="#citation" id="toc-citation" class="nav-link" data-scroll-target="#citation">Citation</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Version Control</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>If I could turn back time</p>
+<p>Cher, <em>If I Could Turn Back Time</em> 1989</p>
+</blockquote>
+<p>Version control tracks changes to your files, lets you undo mistakes, and makes collaboration easy. Once you start using it, you’ll wonder how you worked without it!</p>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>This tutorial was stolen from the <a href="https://swcarpentry.github.io/git-novice">Version Control with Git by The Software Carpentries</a> and <a href="https://code.visualstudio.com/docs/sourcecontrol/overview">VS Code Source Control by Microsoft</a> lessons.</p>
+</div>
+</div>
+</div>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://raw.githubusercontent.com/the-turing-way/the-turing-way/refs/heads/main/book/figures/project-history.svg" class="img-fluid figure-img"></p>
+<figcaption>Two examples of project history management. (<em>Left</em>) A stack of ambiguously named files. You need to be careful not to make the stack crumble when accessing a specific version. (<em>Right</em>) In contrast, a system that tracks version history is like a dial. You can switch betwen version without breaking the stack.</figcaption>
+</figure>
+</div>
+<p>You will work on code with other people in your academic career at some point. You can pass the code between people via email or flash drives. However, quickly you will find out that that the email and flash drive method is not very efficient. You will have to keep track of who has the latest version, and you will have to be careful not to overwrite each other’s changes.</p>
+<p>Imagine a follwing (corny) scenario: Jimmy and Alfredo have been hired by Ratatouille restaurant to investigate if it is possible to make the best recipes archive ever. They want to be able to work on indexing the prices at the same time, but they have run into problems doing this in the past. If they take turns, each one will spend a lot of time waiting for the other to finish, but if they work on their own copies and email changes back and forth things will be lost, overwritten, or duplicated.</p>
+<p>Version control is better than mailing files back and forth:</p>
+<ul>
+<li><p>Nothing that is committed to version control is ever lost, unless you work really, really hard at losing it. Since all old versions of files are saved, it’s always possible to go back in time to see exactly who wrote what on a particular day, or what version of a program was used to generate a particular set of results.</p></li>
+<li><p>As we have this record of who made what changes when, we know who to ask if we have questions later on, and, if needed, revert to a previous version, much like the “undo” feature in an editor.</p></li>
+<li><p>When several people collaborate in the same project, it’s possible to accidentally overlook or overwrite someone’s changes. The version control system automatically notifies users whenever there’s a conflict between one person’s work and another’s.</p></li>
+</ul>
+<p>Teams are not the only ones to benefit from version control: lone researchers can benefit immensely. Keeping a record of what was changed, when, and why is extremely useful for all researchers if they ever need to come back to the project later on (e.g., a year later, when memory has faded).</p>
+<p><strong>Version control is the lab notebook of the digital world</strong>: professionals use it to track changes and work together. Whether you’re coding, writing, or managing data, version control is essential.</p>
+</section>
+<section id="automated-version-control" class="level1">
+<h1>Automated Version Control</h1>
+<p>We’ll start by exploring how version control can be used to keep track of what one person did and when. Even if you aren’t collaborating with other people, automated version control is much better than this situation:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/03_version-control__phd101212s.png" class="img-fluid figure-img"></p>
+<figcaption>Comic: a PhD student sends “FINAL.doc” to their supervisor, but after several increasingly intense and frustrating rounds of comments and revisions they end up with a file named “FINAL_rev.22.comments49.corrections.10.#@$%WHYDIDCOMETOGRADSCHOOL????.doc”</figcaption>
+</figure>
+</div>
+<p>We’ve all been in this situation before: it seems unnecessary to have multiple nearly-identical versions of the same document. Some word processors let us deal with this a little better, such as Microsoft Word’s <a href="https://support.office.com/en-us/article/Track-changes-in-Word-197ba630-0f5f-4a8e-9a77-3712475e806a">Track Changes</a>, Google Docs’ <a href="https://support.google.com/docs/answer/190843?hl=en">version history</a>, or LibreOffice’s <a href="https://help.libreoffice.org/Common/Recording_and_Displaying_Changes">Recording and Displaying Changes</a>.</p>
+<p>Version control systems start with a base version of the document and then record changes you make each step of the way. You can think of it as a recording of your progress: you can rewind to start at the base document and play back each change you made, eventually arriving at your more recent version.</p>
+<p><img src="../images/03_version-control__play-changes.svg" class="img-fluid" alt="A diagram demonstrating how a single document grows as the result of sequential changes"></p>
+<p>Once you think of changes as separate from the document itself, you can then think about “playing back” different sets of changes on the base document, ultimately resulting in different versions of that document. For example, two users can make independent sets of changes on the same document.</p>
+<p><img src="../images/03_version-control__versions.svg" class="img-fluid" alt="A diagram with one source document that has been modified in two different ways to produce two different versions of the document"></p>
+<p>Unless multiple users make changes to the same section of the document - a conflict - you can incorporate two sets of changes into the same base document.</p>
+<p><img src="../images/03_version-control__merge.svg" class="img-fluid" alt="A diagram that shows the merging of two different document versions into one document that contains all of the changes from both versions"></p>
+<p>A version control system is a tool that keeps track of these changes for us, effectively creating different versions of our files. It allows us to decide which changes will be made to the next version (each record of these changes is called a commit), and keeps useful metadata about them, such as who made the change. The complete history of commits for a particular project and their metadata make up a repository. Repositories can be kept in sync across different computers, facilitating collaboration among different people.</p>
+</section>
+<section id="setting-up" class="level1">
+<h1>Setting Up</h1>
+<section id="creating-github-account" class="level2">
+<h2 class="anchored" data-anchor-id="creating-github-account">Creating GitHub account</h2>
+<p>If you don’t already have a GitHub account, check the <a href="../lessons/setting-up.html">Setting Up</a> section.</p>
+</section>
+<section id="installing-git" class="level2">
+<h2 class="anchored" data-anchor-id="installing-git">Installing Git</h2>
+<p>VS Code uses the Git installed on your computer.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Check that Git is available with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> <span class="at">--version</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>If you get an error, please see <a href="https://carpentries.github.io/workshop-template/install_instructions/#git">this webpage</a> from The Software Carpentries for installation steps.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="setting-up-git" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-git">Setting up Git</h2>
+<p>We will use VS Code as our main teaching interface, but Git still needs your name and email once on each computer.</p>
+<p>Open VS Code. If needed, use <strong>File</strong> &gt; <strong>Open Folder</strong> to choose the folder where you want to work.</p>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Open folder like a VS Coder">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Open folder like a VS Coder
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You can also open the Command Palette with <code>Ctrl/Cmd+Shift+P</code> and run <code>Open Folder</code>.</p>
+</div>
+</div>
+<p>Use your own name and email instead of Alfredo’s. For GitHub, it is easiest if this email matches your GitHub account.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Open the terminal in VS Code with <strong>View</strong> &gt; <strong>Terminal</strong> or <code>Ctrl/Cmd+`</code> and run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.name <span class="st">"Alfredo Linguini"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> user.email <span class="st">"a.linguini@ratatouille.fr"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--global</span> init.defaultBranch main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Keeping your email private">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Keeping your email private
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you prefer not to show your personal email in commits, GitHub provides a no-reply email address. See <a href="https://help.github.com/articles/keeping-your-email-address-private/">GitHub’s instructions for keeping your email private</a>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Review these settings anytime with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--list</span> <span class="at">--global</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Windows users">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Windows users
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you are on Windows, doing this lesson inside WSL usually leads to fewer Git and shell problems. In VS Code, use <code>WSL: New Window</code> or <code>WSL: Reopen Folder in WSL</code>.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="creating-a-repository" class="level1">
+<h1>Creating a Repository</h1>
+<p>A <em>repository</em> is a folder whose history Git tracks. We will create one for Alfredo’s recipes, but this time we will do it primarily through VS Code.</p>
+<ol type="1">
+<li>Create a new folder called <code>recipes</code>.</li>
+<li>Open that folder in VS Code with <strong>File</strong> &gt; <strong>Open Folder</strong>.</li>
+<li>Open the <strong>Source Control</strong> view.</li>
+<li>Select <strong>Initialize Repository</strong>.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_initialize-repository_official.png" class="img-fluid figure-img"></p>
+<figcaption>Initialize a local repository in VS Code.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/quickstart">VS Code Source Control Quickstart</a>.</em></p>
+<p>After that, VS Code should show that:</p>
+<ul>
+<li>the folder is now a Git repository,</li>
+<li>you are on the <code>main</code> branch,</li>
+<li>there are no commits yet.</li>
+</ul>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The same setup from the terminal would be:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> recipes</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> recipes</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> init</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Git also creates a hidden <code>.git</code> folder to store the repository history. If you delete <code>.git</code>, you delete the history of that repository.</p>
+</div>
+</div>
+</div>
+<section id="places-to-create-git-repositories" class="level2">
+<h2 class="anchored" data-anchor-id="places-to-create-git-repositories">Places to create Git repositories</h2>
+<p>Usually you want one repository for one project folder. If <code>recipes</code> is already a Git repository, you do <strong>not</strong> need to create another repository inside <code>recipes/desserts</code> just to track dessert files. The main <code>recipes</code> repository will already track subfolders.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Nested repositories">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Nested repositories
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Nested repositories are usually confusing for beginners. If you accidentally run <code>git init</code> inside a subfolder, Git treats that inner folder as a separate repository with separate history.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="tracking-changes" class="level1">
+<h1>Tracking Changes</h1>
+<p>This section is the heart of the lesson. We will use five repeated actions in VS Code:</p>
+<ol type="1">
+<li>Edit files</li>
+<li>Review changes</li>
+<li>Stage changes</li>
+<li>Commit changes</li>
+<li>Repeat</li>
+</ol>
+<p>Start in the <code>recipes</code> folder.</p>
+<p>Create a new file called <code>guacamole.md</code> in the Explorer and add:</p>
+<pre class="output"><code># Guacamole
+## Ingredients
+## Instructions</code></pre>
+<p>Save the file.</p>
+<p>In <strong>Source Control</strong>, you should now see <code>guacamole.md</code> listed under <strong>Changes</strong> with a <code>U</code> marker for <em>untracked</em>. VS Code also shows these change markers in the Explorer and on editor tabs.</p>
+<p>Click <code>guacamole.md</code> in <strong>Source Control</strong> to open the diff editor. Since this is a brand-new file, the entire file appears as a new addition.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_source-control_changes.png" class="img-fluid figure-img"></p>
+<figcaption>The Source Control view showing changed files in VS Code.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/quickstart">VS Code Source Control Quickstart</a>.</em></p>
+<p>Stage the file by hovering over it and selecting the <code>+</code> button. The file moves from <strong>Changes</strong> to <strong>Staged Changes</strong>. This is the key Git idea: staged changes are the ones that will go into the next commit.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_stage-changes.png" class="img-fluid figure-img"></p>
+<figcaption>Stage changes in the VS Code Source Control view.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/staging-commits">VS Code Staging and Committing</a>.</em></p>
+<p>Type a commit message such as <code>Create starter guacamole recipe</code> in the Source Control message box and select <strong>Commit</strong>.</p>
+<p>Now edit <code>guacamole.md</code> again so it looks like this:</p>
+<pre class="output"><code># Guacamole
+## Ingredients
+* avocado
+* lemon
+* salt
+## Instructions</code></pre>
+<p>Save the file and return to <strong>Source Control</strong>. You should now see <code>M</code> for <em>modified</em>.</p>
+<p>Click the file again to review the diff. VS Code highlights additions and deletions line by line. This review step is important: get in the habit of checking what changed before you commit.</p>
+<p>Stage <code>guacamole.md</code>, write a message such as <code>Add ingredients for basic guacamole</code>, and commit.</p>
+<p>Now make one more change by replacing <code>lemon</code> with <code>lime</code>:</p>
+<pre class="output"><code># Guacamole
+## Ingredients
+* avocado
+* lime
+* salt
+## Instructions</code></pre>
+<p>Save, review the diff, stage the change, and commit it with a message such as <code>Use lime in guacamole recipe</code>.</p>
+<p>At this point you have used the full everyday workflow in VS Code:</p>
+<ul>
+<li>edit in the editor,</li>
+<li>review in the diff editor,</li>
+<li>stage in <strong>Source Control</strong>,</li>
+<li>commit from the message box.</li>
+</ul>
+<div class="callout callout-style-simple callout-note callout-titled" title="What U, M, and D mean">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What U, M, and D mean
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>U</code> means <em>untracked</em>: Git sees the file, but it is not included in version control yet.</li>
+<li><code>M</code> means <em>modified</em>: the file is tracked and has changed since the last commit.</li>
+<li><code>D</code> means <em>deleted</em>: the file was removed and Git noticed.</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The matching command-line workflow is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add guacamole.md</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Create starter guacamole recipe"</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add guacamole.md</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Add ingredients for basic guacamole"</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add guacamole.md</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Use lime in guacamole recipe"</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<section id="commit-message" class="level2">
+<h2 class="anchored" data-anchor-id="commit-message">Commit message</h2>
+<p>Which of the following commit messages is most helpful?</p>
+<ol type="1">
+<li><code>"changes"</code></li>
+<li><code>"change lemon for lime"</code></li>
+<li><code>"use lime in guacamole recipe"</code></li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled" title="Solution">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Answer 3 is best. Good commit messages are short, descriptive, and make the change easy to understand later.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="committing-multiple-files" class="level2">
+<h2 class="anchored" data-anchor-id="committing-multiple-files">Committing multiple files</h2>
+<p>VS Code also makes it easy to commit related changes from multiple files together.</p>
+<ol type="1">
+<li>Add rough prices to <code>guacamole.md</code>.</li>
+<li>Create a new file <code>groceries.md</code> with ingredient prices from a market.</li>
+<li>Review both files in <strong>Source Control</strong>.</li>
+<li>Stage both files.</li>
+<li>Commit them together with one message.</li>
+</ol>
+<div class="callout callout-style-simple callout-note callout-titled" title="One possible result">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>One possible result
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You might end up with something like:</p>
+<pre class="output"><code># Guacamole
+## Ingredients
+* avocado (1.35)
+* lime (0.64)
+* salt (2)
+## Instructions</code></pre>
+<p>and</p>
+<pre class="output"><code># Market A
+* avocado: 1.35 per unit
+* lime: 0.64 per unit
+* salt: 2 per kg</code></pre>
+<p>A good commit message would be <code>Add ingredient prices and market list</code>.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="exploring-history" class="level1">
+<h1>Exploring History</h1>
+<p>Once you have a few commits, Git becomes more useful because you can <em>look backward</em>. In VS Code, history is mostly visual.</p>
+<section id="compare-your-current-file-to-the-last-commit" class="level2">
+<h2 class="anchored" data-anchor-id="compare-your-current-file-to-the-last-commit">Compare your current file to the last commit</h2>
+<p>Add one temporary line to <code>guacamole.md</code>, save the file, and open it from <strong>Source Control</strong>.</p>
+<p>The diff editor compares your current file with the last committed version. For most beginners, this is the most important history view to learn first.</p>
+<p>If you decide the change was a mistake, right-click the file in <strong>Source Control</strong> and choose <strong>Discard Changes</strong>.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-13-contents" aria-controls="callout-13" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-13" class="callout-13-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>From the terminal, you would usually inspect and discard the change like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff guacamole.md</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> restore guacamole.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="view-earlier-commits" class="level2">
+<h2 class="anchored" data-anchor-id="view-earlier-commits">View earlier commits</h2>
+<p>VS Code gives you two helpful history views:</p>
+<ul>
+<li><strong>Timeline</strong>: shows the history of one file.</li>
+<li><strong>Source Control Graph</strong>: shows the history of the whole repository.</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_timeline-view.png" class="img-fluid figure-img"></p>
+<figcaption>The Timeline view for file history in VS Code.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/overview">VS Code Source Control Overview</a>.</em></p>
+<p>To use them:</p>
+<ol type="1">
+<li>Select <code>guacamole.md</code> in the Explorer and open the <strong>Timeline</strong> view.</li>
+<li>Browse older file versions and commit messages.</li>
+<li>Open the <strong>Source Control Graph</strong> to see the order of commits in the repository.</li>
+</ol>
+<p>This is much easier for beginners than memorizing commit IDs early on.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_source-control-graph.png" class="img-fluid figure-img"></p>
+<figcaption>The Source Control Graph view in VS Code.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/overview">VS Code Source Control Overview</a>.</em></p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-14-contents" aria-controls="callout-14" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-14" class="callout-14-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The terminal version of these history views is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log guacamole.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="recovering-older-versions-of-a-file" class="level2">
+<h2 class="anchored" data-anchor-id="recovering-older-versions-of-a-file">Recovering older versions of a file</h2>
+<p>Suppose you edited <code>guacamole.md</code> and want to get back to the last committed version.</p>
+<p>In VS Code:</p>
+<ol type="1">
+<li>Open <strong>Source Control</strong>.</li>
+<li>Right-click <code>guacamole.md</code>.</li>
+<li>Choose <strong>Discard Changes</strong>.</li>
+</ol>
+<p>That restores the file to its most recently committed state.</p>
+<p>If you want to inspect older versions first, use the <strong>Timeline</strong> for that file and open previous entries before deciding what to restore.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Advanced: HEAD in terminal">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Advanced: HEAD in terminal
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>On the command line, the most recent commit is called <code>HEAD</code>. The commit before it is <code>HEAD~1</code>, then <code>HEAD~2</code>, and so on.</p>
+<p>Examples:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff HEAD guacamole.md</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> restore guacamole.md</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> restore <span class="at">-s</span> HEAD~1 guacamole.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You do not need this syntax for the main VS Code workflow in this lesson.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="getting-rid-of-staged-changes" class="level2">
+<h2 class="anchored" data-anchor-id="getting-rid-of-staged-changes">Getting rid of staged changes</h2>
+<p>What if you staged a file and then changed your mind before committing?</p>
+<p>In VS Code, you can unstage it in several ways:</p>
+<ul>
+<li>click the <code>-</code> icon beside the file in <strong>Staged Changes</strong>,</li>
+<li>right-click and choose <strong>Unstage Changes</strong>,</li>
+<li>drag it back from <strong>Staged Changes</strong> to <strong>Changes</strong>.</li>
+</ul>
+<p>After that, if you also want to throw away the edit entirely, use <strong>Discard Changes</strong>.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-16-contents" aria-controls="callout-16" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-16" class="callout-16-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The command-line version is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> restore <span class="at">--staged</span> guacamole.md</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> restore guacamole.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="explore-and-summarize-histories" class="level2">
+<h2 class="anchored" data-anchor-id="explore-and-summarize-histories">Explore and summarize histories</h2>
+<p>Imagine the <code>recipes</code> project has dozens of files and you want to answer questions like:</p>
+<ul>
+<li>Which commit changed <code>guacamole.md</code>?</li>
+<li>When did the ingredient list change?</li>
+<li>What changed in that commit?</li>
+</ul>
+<p>In VS Code:</p>
+<ol type="1">
+<li>Use <strong>Timeline</strong> for file-by-file history.</li>
+<li>Use <strong>Source Control Graph</strong> for repository history.</li>
+<li>Open commits on GitHub to inspect remote history and diffs.</li>
+</ol>
+<p>If commit messages are vague, open the commit diff instead of guessing from the title alone.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-17-contents" aria-controls="callout-17" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-17" class="callout-17-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Useful history commands include:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log guacamole.md</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--patch</span> guacamole.md</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="ignoring-things" class="level1">
+<h1>Ignoring Things</h1>
+<p>Some files should not be tracked, such as generated images, temporary logs, or output folders.</p>
+<p>Create a few files that you do <strong>not</strong> want in version control, for example some <code>.png</code> files and a <code>pictures/</code> directory. In VS Code, they will appear in <strong>Source Control</strong> as untracked files.</p>
+<p>Now create a file called <code>.gitignore</code> in the root of the repository and add:</p>
+<pre class="output"><code>*.png
+pictures/</code></pre>
+<p>Save the file. The noisy image files should disappear from <strong>Source Control</strong>, leaving only <code>.gitignore</code> to stage and commit.</p>
+<p>This is one of the nicest beginner moments in Git: your change list becomes cleaner right away.</p>
+<p>Commit <code>.gitignore</code> so everyone using the repository shares the same ignore rules.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Tracked vs ignored">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Tracked vs ignored
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ignoring only affects files Git is not already tracking. If a file was committed earlier, adding it to <code>.gitignore</code> does not automatically remove it from version control.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-19-contents" aria-controls="callout-19" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-19" class="callout-19-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The same workflow from the terminal would be:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> pictures</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">touch</span> a.png b.png c.png pictures/cake1.jpg pictures/cake2.jpg</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">printf</span> <span class="st">"*.png\npictures/\n"</span> <span class="op">&gt;</span> .gitignore</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .gitignore</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Ignore generated image files"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<section id="log-files" class="level2">
+<h2 class="anchored" data-anchor-id="log-files">Log files</h2>
+<p>You wrote a script that creates temporary files like <code>log_01</code>, <code>log_02</code>, and <code>log_03</code>.</p>
+<p>Add a rule such as:</p>
+<pre class="output"><code>log_*</code></pre>
+<p>to <code>.gitignore</code>.</p>
+<p>If you later decide to track one of them anyway, that is an advanced case and is easier from the terminal.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-20-contents" aria-controls="callout-20" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-20" class="callout-20-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>You can override an ignore rule with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add <span class="at">-f</span> log_01</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> status <span class="at">--ignored</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="remotes-in-github" class="level1">
+<h1>Remotes in GitHub</h1>
+<p>So far everything has happened on your computer. A <em>remote</em> is a copy of the repository stored somewhere else, usually on a service such as GitHub.</p>
+<p>For this lesson, we will use VS Code’s built-in GitHub flow instead of teaching manual remote setup first.</p>
+<section id="creating-a-remote-repository" class="level2">
+<h2 class="anchored" data-anchor-id="creating-a-remote-repository">Creating a remote repository</h2>
+<p>After you have a few local commits:</p>
+<ol type="1">
+<li>Open <strong>Source Control</strong>.</li>
+<li>Choose <strong>Publish to GitHub</strong>.</li>
+<li>Sign in through the browser if VS Code prompts you.</li>
+<li>Choose whether the repository should be public or private.</li>
+<li>Let VS Code create the GitHub repository and push your existing commits.</li>
+</ol>
+<p>This is the simplest beginner path because VS Code handles both repository creation and the first push.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_github-signin.png" class="img-fluid figure-img"></p>
+<figcaption>The GitHub sign-in prompt in VS Code.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/github">VS Code Collaborate on GitHub</a>.</em></p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-21-contents" aria-controls="callout-21" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-21" class="callout-21-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The closest terminal-based setup is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/USERNAME/recipes.git</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="understanding-remotes" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-remotes">Understanding remotes</h2>
+<p>Once published, your repository has:</p>
+<ul>
+<li>a <strong>local</strong> copy on your computer,</li>
+<li>a <strong>remote</strong> copy on GitHub.</li>
+</ul>
+<p>VS Code will show sync information in the status bar and in <strong>Source Control</strong>. The most important remote actions are:</p>
+<ul>
+<li><strong>Fetch</strong>: check for remote updates without changing your files</li>
+<li><strong>Pull</strong>: download and apply remote updates</li>
+<li><strong>Push</strong>: upload your local commits</li>
+<li><strong>Sync Changes</strong>: do the needed pull/push steps together</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_sync-fetch-pull-push.png" class="img-fluid figure-img"></p>
+<figcaption>Fetch, pull, and push controls in VS Code.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/repos-remotes">VS Code Repositories and Remotes</a>.</em></p>
+<div class="callout callout-style-simple callout-note callout-titled" title="What is origin?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What is origin?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>origin</code> is the default nickname Git gives to the main remote repository. You do not need to type it in VS Code, but you may still see the name in documentation and terminal examples.</p>
+</div>
+</div>
+</section>
+<section id="pushing-local-changes-to-a-remote" class="level2">
+<h2 class="anchored" data-anchor-id="pushing-local-changes-to-a-remote">Pushing local changes to a remote</h2>
+<p>Make one more local commit in VS Code. After committing, VS Code should show that you have outgoing changes.</p>
+<p>Use <strong>Sync Changes</strong> or <strong>Push</strong> to send them to GitHub. Then refresh the repository page on GitHub and confirm that the new commit appears there.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-23-contents" aria-controls="callout-23" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-23" class="callout-23-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>In the terminal, you would usually do:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin main</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="github-view-of-history" class="level2">
+<h2 class="anchored" data-anchor-id="github-view-of-history">GitHub view of history</h2>
+<p>On GitHub, open the repository and explore the commits list. You can:</p>
+<ul>
+<li>open a commit to view its diff,</li>
+<li>inspect when changes were made,</li>
+<li>review history without leaving the browser.</li>
+</ul>
+<p>This complements the VS Code Graph and Timeline views nicely.</p>
+</section>
+<section id="push-vs.-commit" class="level2">
+<h2 class="anchored" data-anchor-id="push-vs.-commit">Push vs.&nbsp;commit</h2>
+<p>A <strong>commit</strong> saves a snapshot in your local repository. A <strong>push</strong> sends your local commits to the remote repository on GitHub.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Advanced: manual remote setup">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-24-contents" aria-controls="callout-24" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Advanced: manual remote setup
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-24" class="callout-24-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you ever need to add a remote by hand, the terminal version looks like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote add origin https://github.com/USERNAME/recipes.git</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin main</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> remote <span class="at">-v</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Advanced: use SSH instead of VS Code sign-in">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-25-contents" aria-controls="callout-25" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Advanced: use SSH instead of VS Code sign-in
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-25" class="callout-25-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>This lesson does not require SSH.</p>
+<p>If you later want SSH, the usual flow is:</p>
+<ol type="1">
+<li>Create a key pair with <code>ssh-keygen</code>.</li>
+<li>Copy the public key from <code>~/.ssh/id_ed25519.pub</code>.</li>
+<li>Add it to GitHub under <strong>Settings</strong> &gt; <strong>SSH and GPG keys</strong>.</li>
+<li>Use an SSH remote such as <code>git@github.com:USERNAME/recipes.git</code>.</li>
+</ol>
+<p>VS Code’s browser sign-in is simpler for most beginners, so that is our recommended default.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="collaborating" class="level1">
+<h1>Collaborating</h1>
+<p>The grand finale: Version control becomes much more valuable when you work with another person. Now, you will collaborate on Quarto websites instead of a single recipe file.</p>
+<p>Quarto is a publishing system that can create websites, books, and reports from plain-text source files. It is built on Markdown and Pandoc, so it is easy to learn if you already know Markdown. It getting traction and I bet it will be the standard for the scienctific publishing in the future (no <strong>offence</strong> LaTeX). You can learn more about Quarto at <a href="https://quarto.org" class="uri">https://quarto.org</a>.</p>
+<p>You will first create and publish your own site. Then you will fork your partner’s repository, make website edits in your fork, and submit those edits for review.</p>
+<section id="create-and-publish-your-quarto-website" class="level2">
+<h2 class="anchored" data-anchor-id="create-and-publish-your-quarto-website">Create and publish your Quarto website</h2>
+<p>Start by opening the template repository on GitHub and selecting <strong>Use this template</strong> to create your own website repository. Name it something like <code>recipe-website</code> and choose it to be public. Also, include all branches so you do not need to fiddle with Quarto.</p>
+<p>
+<a href="https://github.com/igorsdub/quarto-website" class="btn btn-primary" target="_blank" rel="noopener noreferrer"> igorsdub/quarto-website </a>
+</p>
+<p>Nice, now you have your own website. Ain’t taht cool?! Clone that repository to your computer in VS Code. The main page of your website lives in the <code>index.qmd</code> file.</p>
+<p>Default content of <code>index.qmd</code> is:</p>
+<pre class="quarto"><code>---
+title: "quarto-website"
+---
+
+This is a Quarto website.
+
+To learn more about Quarto websites visit &lt;https://quarto.org/docs/websites&gt;.</code></pre>
+<p>You can add the guacamole recipe to your website by editing <code>index.qmd</code> and adding the following content or a receipe of your choice.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Quarto files are plain text">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Quarto files are plain text
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Quarto pages are still plain-text source files, just like the Markdown files you used earlier. The collaboration ideas are the same, even though the project is now a website instead of a recipe note.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-27-contents" aria-controls="callout-27" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-27" class="callout-27-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you prefer the terminal for setup and publishing, a common flow is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/YOUR-USERNAME/recipe-website.git</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> recipe-website</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> preview</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> publish gh-pages</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="fork-your-partners-repository" class="level2">
+<h2 class="anchored" data-anchor-id="fork-your-partners-repository">Fork your partner’s repository</h2>
+<p>Instead of adding each other as collaborators, use a fork-based workflow. Open your partner’s repository on GitHub and select <strong>Fork</strong> to create your own copy under your GitHub account.</p>
+<p>This is safer and closer to how open-source collaboration usually works. You can make changes freely in your fork, but you still need the original owner to review and merge them.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-28-contents" aria-controls="callout-28" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-28" class="callout-28-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you use GitHub CLI, a fork-and-clone flow can look like this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> repo fork PARTNER-USERNAME/recipe-website <span class="at">--clone</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> recipe-website</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="clone-your-fork" class="level2">
+<h2 class="anchored" data-anchor-id="clone-your-fork">Clone your fork</h2>
+<p>Now clone <strong>your fork</strong> of your partner’s website repository in VS Code. Open <strong>Source Control</strong>, select <strong>Clone Repository</strong> or run <code>Git: Clone</code> from the Command Palette, paste the URL of your fork, choose a local parent folder, and open the cloned repository in VS Code.</p>
+<p>When you clone, Git automatically connects the local copy to your fork on GitHub.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_clone-repository.png" class="img-fluid figure-img"></p>
+<figcaption>Cloning a repository in VS Code.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/quickstart">VS Code Source Control Quickstart</a>.</em></p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-29-contents" aria-controls="callout-29" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-29" class="callout-29-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Clone your fork with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/YOUR-USERNAME/recipe-website.git</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> recipe-website</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="make-changes-to-your-partners-website" class="level2">
+<h2 class="anchored" data-anchor-id="make-changes-to-your-partners-website">Make changes to your partner’s website</h2>
+<p>Now work on your fork of your partner’s Quarto website.</p>
+<p>Good beginner changes include:</p>
+<ul>
+<li>updating text on <code>index.qmd</code>,</li>
+<li>improving the <code>about.qmd</code> page,</li>
+<li>adding a recipe section,</li>
+<li>fixing navigation or headings in <code>_quarto.yml</code>.</li>
+</ul>
+<p>Before you edit anything, pull or sync so your local copy of the fork is up to date.</p>
+<p>For this exercise, make your changes on a <strong>new branch</strong> rather than directly on <code>main</code>. That keeps your work tidy and makes review much clearer.</p>
+<p>In VS Code, create a new branch from <code>main</code>, edit one or more <code>.qmd</code> or configuration files, review the diff in <strong>Source Control</strong>, stage the files, commit with a clear message, and push the branch to your fork on GitHub.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-30-contents" aria-controls="callout-30" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-30" class="callout-30-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The terminal version usually looks like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> partner-edit</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="co"># edit files</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Improve partner website homepage"</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin partner-edit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="open-a-pull-request-for-review" class="level2">
+<h2 class="anchored" data-anchor-id="open-a-pull-request-for-review">Open a pull request for review</h2>
+<p>After you push the branch, open a pull request so your partner can review the website changes before they are merged.</p>
+<p>You can do this in two ways:</p>
+<ul>
+<li>use the GitHub Pull Requests extension in VS Code, or</li>
+<li>open the pull request directly on GitHub after pushing to your fork.</li>
+</ul>
+<p>In either case, use your partner’s original repository <code>main</code> branch as the target, add a short title and description explaining the website edits, and submit the pull request.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_create-pull-request-view.png" class="img-fluid figure-img"></p>
+<figcaption>Create a pull request from VS Code.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/github">VS Code Collaborate on GitHub</a>.</em></p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-31-contents" aria-controls="callout-31" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-31" class="callout-31-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you use GitHub CLI, you can open the pull request with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> pr create <span class="at">--repo</span> PARTNER-USERNAME/recipe-website <span class="at">--base</span> main <span class="at">--head</span> YOUR-USERNAME:partner-edit</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="review-approve-or-request-changes" class="level2">
+<h2 class="anchored" data-anchor-id="review-approve-or-request-changes">Review, approve, or request changes</h2>
+<p>Now switch roles and review the proposed website changes. You can:</p>
+<ul>
+<li>inspect the changed <code>.qmd</code> files,</li>
+<li>comment on specific lines,</li>
+<li>request changes,</li>
+<li>approve the pull request,</li>
+<li>or reject it for now and ask for revisions.</li>
+</ul>
+<p>This is the key moment where collaboration becomes more than simple file sharing. GitHub records the proposed edits, comments, and review decision in one place.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-32-contents" aria-controls="callout-32" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-32" class="callout-32-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you use GitHub CLI, you can review a pull request with commands like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> pr checkout NUMBER</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> pr review NUMBER <span class="at">--approve</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="ex">gh</span> pr review NUMBER <span class="at">--request-changes</span> <span class="at">--body</span> <span class="st">"Please revise the homepage text."</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip callout-titled" title="When to add collaborators instead of forking">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>When to add collaborators instead of forking
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you add someone as a collaborator, they can push changes directly to your repository. Only do that if you trust them and you are happy for them to have that level of access.</p>
+<p>Forking is safer for this lesson because it keeps the original repository protected and makes the review step unavoidable.</p>
+</div>
+</div>
+</section>
+<section id="merge-the-approved-changes-and-pull-them-locally" class="level2">
+<h2 class="anchored" data-anchor-id="merge-the-approved-changes-and-pull-them-locally">Merge the approved changes and pull them locally</h2>
+<p>If you approve the pull request, merge it on GitHub.</p>
+<p>After the merge, return to your original local repository in VS Code, use <strong>Pull</strong> or <strong>Sync Changes</strong> to bring the merged updates into the local copy, and open the <strong>Source Control Graph</strong> to confirm that the pull request introduced a branch history line that has now been merged back into <code>main</code>.</p>
+<p>This is a great visual payoff for the lesson: you can see that the collaboration happened on a branch, then ended as a merge in the history graph.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-34-contents" aria-controls="callout-34" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-34" class="callout-34-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Back in your original repository, you would usually run:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> checkout main</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> log <span class="at">--graph</span> <span class="at">--oneline</span> <span class="at">--decorate</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="what-to-notice" class="level2">
+<h2 class="anchored" data-anchor-id="what-to-notice">What to notice</h2>
+<p>You should have seen all of these ideas in one workflow:</p>
+<ul>
+<li>creating a repository from a template,</li>
+<li>publishing a Quarto website,</li>
+<li>forking a partner’s repository,</li>
+<li>cloning your fork,</li>
+<li>editing <code>.qmd</code> website files,</li>
+<li>pushing a branch to your fork,</li>
+<li>opening a pull request,</li>
+<li>reviewing and approving or rejecting changes,</li>
+<li>pulling the merged result locally,</li>
+<li>inspecting the merge in the VS Code Graph.</li>
+</ul>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-35-contents" aria-controls="callout-35" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-35" class="callout-35-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The command-line version of this workflow usually includes commands like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/YOUR-USERNAME/PARTNER-WEBSITE-FORK.git</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="co">#do some edits</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> switch <span class="at">-c</span> partner-edit</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add .</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Improve partner website homepage"</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push <span class="at">-u</span> origin partner-edit</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="conflicts" class="level1">
+<h1>Conflicts</h1>
+<p>Conflicts happen when two people change the same part of the same file before syncing.</p>
+<p>For example:</p>
+<ul>
+<li>collaborator A adds <code>* put one avocado into a bowl.</code></li>
+<li>collaborator B adds <code>* peel the avocados</code></li>
+</ul>
+<p>If one person pushes first, the second person may be forced to pull before pushing. If Git cannot combine the edits safely, VS Code will mark the file as conflicted.</p>
+<section id="resolving-conflicts-in-vs-code" class="level2">
+<h2 class="anchored" data-anchor-id="resolving-conflicts-in-vs-code">Resolving conflicts in VS Code</h2>
+<p>When a conflict appears:</p>
+<ol type="1">
+<li>Open <strong>Source Control</strong> and select the conflicted file.</li>
+<li>Open the <strong>Merge Editor</strong>.</li>
+<li>Compare the current change and incoming change.</li>
+<li>Use VS Code’s buttons to accept one side, accept both, or edit a combined result manually.</li>
+<li>Save the file.</li>
+<li>Stage the resolved file.</li>
+<li>Commit the merge result.</li>
+<li>Push or sync the repository.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/version-control_vscode_merge-editor.png" class="img-fluid figure-img"></p>
+<figcaption>The Merge Editor in VS Code.</figcaption>
+</figure>
+</div>
+<p><em>Source: <a href="https://code.visualstudio.com/docs/sourcecontrol/merge-conflicts">VS Code Merge Conflicts</a>.</em></p>
+<p>For this lesson, a good final resolution for <code>guacamole.md</code> would be:</p>
+<pre class="output"><code># Guacamole
+## Ingredients
+* avocado
+* lime
+* salt
+## Instructions
+* peel the avocados and put them into a bowl.</code></pre>
+<p>This merge-editor workflow is much friendlier than trying to memorize conflict markers immediately.</p>
+</section>
+<section id="understanding-the-conflict-markers" class="level2">
+<h2 class="anchored" data-anchor-id="understanding-the-conflict-markers">Understanding the conflict markers</h2>
+<p>If you ever open the raw file before resolving it, Git may insert markers like:</p>
+<pre class="git"><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+* peel the avocados
+=======
+* put one avocado into a bowl.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; incoming change</code></pre>
+<p>These markers are Git’s way of saying “I found two competing edits here.” VS Code’s merge tools help you resolve them without editing the markers by hand.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Terminal equivalent">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-36-contents" aria-controls="callout-36" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Terminal equivalent
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-36" class="callout-36-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>The command-line version usually looks like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> pull origin main</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> add guacamole.md</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-m</span> <span class="st">"Merge changes from GitHub"</span></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> push origin main</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>After the merge commit is pushed, other collaborators can pull normally and receive the already-resolved version.</p>
+<p>To minimize conflicts:</p>
+<ul>
+<li>Pull frequently from the remote repository.</li>
+<li>Communicate with teammates about who is working on what.</li>
+<li>Make smaller, focused commits.</li>
+</ul>
+</section>
+</section>
+<section id="licensing" class="level1">
+<h1>Licensing</h1>
+<p>A <code>LICENSE</code> file specifies how others can use your code and data. Without one, default copyright laws apply. Choose a license from the start—even for private repositories—since adding one later requires approval from all contributors who hold copyright.</p>
+<p>Use <a href="https://choosealicense.com/">choosealicense.com</a> to find a license. Key considerations include:</p>
+<ul>
+<li>patent rights protection,</li>
+<li>whether derivative works must share source code,</li>
+<li>whether you are licensing code, data, or both.</li>
+</ul>
+<p>GitHub also lets you add a license from the browser, as explained <a href="https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/adding-a-license-to-a-repository">here</a>.</p>
+</section>
+<section id="citation" class="level1">
+<h1>Citation</h1>
+<p>Include a <code>CITATION</code> file to explain how to cite your project:</p>
+<pre><code>To reference this project, cite:
+
+Author Name: "Project Title". Publisher, Year.
+
+@online{project-year,
+  author = {Author Name},
+  title = {Project Title},
+  year = {Year}
+}</code></pre>
+<p>Use <a href="https://citation-file-format.github.io/">Citation File Format (<code>CITATION.cff</code>)</a> for automated citation information. GitHub automatically renders CFF files on your repository page. Create one at <a href="https://citation-file-format.github.io/cff-initializer-javascript/#/">cff-init</a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/oist\.github\.io\/gecs\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>by Igors Dubanevics | 2025-2026 | MIT License</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

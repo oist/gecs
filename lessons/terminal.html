@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Terminal – Good Enough Computing in Science 👍⚖️🧑‍💻🧪</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../images/geek_emoji.jpeg" rel="icon" type="image/jpeg">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5b4ad623e5705c0698d39aec6f10cf02.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<meta name="mermaid-theme" content="neutral">
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../lessons/terminal.html">Terminal</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Good Enough Computing in Science 👍⚖️🧑‍💻🧪</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/setting-up.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Setting Up</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/terminal.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Terminal</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/version-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Version Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/project-structure.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Project Structure</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/virtual-environments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Virtual Environments</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/testing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Testing</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/automation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Automation</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../lessons/vs-code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">VS Code</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#a-bit-of-pop-wisdom" id="toc-a-bit-of-pop-wisdom" class="nav-link active" data-scroll-target="#a-bit-of-pop-wisdom">A Bit of Pop Wisdom</a></li>
+  <li><a href="#integrated-terminal" id="toc-integrated-terminal" class="nav-link" data-scroll-target="#integrated-terminal">Integrated Terminal</a></li>
+  <li><a href="#navigation" id="toc-navigation" class="nav-link" data-scroll-target="#navigation">Navigation</a>
+  <ul class="collapse">
+  <li><a href="#moving-between-directories" id="toc-moving-between-directories" class="nav-link" data-scroll-target="#moving-between-directories">Moving between directories</a></li>
+  <li><a href="#listing-directory-contents" id="toc-listing-directory-contents" class="nav-link" data-scroll-target="#listing-directory-contents">Listing directory contents</a></li>
+  </ul></li>
+  <li><a href="#exploring-files" id="toc-exploring-files" class="nav-link" data-scroll-target="#exploring-files">Exploring Files</a>
+  <ul class="collapse">
+  <li><a href="#viewing-file-contents" id="toc-viewing-file-contents" class="nav-link" data-scroll-target="#viewing-file-contents">Viewing file contents</a></li>
+  <li><a href="#options-and-arguments" id="toc-options-and-arguments" class="nav-link" data-scroll-target="#options-and-arguments">Options and arguments</a></li>
+  <li><a href="#important-rules" id="toc-important-rules" class="nav-link" data-scroll-target="#important-rules">Important rules</a></li>
+  </ul></li>
+  <li><a href="#creating-directories-and-files" id="toc-creating-directories-and-files" class="nav-link" data-scroll-target="#creating-directories-and-files">Creating Directories and Files</a>
+  <ul class="collapse">
+  <li><a href="#directories" id="toc-directories" class="nav-link" data-scroll-target="#directories">Directories</a></li>
+  <li><a href="#files" id="toc-files" class="nav-link" data-scroll-target="#files">Files</a></li>
+  </ul></li>
+  <li><a href="#manipulating-files" id="toc-manipulating-files" class="nav-link" data-scroll-target="#manipulating-files">Manipulating Files</a>
+  <ul class="collapse">
+  <li><a href="#renaming-files" id="toc-renaming-files" class="nav-link" data-scroll-target="#renaming-files">Renaming files</a></li>
+  <li><a href="#copying-files" id="toc-copying-files" class="nav-link" data-scroll-target="#copying-files">Copying files</a></li>
+  <li><a href="#deleting-files-and-directories" id="toc-deleting-files-and-directories" class="nav-link" data-scroll-target="#deleting-files-and-directories">Deleting files and directories</a></li>
+  </ul></li>
+  <li><a href="#a-bit-of-plumbing" id="toc-a-bit-of-plumbing" class="nav-link" data-scroll-target="#a-bit-of-plumbing">A Bit of Plumbing</a>
+  <ul class="collapse">
+  <li><a href="#downloading-files-from-the-web" id="toc-downloading-files-from-the-web" class="nav-link" data-scroll-target="#downloading-files-from-the-web">Downloading files from the web</a></li>
+  </ul></li>
+  <li><a href="#the-superuser" id="toc-the-superuser" class="nav-link" data-scroll-target="#the-superuser">The Superuser</a></li>
+  <li><a href="#hidden-files" id="toc-hidden-files" class="nav-link" data-scroll-target="#hidden-files">Hidden Files</a>
+  <ul class="collapse">
+  <li><a href="#reloading-configuration-files" id="toc-reloading-configuration-files" class="nav-link" data-scroll-target="#reloading-configuration-files">Reloading configuration files</a></li>
+  </ul></li>
+  <li><a href="#appendix" id="toc-appendix" class="nav-link" data-scroll-target="#appendix">Appendix</a>
+  <ul class="collapse">
+  <li><a href="#terminology" id="toc-terminology" class="nav-link" data-scroll-target="#terminology">Terminology</a></li>
+  <li><a href="#a-brief-history-of-operating-systems" id="toc-a-brief-history-of-operating-systems" class="nav-link" data-scroll-target="#a-brief-history-of-operating-systems">A brief history of operating systems</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Terminal</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>“Graphical user interfaces make easy tasks easy, while command line interfaces make difficult tasks possible.”</p>
+<p>William Shotts, <em>The Linux Command Line: A Complete Introduction</em></p>
+</blockquote>
+<p>If there is one software skill you had to learn, it would be working with a terminal. It is ubiquitous! It has been around since 1970s and is likely to stay, unlike other tools. Thus, investing your time learning how to use it properly is worth it.</p>
+<section id="a-bit-of-pop-wisdom" class="level1">
+<h1>A Bit of Pop Wisdom</h1>
+<p>Have you watched the movie <em>The Matrix</em>? While the protagonists are inside the Matrix, operator assists them in real time monitoring what is happening and where should they go. The operator’s setup can be seen below.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/matrix_computer_view.jpg" class="img-fluid figure-img"></p>
+<figcaption>Tank, played by Marcus Chong, monitors the Matrix.</figcaption>
+</figure>
+</div>
+<p>Do you notice anything unsual abou this set up? Look closely. The operator is not using a mouse. He is using a terminal to monitor the Matrix. That alone should convice you of the power of the terminal. Jokes aside, you will immensely benefit from learning how to use it. It may seem intimidating at first (and it will), but with practice, you’ll find it to be an invaluable skill.</p>
+</section>
+<section id="integrated-terminal" class="level1">
+<h1>Integrated Terminal</h1>
+<p>Opening a terminal varies depending on your operating system. On macOS, you can find the Terminal application in <code>Applications/</code> → <code>Utilities/</code>. On Linux, you might find it in your applications menu, or you can press <code>Ctrl+Alt+T</code> on many systems. On Windows, you’ll want to use Ubuntu as part of the Windows Subsystem for Linux (WSL).</p>
+<p>We will be interacting with a terminal inside VS Code. Start VS Code and open a folder or workspace. Open the terminal by selecting <strong>View</strong> &gt; <strong>Terminal</strong> from the menu bar, or by pressing the <code>Ctrl/Cmd+`</code> keyboard shortcut. Based on your operating system configuration, the terminal opens with a default shell like Bash, PowerShell, or Zsh. The shell’s working directory starts at the root of the workspace folder.</p>
+<p>Once you have your terminal open, you’ll see a prompt—usually something like <code>user@computer:~$</code> or just <code>$</code> in Ubuntu or <code>%</code> on macOS. This is where you type your commands.</p>
+<p>Let’s start with some basic exploration. Try typing a few simple commands to get a feel for how the terminal responds. Don’t worry about what they do yet—we’ll explain them shortly.</p>
+<p>First, try typing gibberish to see what happens:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sfkagifvnbasd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You should see an error message saying the command was not found. Good! The terminal is working.</p>
+<p>Now try some real commands:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This shows you the current date and time. Next:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">uptime</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This tells you how long your computer has been running. Try:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">df</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This shows you disk space usage. Another useful one:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">whoami</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This tells you which user account you’re logged in as. Another useful command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> ls</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>which</code> command tells you the location of a program on your system. This is helpful when you want to know where a command is installed or verify that a program is available. And finally:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">exit</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This closes your terminal session.</p>
+<p>Don’t worry if you don’t understand what these commands do in detail—the important thing is that you’ve confirmed the terminal is working and ready for the next steps.</p>
+</section>
+<section id="navigation" class="level1">
+<h1>Navigation</h1>
+<p>Now that you know the terminal is working, let’s learn how to navigate around the file system. Every time you open a terminal, you start in a particular location called your <strong>working directory</strong>. To find out where you are, use the <code>pwd</code> (<strong>p</strong>rint <strong>w</strong>orking <strong>d</strong>irectory) command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This will print the full path to your current location. Usually, when you first open a terminal, you’ll be in your home directory, which is represented by a tilde (<code>~</code>).</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Note that the directory separator is a forward slash <code>/</code>, not the backslash <code>\</code> that you may be used to from Windows or DOS systems. This is important when navigating or specifying file paths.</p>
+</div>
+</div>
+</div>
+<section id="moving-between-directories" class="level2">
+<h2 class="anchored" data-anchor-id="moving-between-directories">Moving between directories</h2>
+<p>To move to a different directory, use the <code>cd</code> (<strong>c</strong>hange <strong>d</strong>irectory) command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /usr</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You’re now in the <code>/usr</code> directory. Notice how <code>pwd</code> shows a different path. You can use both <strong>absolute paths</strong> (starting from the root <code>/</code>) and <strong>relative paths</strong> (starting from your current location).</p>
+<p>Some useful shortcuts for relative paths:</p>
+<ul>
+<li><code>cd .</code> - stay in the current directory</li>
+<li><code>cd ..</code> - go up one level to the parent directory</li>
+<li><code>cd -</code> - go back to the previous directory</li>
+<li><code>cd ~</code> - go to your home directory</li>
+<li><code>cd</code> (with no arguments) - also goes to your home directory</li>
+</ul>
+<p>Try these out:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ..</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="at">-</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ~</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="bu">pwd</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="listing-directory-contents" class="level2">
+<h2 class="anchored" data-anchor-id="listing-directory-contents">Listing directory contents</h2>
+<p>To see what’s in your current directory, use the <code>ls</code> (<strong>l</strong>i<strong>s</strong>t) command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This shows the files and directories in your current location. You can also list the contents of a specific directory without changing to it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /usr</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> ~</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="exploring-files" class="level1">
+<h1>Exploring Files</h1>
+<p>Now that you can navigate around, let’s learn how to explore and examine files. There are several useful commands for working with files.</p>
+<section id="viewing-file-contents" class="level2">
+<h2 class="anchored" data-anchor-id="viewing-file-contents">Viewing file contents</h2>
+<p>To see the contents of a file, you can use the <code>cat</code> (<strong>con</strong>ca<strong>t</strong>enate) command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> /etc/hostname</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This displays the contents of the file directly in the terminal.</p>
+<p>For larger files, you might want to use a <strong>pager</strong> to view them one screen at a time. The <code>less</code> command is perfect for this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> /etc/profile</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Inside <code>less</code>, you can use arrow keys to scroll, Page Up/Page Down for larger jumps, and <code>q</code> to quit.</p>
+</section>
+<section id="options-and-arguments" class="level2">
+<h2 class="anchored" data-anchor-id="options-and-arguments">Options and arguments</h2>
+<p>Most commands accept <strong>options</strong> (also called flags or switches) and <strong>arguments</strong>. The general format is:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">command</span> <span class="at">-options</span> arguments</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Options typically start with a hyphen (<code>-</code>) or double hyphen (<code>--</code>). Let’s see this in action:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>-l</code> option shows a “long” listing with more details. Try:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-t</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>-t</code> option sorts files by modification time. You can combine multiple options:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lt</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This combines <code>-l</code> and <code>-t</code> to show details sorted by time.</p>
+</section>
+<section id="important-rules" class="level2">
+<h2 class="anchored" data-anchor-id="important-rules">Important rules</h2>
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Try to avoid any spaces in your directory and file names. Shell interprets space as separator between options or arguments. Space in names will most likely break programs, producing errors.</p>
+<p>You can use spaces by including names in parentheses or quotes, but that’s an unnecessary complication.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-important">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Commands are case sensitive. <code>ls</code> is not the same as <code>LS</code>, <code>Ls</code>, or <code>lS</code>. Try it yourself!</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="creating-directories-and-files" class="level1">
+<h1>Creating Directories and Files</h1>
+<p>Principles to create files and directories are very similar but, as usual, have their own terminiology and quirks. We will first look at directories since they are conceptually easier to compehed.</p>
+<div class="callout callout-style-simple callout-note callout-titled" title="Folder vs directory">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Folder vs directory
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Another terminology difference from Windows. Funilly, file is a file.</p>
+</div>
+</div>
+<section id="directories" class="level2">
+<h2 class="anchored" data-anchor-id="directories">Directories</h2>
+<p>Lets create our first object using the terminal. While in your home directory <code>~</code>, type:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> oist</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Check with <code>ls</code> what happened. <code>mkdir</code> stands for <strong>m</strong>a<strong>k</strong>e <strong>dir</strong>ectory.</p>
+<p>Looks nice! Let’s go inside.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> oist</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>And, check check it out.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Kind of boring here. There is nothing inside. Let’s make some more directories inside.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> lab1 lab2 lab3 lab4 lab5</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>There’s something a little different about that command. So far we’ve only seen commands that work on their own (<code>cd</code>, <code>pwd</code>) or that have a single item afterwards (<code>cd -</code>, <code>cd ~/Desktop/</code>). But this time we’ve added five things after the mkdir command. Those things are referred to as parameters or arguments, and different commands can accept different numbers of arguments. The mkdir command expects at least one argument, whereas the cd command can work with zero or one, but no more. See what happens when you try to pass the wrong number of parameters to a command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> /etc/ ~/Desktop/</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notice that mkdir created all the folders in one directory. It didn’t create <code>lab3/</code> inside <code>lab2/</code> inside <code>lab1/</code>, or any other nested structure. But sometimes it’s handy to be able to do exactly that, and <code>mkdir</code> does have a way:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> lab4/levelE/48</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can try to run without <code>-p</code> and see which error message you get.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> lab5/levelD/23</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>I find this behaviour annoying. The same goes for creating files in non-existent subdirectories but I am sure there is a good reason behind such restriction.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> lab4</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> levelE</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> ../..</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The “-p” that we used is called an option or a switch (in this case it means “create the parent directories, too”). Options are used to modify the way in which a command operates, allowing a single command to behave in a variety of different ways. Unfortunately, due to quirks of history and human nature, options can take different forms in different commands. You’ll often see them as single characters preceded by a hyphen (as in this case), or as longer words preceded by two hyphens. The single character form allows for multiple options to be combined, though not all commands will accept that. And to confuse matters further, some commands don’t clearly identify their options at all, whether or not something is an option is dictated purely by the order of the arguments! You don’t need to worry about all the possibilities, just know that options exist and they can take several different forms. For example the following all mean exactly the same thing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># These commands are equivalent</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">--parents</span> <span class="at">--verbose</span> lab5/levelDE</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="at">--verbose</span> lab5/levelDE</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="at">-v</span> lab5/levelDE</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-pv</span> lab5/levelDE</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="files" class="level2">
+<h2 class="anchored" data-anchor-id="files">Files</h2>
+<p>Many labs, right? Can we keep a log of them? <code>ls</code> just printed them but can we store this command output in a file? That’s where redirecton comes into play.</p>
+<p>Suppose we wanted to capture the output of that command as a text file that we can look at or manipulate further. All we need to do is to add the greater-than character (“&gt;”) to the end of our command line, followed by the name of the file to write to:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="op">&gt;</span> lab.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This time there’s nothing printed to the screen, because the output is being redirected to our file instead. If you just run ls on its own you should see that the <code>lab.log</code> file has been created. We can use the <code>cat</code> command to look at its content:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> lab.log</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Okay, so it’s not exactly what was displayed on the screen previously, but it contains all the same data, and it’s in a more useful format for further processing.</p>
+<p>Let’s look at another command, <code>echo</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"VISION, CHALLENGES, INNOVATION"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Yes, echo just prints its arguments back out again (hence the name). But combine it with a redirect, and you’ve got a way to easily create small files. Let’s redirect these words into a file that will represent the <a href="https://en.wikipedia.org/wiki/Sydney_Brenner">Prof.&nbsp;Sydney Brenner</a> statue located at the Center Court.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/paste-39.png" class="img-fluid figure-img"></p>
+<figcaption>Dr.&nbsp;Brenner’s statue presented by Okinawa Prefecture and the Council for Promotion of OIST https://www.oist.jp/image/dr-sydney-brenners-statue</figcaption>
+</figure>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"VISION, CHALLENGES, INNOVATION"</span> <span class="op">&gt;</span> sydney_brenner.statue</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> sydney_brenner.statue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-important callout-titled" title="File extension">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>File extension
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Linux-type systems do not care about file extensions. Files can have no extensions at all and be absolutely fine. Try redirecting the words output to file named <code>sydney_brenner</code> and see if you can inspect it.</p>
+</div>
+</div>
+<p>We have one statue but why stop here? It is not improbable that <a href="http://en.wikipedia.org/wiki/Svante_P%C3%A4%C3%A4bo">Prof.&nbsp;Svante Pääbo</a> will get his statute at OIST in the future. For his statue engraving we will choose something more personal.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"I really wanted to discover mummies, like Indiana Jones."</span> <span class="op">&gt;</span> svante_paabo.statue</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> svante_paabo.statue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>However, <code>cat</code> is more than just a file viewer - its name comes from ‘con<strong>cat</strong>enate’, meaning “to link together”. If you pass more than one filename to <code>cat</code> it will output each of them, one after the other, as a single block of text:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> sydney_brenner.statue svante_paabo.statue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Where you want to pass multiple file names to a single command, there are some useful shortcuts that can save you a lot of typing if the files have similar names. A question mark (“?”) can be used to indicate “any single character” within the file name. An asterisk (“*”) can be used to indicate “zero or more characters”. These are sometimes referred to as “wildcard” characters. A couple of examples might help, the following commands all do the same thing:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> sydney_brenner.statue svante_paabo.statue</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.statue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That is where file extension <code>.statue</code> that we came up with is useful. We can match all statue files no matter how many there are. <code>lab.log</code> has been omitted. This simple syntax makes selective manipulation of files an easy task.</p>
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>As you might have guessed, this capability also means that you need to escape file names with “?” or “*” characters in them, too. It’s usually better to avoid any punctuation in file names if you want to manipulate them from the command line.</p>
+</div>
+</div>
+</div>
+<p>We have not used <code>?</code> character above. A somewhat artificial example with our current setup would be to list only the lab directories and their subdirectories:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> lab<span class="pp">?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Thus we only look at what is inside the directories that start with “lab”.</p>
+<p>Going back to the statues. Let’s join all our files together into a single new file, then view it:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.statue <span class="op">&gt;</span> nobel_motivation.txt</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> nobel_motivation.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>What do you think will happen if we run those two commands a second time? Will the computer complain, because the file already exists? Will it append the text to the file, so it contains two copies? Or will it replace it entirely? Give it a try to see what happens, but to avoid typing the commands again you can use the <strong>Up Arrow</strong> and <strong>Down Arrow</strong> keys to move back and forth through the history of commands you’ve used. Press the <strong>Up Arrow</strong> a couple of times to get to the first <code>cat</code> and press <strong>Enter</strong> to run it, then do the same again to get to the second.</p>
+<p>As you can see, the file looks the same. That’s not because it’s been left untouched, but because the shell clears out all the content of the file before it writes the output of your <code>cat</code> command into it. Because of this, you should be extra careful when using redirection to make sure that you don’t accidentally overwrite a file you need. If you do want to append to, rather than replace, the content of the files, double up on the greater-than character “&gt;&gt;”:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> <span class="pp">*</span>.statue <span class="op">&gt;&gt;</span> nobel_motivation.txt</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'I want my statue too!'</span> <span class="op">&gt;&gt;</span> nobel_motivation.txt</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> nobel_motivation.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Repeat the first <code>cat</code> and the <code>echo</code> a few more times, using the <strong>Up Arrow</strong> for convenience until your text document is so large that it won’t all fit in the terminal at once when you use <code>cat</code> to display it. In order to see the whole file we now need to use a different program, called a <em>pager</em> (because it displays your file one “page” at a time). The standard pager of old was called <code>more</code>, because it puts a line of text at the bottom of each page that says “–More–” to indicate that you haven’t read everything yet. These days there’s a far better pager that you should use instead: because it replaces <code>more</code>, the programmers decided to call it <code>less</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">less</span> nobel_motivation.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>When viewing a file through <code>less</code> you can use the <strong>Up Arrow</strong>, <strong>Down Arrow</strong>, <strong>Page Up</strong>, <strong>Page Down</strong>, <strong>Home</strong> and <strong>End</strong> keys to move through your file. Give them a try to see the difference between them. When you’ve finished viewing your file, press <strong>q</strong> to <strong>q</strong>uit <code>less</code> and return to the command line.</p>
+<div class="callout callout-style-simple callout-tip callout-titled" title="Good naming practice">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Good naming practice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When you consider both case sensitivity and escaping, a good rule of thumb is to keep your file names all lower case, with only letters, numbers, underscores and hyphens. For files there’s usually also a dot and a few characters on the end to indicate the type of file it is (referred to as the “file extension”). This guideline may seem restrictive, but if you end up using the command line with any frequency you’ll be glad you stuck to this pattern.</p>
+</div>
+</div>
+<p>If we want to move Sydney to show him the latest lab, Lab 5, how do we do that? Also, is the file we created created empty? How can we check that? <code>ls</code> will not work. We will see how files can be manipulated in the next section.</p>
+</section>
+</section>
+<section id="manipulating-files" class="level1">
+<h1>Manipulating Files</h1>
+<p>Now that we’ve got a few files, let’s look at the sort of day-to-day tasks you might need to perform on them. In practice you’ll still most likely use a graphical program when you want to move, rename or delete one or two files, but knowing how to do this using the command line can be useful for bulk changes, or when the files are spread amongst different folders. Plus, you’ll learn a few more things about the command line along the way.</p>
+<p>Let’s begin by putting our <code>svante_paabo.statue</code> file into our <code>lab1/</code> directory, using the <code>mv</code> (<strong>m</strong>o<strong>v</strong>e) command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> svante_paabo.statue lab1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You can confirm that the job has been done by using <code>ls</code> to see that it’s missing from the working directory, then <code>cd lab1/</code> to change into <code>lab1/</code>, <code>ls</code> to see that it’s in there, then <code>cd ..</code> to move the working directory back again. Or you could save a lot of typing by passing a path directly to the <code>ls</code> command to get straight to the confirmation you’re looking for:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> lab1</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Now suppose it turns out that file shouldn’t be in <code>lab1/</code> after all. Let’s move it back to the working directory. We could <code>cd</code> into <code>lab1/</code> then use <code>mv svante_paabo.statue ..</code> to say “move svante_paabo.statue into the parent directory”. But we can use another path shortcut to avoid changing directory at all. In the same way that two dots (<code>..</code>) represents the parent directory, so a single dot (<code>.</code>) can be used to represent the current working directory. Because we know there’s only one file in <code>lab1/</code> we can also just use <code>*</code> to match any filename in that directory, saving ourselves a few more keystrokes. Our command to move the file back into the working directory therefore becomes this (note the space before the dot, there are <strong>two</strong> parameters being passed to <code>mv</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> lab1/<span class="pp">*</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>mv</code> command also lets us move more than one file at a time. If you pass more than two arguments, the last one is taken to be the destination directory and the others are considered to be files (or directories) to move. Let’s use a single command to move <code>lab.log</code>, all our <code>*.statue</code> files and <code>lab2/</code> into <code>lab3/</code> (now, it’s getting trippy). There’s a bit more going on here, but if you look at each argument at a time you should be able to work out what’s happening:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> lab.log <span class="pp">*</span>.statue lab2 lab3</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> lab3</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Let’s keep <code>lab.log</code> in <code>lab3/</code> but everything else out:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> lab3/lab<span class="pp">?</span> lab3/<span class="pp">*</span>.statue .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="renaming-files" class="level2">
+<h2 class="anchored" data-anchor-id="renaming-files">Renaming files</h2>
+<p>The <code>mv</code> command doesn’t just move files between directories—it’s also used to rename them. When you move a file to the same directory but give it a new name, you’re effectively renaming it.</p>
+<p>For example, let’s rename one of our statue files:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mv</span> sydney_brenner.statue brenner_sydney.statue</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> brenner_sydney.statue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The file has been renamed, not moved to a different location.</p>
+</section>
+<section id="copying-files" class="level2">
+<h2 class="anchored" data-anchor-id="copying-files">Copying files</h2>
+<p>Sometimes you want to create a duplicate of a file. This is where the <code>cp</code> (<strong>c</strong>o<strong>p</strong>y) command comes in:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> brenner_sydney.statue sydney_brenner.statue</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">*</span>.statue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You now have two files: the original and the last-name-first copy. The <code>cp</code> command can also work with directories, but you need to use an option to do so. To copy an entire directory and all its contents, use the <code>-r</code> option (which stands for “recursive”):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cp</span> <span class="at">-r</span> lab4 lab0</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This creates a complete copy of <code>lab4/</code> and all the files inside it, called <code>lab0/</code>.</p>
+</section>
+<section id="deleting-files-and-directories" class="level2">
+<h2 class="anchored" data-anchor-id="deleting-files-and-directories">Deleting files and directories</h2>
+<p>To remove files, use the <code>rm</code> (<strong>r</strong>e<strong>m</strong>o<strong>v</strong>e) command. Be careful with this—once deleted, files are generally gone for good!</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> brenner_sydney.statue</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">*</span>.statue</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>To be honest, there is only one Lab0. To remove a directory, add the <code>-r</code> option:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="at">-r</span> lab0</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-caution callout-titled" title="Warning: rm is permanent">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Caution</span>Warning: rm is permanent
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Unlike moving files to a trash or recycle bin on a graphical interface, <code>rm</code> permanently deletes files. There is no undo! Always double-check your command before pressing <strong>Enter</strong>.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="a-bit-of-plumbing" class="level1">
+<h1>A Bit of Plumbing</h1>
+<p>Today’s computers and phones have the sort of graphical and audio capabilities that our 70s terminal users couldn’t even begin to imagine. Yet still text prevails as a means to organise and categorise files. Whether it’s the file name itself, GPS coordinates embedded in photos you take on your phone, or the metadata stored in an audio file, text still plays a vital role in every aspect of computing. It’s fortunate for us that the Linux command line includes some powerful tools for manipulating text content, and ways to join those tools together to create something more capable still.</p>
+<p>Let’s start with a simple question. How many lines are there in your <code>combined.txt</code> file? The <code>wc</code> (word count) command can tell us that, using the <code>-l</code> switch to tell it we only want the line count (it can also do character counts and, as the name suggests, word counts):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> nobel_motivation.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Similarly, if you wanted to know how many files and folders are in your home directory, and then tidy up after yourself, you could do this:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> ~ <span class="op">&gt;</span> home_file_list.txt</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> home_file_list.txt</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> home_file_list.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That method works, but creating a temporary file to hold the output from <code>ls</code> only to delete it two lines later seems a little excessive. Fortunately the Unix command line provides a shortcut that avoids you having to create a temporary file, by taking the output from one command (referred to as standard output or <strong>STDOUT</strong>) and feeding it directly in as the input to another command (standard input or <strong>STDIN</strong>). It’s as though you’ve connected a <em>pipe</em> between one command’s output and the next command’s input, so much so that this process is actually referred to as piping the data from one command to another. Here’s how to pipe the output of our <code>ls</code> command into <code>wc</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> ~ <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Notice that there’s no temporary file created, and no file name needed. Pipes operate entirely in memory, and most Unix command line tools will expect to receive input from a pipe if you don’t specify a file for them to work on. Looking at the line above, you can see that it’s two commands, <code>ls ~</code> (list the contents of the home directory) and <code>wc -l</code> (count the lines), separated by a vertical bar character (<code>|</code>). This process of piping one command into another is so commonly used that the character itself is often referred to as the pipe character, so if you see that term you now know it just means the vertical bar.</p>
+<p>Note that the spaces around the pipe character aren’t important, we’ve used them for clarity, but the following command works just as well, this time for telling us how many items are in the <code>/etc</code> directory:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb52"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Phew! That’s quite a few files. If we wanted to list them all it would clearly fill up more than a single screen. As we discovered earlier, when a command produces a lot of output, it’s better to use <code>less</code> to view it, and that advice still applies when using a pipe (remember, press <code>q</code> to quit):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> /etc <span class="kw">|</span> <span class="fu">less</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Going back to our own files, we know how to get the number of lines in <code>combined.txt</code>, but given that it was created by concatenating the same files multiple times, I wonder how many unique lines there are? Unix has a command, <code>uniq</code>, that will only output unique lines in the file. So we need to <code>cat</code> the file out and pipe it through <code>uniq</code>. But all we want is a line count, so we need to use <code>wc</code> as well. Fortunately the command line doesn’t limit you to a single pipe at a time, so we can continue to chain as many commands as we need:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb54"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> nobel_motivation.txt <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>That line probably resulted in a count that’s pretty close to the total number of lines in the file, if not exactly the same. Surely that can’t be right? Lop off the last pipe to see the output of the command for a better idea of what’s happening. If your file is very long, you might want to pipe it through <code>less</code> to make it easier to inspect:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> nobel_motivation.txt <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">less</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>It appears that very few, if any, of our duplicate lines are being removed. To understand why, we need to look at the documentation for the <code>uniq</code> command. Most command line tools come with a brief (and sometimes not-so-brief) instruction manual, accessed through the <code>man</code> (manual) command. The output is automatically piped through your pager, which will typically be <code>less</code>, so you can move back and forth through the output, then press <code>q</code> when you’re finished:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">man</span> uniq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Because this type of documentation is accessed via the <code>man</code> command, you’ll hear it referred to as a “man page”, as in “check the man page for more details”. The format of man pages is often terse, think of them more as a quick overview of a command than a full tutorial. They’re often highly technical, but you can usually skip most of the content and just look for the details of the option or argument you’re using.</p>
+<p>The <code>uniq</code> man page is a typical example in that it starts with a brief one-line description of the command, moves on to a synopsis of how to use it, then has a detailed description of each option or parameter. But whilst man pages are invaluable, they can also be impenetrable. They’re best used when you need a reminder of a particular switch or parameter, rather than as a general resource for learning how to use the command line. Nevertheless, the first line of the <strong>DESCRIPTION</strong> section for <code>man uniq</code> does answer the question as to why duplicate lines haven’t been removed: it only works on adjacent matching lines.</p>
+<p>The question, then, is how to rearrange the lines in our file so that duplicate entries are on adjacent lines. If we were to sort the contents of the file alphabetically, that would do the trick. Unix offers a <code>sort</code> command to do exactly that. A quick check of <code>man sort</code> shows that we can pass a file name directly to the command, so let’s see what it does to our file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> nobel_motivation.txt <span class="kw">|</span> <span class="fu">less</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>You should be able to see that the lines have been reordered, and it’s now suitable for piping straight into <code>uniq</code>. We can finally complete our task of counting the unique lines in the file:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span> nobel_motivation.txt <span class="kw">|</span> <span class="fu">uniq</span> <span class="kw">|</span> <span class="fu">wc</span> <span class="at">-l</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>As you can see, the ability to pipe data from one command to another, building up long chains to manipulate your data, is a powerful tool, as well as reducing the need for temporary files, and saving you a lot of typing. For this reason you’ll see it used quite often in command lines. A long chain of commands might look intimidating at first, but remember that you can break even the longest chain down into individual commands (and look at their man pages) to get a better understanding of what it’s doing.</p>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Most Linux command line tools include a man page. Try taking a brief look at the pages for some of the commands you’ve already encountered: <code>man ls</code>, <code>man cp</code>, <code>man rmdir</code> and so on. There’s even a man page for the <code>man</code> program itself, which is accessed using <code>man man</code>, of course.</p>
+</div>
+</div>
+</div>
+<section id="downloading-files-from-the-web" class="level2">
+<h2 class="anchored" data-anchor-id="downloading-files-from-the-web">Downloading files from the web</h2>
+<p>Another powerful command you encountered during <a href="../lessons/setting-up.html">the setup process</a> is <code>curl</code> (<strong>C</strong>lient <strong>URL</strong>). It’s used to transfer data from or to a server, often for downloading files or scripts from the internet:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://pixi.sh/install.sh <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This command downloads the Pixi installation script and pipes it directly to <code>sh</code> (the shell) for execution. Let’s break down the options:</p>
+<ul>
+<li><code>-f</code> - Fail silently on server errors</li>
+<li><code>-s</code> - Silent mode (don’t show progress)</li>
+<li><code>-S</code> - Show errors even in silent mode</li>
+<li><code>-L</code> - Follow redirects if the URL has moved</li>
+</ul>
+<p>You can also use <code>curl</code> to download files and save them:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-O</span> https://example.com/file.txt</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>-O</code> option saves the file with its original name.</p>
+<div class="callout callout-style-simple callout-warning">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Be cautious when piping downloaded scripts directly to a shell interpreter (<code>| sh</code> or <code>| bash</code>). Only do this with scripts from trusted sources, as they will execute with your user privileges. During setup, you used this method with official installation scripts from Pixi and Starship.</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="the-superuser" class="level1">
+<h1>The Superuser</h1>
+<p>We won’t encounter this command too much in this course, but some commands require elevated privileges to run. On Linux systems like Ubuntu, the <code>sudo</code> command allows you to run a command with superuser (administrator) privileges. When you use <code>sudo</code>, you’ll be prompted for your password.</p>
+<p>You’ve already used <code>sudo</code> during the setup process when you ran:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt update <span class="kw">&amp;&amp;</span> <span class="fu">sudo</span> apt upgrade <span class="at">-y</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This command updates the package lists and upgrades installed packages on Ubuntu. The <code>apt</code> (<strong>A</strong>dvanced <strong>P</strong>ackage <strong>T</strong>ool) is Ubuntu’s package manager. You can also install new programs:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sudo</span> apt install tree</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This would install the <code>tree</code> program from your system’s software repositories. macOS users can use the Homebrew package manager with the <code>brew</code> command to install <code>tree</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install tree</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-note">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Note that on macOS, <code>brew</code> typically doesn’t require <code>sudo</code> as it installs to user-writable locations.</p>
+</div>
+</div>
+</div>
+<p>Investigate the <code>oist/</code> directory structure that we have built with:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="ex">tree</span> .</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-simple callout-caution">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>When using <code>sudo</code>—always understand what a command does before running it with elevated privileges. Never run commands from untrusted sources with <code>sudo</code>, as they could potentially damage your system.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="hidden-files" class="level1">
+<h1>Hidden Files</h1>
+<p>In Unix-like systems, any file or directory whose name starts with a dot (<code>.</code>) is considered hidden. These files don’t appear in normal <code>ls</code> listings—you have to specifically ask for them using the <code>-a</code> option:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-a</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>-a</code> stands for “all”, and will show you every file and directory, including the hidden ones. You’ll typically see files like <code>.bashrc</code>, <code>.zshrc</code>, <code>.ssh/</code>, <code>.config/</code>, and many others.</p>
+<p>Hidden files are commonly used for storing configuration settings. For example:</p>
+<ul>
+<li><code>.bashrc</code> - Configuration file for the Bash shell. Contains settings, aliases, and functions that customize your Bash environment.</li>
+<li><code>.zshrc</code> - Configuration file for the Zsh shell. Similar to <code>.bashrc</code>, but for Zsh.</li>
+</ul>
+<p>These files are executed every time you start a terminal. During the <a href="../lessons/setting-up.html">setup process</a>, you modified these files when installing tools like Pixi and Starship. For example, you added lines like:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">'eval "$(starship init bash)"'</span> <span class="op">&gt;&gt;</span> ~/.bashrc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This command appended a line to your <code>.bashrc</code> file that tells your shell to start Starship. If you remove that line, your terminal will go back to the looks it had before.</p>
+<section id="reloading-configuration-files" class="level2">
+<h2 class="anchored" data-anchor-id="reloading-configuration-files">Reloading configuration files</h2>
+<p>When you modify configuration files like <code>.bashrc</code> or <code>.zshrc</code>, the changes won’t take effect until you start a new terminal session. However, you can reload the configuration without closing your terminal using the <code>source</code> command:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.bashrc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or for Zsh users:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="sourceCode zsh code-with-copy"><code class="sourceCode zsh"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="bu">source</span> ~/.zshrc</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This reads and executes the commands from the specified file in your current shell session. You used this command during setup to activate Pixi after installation.</p>
+<div class="callout callout-style-simple callout-tip">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>You can view the contents of your configuration files using <code>cat ~/.bashrc</code> or <code>less ~/.bashrc</code> to see what customizations you’ve made.</p>
+</div>
+</div>
+</div>
+<p>As you progress through more advanced topics, you’ll encounter many more hidden files and directories. Configuration files, cache directories, and version control metadata (like <code>.git/</code>) all use the dot-prefix convention. This naming strategy keeps your file system organized and separates system/application configuration from your regular working files. In future lessons, we’ll explore how these hidden files and directories make it very convenient to manage complex configurations without cluttering your workspace.</p>
+</section>
+</section>
+<section id="appendix" class="level1">
+<h1>Appendix</h1>
+<section id="terminology" class="level2">
+<h2 class="anchored" data-anchor-id="terminology">Terminology</h2>
+<p>Any terminology is confusing until you repeat it many times. Starting from the left in the figure below, <em>terminal</em> or more properly <em>terminal emulator</em> is a text-based input/output program that communicates with your computer. You type commands in a <em>command line</em> or a <em>command line interface (CLI)</em>. The command is passed to <em>shell</em> which is a command line interpreter (confusingly, it can be abbreviated as CLI as well, but thankfully no one does that). Next, <em>shell</em> talks to <em>operating system (OS)</em>. OS is agnostic to hardware and could be run on different physical machines. At the core of any <em>OS</em> is <em>kernel</em>. Finally, <em>kernel</em> talks to the hardware (CPU, GPU, RAM, disk, etc.).</p>
+<p>Only reason I give this detail that some times people use these terms interchangeably.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    H[Hardware]
+
+    subgraph OS[Operating System]
+        K[Kernel]
+    end
+
+    S[Shell]
+
+    subgraph T[Terminal]
+        C[Command Line]
+    end
+
+    T --- S --- OS --- H
+
+    %% Single hue (blue), different lightness
+    classDef l1 fill:#eaf2fb,stroke:transparent,color:#000
+    classDef l2 fill:#d0e2f2,stroke:transparent,color:#000
+    classDef l3 fill:#9ecae1,stroke:transparent,color:#000
+    classDef l4 fill:#6baed6,stroke:transparent,color:#000
+
+    %% Apply styles
+    class H l1
+    class OS l2
+    class K l4
+    class S l2
+    class T l2
+    class C l4
+
+    %% Remove subgraph borders
+    style OS fill:#d0e2f2,stroke-width:0px
+    style T fill:#d0e2f2,stroke-width:0px
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="a-brief-history-of-operating-systems" class="level2">
+<h2 class="anchored" data-anchor-id="a-brief-history-of-operating-systems">A brief history of operating systems</h2>
+<p>When you look at most operating systems, you see that most of them stem from UNIX. Then they branch into derivatives like Linux, which is the most prominent “child”. Windows, on the other hand, is isolated from UNIX and only the recent introduction of WSL allowed it to use UNIX-based tools with ease.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../images/paste-37.png" class="img-fluid figure-img"></p>
+<figcaption>Evolution of operating systems, its kernels, and distributions. <a href="https://www.reddit.com/r/coolguides/comments/k1lopj/os_family_tree/" class="uri">https://www.reddit.com/r/coolguides/comments/k1lopj/os_family_tree/</a></figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<ul>
+<li><a href="https://third-bit.com/py-rse/bash-basics.html">Chapter 2 The Basics of the Unix Shell, Research Software Engineering with Python</a> by Wilson et al.</li>
+<li><a href="https://code.visualstudio.com/docs/terminal/basics">Visual Studio Code Terminal Basics</a></li>
+<li><a href="https://code.visualstudio.com/docs/terminal/getting-started">Getting Started with the VS Code Terminal</a></li>
+<li><a href="https://ubuntu.com/tutorials/command-line-for-beginners">Command Line for Beginners by Ubuntu</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/oist\.github\.io\/gecs\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>by Igors Dubanevics | 2025-2026 | MIT License</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

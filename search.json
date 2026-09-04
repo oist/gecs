@@ -1,5 +1,425 @@
 [
   {
+    "objectID": "lessons/setting-up.html",
+    "href": "lessons/setting-up.html",
+    "title": "Setting Up",
+    "section": "",
+    "text": "This section will equip your computer with all necessary tools for this course. The motivation behind each tool will be explained in the later sessions. For now, just follow the instructions and prepare to awe (and, at times, get frustrated) with power of computing.\nAlthough the course advertises itself as programming language agnostic, Python will be used to provide ‘meat’ for coding examples. See a Justin Bois’s note on “superiority” of one programming language over another below.",
+    "crumbs": [
+      "Setting Up"
+    ]
+  },
+  {
+    "objectID": "lessons/setting-up.html#wsl-windows-users-only",
+    "href": "lessons/setting-up.html#wsl-windows-users-only",
+    "title": "Setting Up",
+    "section": "WSL (Windows users only)",
+    "text": "WSL (Windows users only)\nBeing a popular operating system doesn’t make Windows easy to use for software development. Windows Subsystem for Linux (WSL) circumvents this problem by creating a separate environment on your computer to run Linux, a free UNIX-like OS. We will install Linux with a particular flavour called Ubuntu. Right now, we will not go into details. All you need to know is that by the end of this installation you will be free to use a vast majority of scientific software available on the web.\n\nInstallation\nThere are two ways to install WSL with Ubuntu: graphical and terminal. The graphical method uses the Microsoft Store and should be straightforward. The terminal method uses PowerShell and is less user-friendly but more robust to errors. Choose whichever suits you best.\n\n\n\n\n\n\nNoteTroubleshooting WSL\n\n\n\n\n\nIf you’re experiencing some troubles with installation, it is worth:\n\nUpdating your Windows version. Open Windows Settings, go to ‘Updates and Security’ and hit ‘Check for Updates’.\nEnable WSL on your Windows manually.\n\nClick on the Start Menu and search for “Turn Windows features on or off”.\nOpen the result. A new window will appear with a list of Windows features.\nScroll down and check the following two boxes:\n\n‘Windows Subsystem for Linux’ ✅\n‘Virtual Machine Platform’ ✅\n\nClick OK. Windows will apply the changes and may ask you to restart your computer.\nAfter restarting, WSL will be enabled on your system.\n\n\n\n\n\n\nOpen the Start Menu, and search for “PowerShell”.\nRight-click and choose “Run as administrator”.\nEnter the following command to install WSL and hit Enter:\nwsl --install\n\n\n\n\n\n\n\n\nYou need to restart your computer after installing WSL.\n\n\n\n\nOnce restarted, open PowerShell again in the administartive mode and type:\nwsl --install\nBy default, Ubuntu will be installed as the main Linux distribution.\n\n\n\nCreating a Default UNIX User Account\nNow, that you have Ubuntu installed, you need to create an account in order to start using it. Generally it is called a “UNIX User Account” but a “Ubuntu account” would do as well.\n\n\n\n\n\n\nBefore you set a username on your computer, sign up for a GitHub account (see Section 4.1) and check if that username is available. This unity in names will make it easier for you to orient your files and folder,as well establish a virtual nickname that you can use consistently in the future projects.\n\n\n\n\n\n\n\n\n\n\nTipUsername and password suggestions\n\n\n\n\n\nFor a username: - Use only lower-case letters and numbers. - Start with a letter. - Be short and descriptive.\nIf your name is John Derek Smith you can try: jsmith, jdsmith, or johnsmith. Any other imaginary name is permissible as long as it meets the criteria above. D&D, MTG, LoL, and WoW nicknames, if that’s is publically appropriate.\nFor a password, you can set the same one you have for your OIST account to make it easier to remember. It will be used for login and authentication but, more importantly, commands like sudo that grant administrative priviledges. If not sure what makes a strong password consult XKCD.\n\n\n\n\nLaunch Ubuntu terminal.\n\n\n\nYou will be prompted to enter a username.\n\n\nEnter your chosen username and hit Enter. If you make a mistake in typing your username, you can close the window and open it again. In this example, tunkert is the username.\n\n\n\n\n\n\nIf you closed the terminal window or made a mistake while typying your username or password do not worry. Ubuntu is already installed on your computer and you can open it from the Command Promt application.\n\n\n\n\n\nChoose a password. You will not see it as you type due to default UNIX security reasons. If not sure what you entered is correct, hold Backspace for a couple of seconds or hit Ctrl+U. That will erase everything you have written. After making sure you have entered the correct password, hit Enter. If unsure, write the password down.\n\n\n\nRe-type the chosen password and hit Enter.\n\n\n\nOnce both username and password are entered, you will see a welcome message from Ubuntu.\n\n\n\n\n\n\n\n\nThe typing line takes the new form of tunkert@LAPTOP-JU9CGB60:~$. Can you guess what the name after @ means? We will talk about what each symbol means in the terminal section.\n\n\n\n\nTo ensure that Ubuntu is up-to-date, type the following and press Enter:\n\nsudo apt update && sudo apt upgrade -y\n\n\n\n\n\n\nWe will understand the logic behind this command later in the next section as well.\n\n\n\n\n\nYou will be prompted to enter the password (Do you remember?). Enter the password—you will not see it—and press Enter.\n\n\n\nThe update will begin. In the end, you will have an empty typing line with the latest Ubuntu.\n\n\n\n\n\n\n\n\nTipDefault Command Prompt settings\n\n\n\nI suggest you make Ubuntu your Default profile. Command Promt &gt; Settings &gt; Start-up &gt; Default profile, choose Ubuntu and press Save.\n\n\nYou are now set and ready to install all the wonderful programming tools that have been developed over the past 50 or so years by the developer’s community. As you might guess, there are hundreds of thousands of programs out there, and ideally, we would like to keep track of what we install. That will be our next installation.",
+    "crumbs": [
+      "Setting Up"
+    ]
+  },
+  {
+    "objectID": "lessons/setting-up.html#visual-studio-code",
+    "href": "lessons/setting-up.html#visual-studio-code",
+    "title": "Setting Up",
+    "section": "Visual Studio Code",
+    "text": "Visual Studio Code\nVisual Studio Code, aka VS Code, has the following useful features:\n\na way to run your code interactively (line-by-line) or all at once\na way to debug (look for errors) in your code\na quick way to access helpful information about commonly used software packages\nautomatic code formatting, so that your code follows best practice guidelines\nauto-completion of your code when you hit TAB\nautomatic code checking for basic errors\ncoloring your brackets in pairs so you can keep track of the logical order of execution of your code!\n\n\n\nInstallation\nInstall VS Code from the official website (it will determine which version of the installer to use) or download installer manually here.\n\n\n\n\n\n\n\nNoteVS Code WSL extension\n\n\n\n\n\nWindows users will be promted to install the VS Code WSL extension. Agree and see Section 2.1.2.1.\n\n\n\n\n\nExtensions\nThe biggest power of VS Code lies in its extensions. They are ubiquitous allowing you to boost your IDE simply by installing what others have solved for you. You can browse them by clicking on the four cube icon on the side bar or by pressing Cmd/Ctrl+Shift+X.\n\nThere are certain basic extensions that almost every VS Code user will have installed but it can be cumbersome to manually select all those one by one. That’s how VS Code Profiles have been created.\n\nWSL Extenison (Windows users only)\nWindows user will need one more step before they can start using VS Code at its full potential. Right now, you open VS Code and all files and computation is done in Windows environment. We want VS Code to use Ubuntu that lives in WSL. Using the Visual Studio Code WSL extension VS Code will integrate Ubuntu into its environment.\nOnce the extension is installed you need to open VS Code with Ubuntu as the main environment. To do that, locate a button in the left-bottom corner of the VS Code window consisting of two stacked arrow symbols ‘&gt;’ and ‘&lt;’. Click on it.\n\nAfter clicking on this button, a promt line will appear on the top of the window. Select WSL: New WSL Window and press Enter.\n\nA new window will open. This time, notice that the corner button has changed. Now, we are running on Ubuntu.\n\nWindows users will use this environment for the course.\n\n\n\nProfiles\n\nProfiles can be used to customize VS Code for students to ease the use in a classroom setting. Profiles allow educators to quickly share a customized VS Code setup with students.\nVS Code manual\n\n\nYou can access the Profiles editor in either of the following ways: - From the Code &gt; Settings &gt; Profiles menu item\n\nFrom the Manage gear button in the bottom of the Activity Bar.\n\n\nYou will see that the Default profile is in use. We will import the GECS profile for this course. The profile file is stored on GitHub (one of its nice features). That code is shown below.\n\nHowever, you don’t need to copy it, only need the link.\nhttps://gist.github.com/igorsdub/04f6a1191dde8e09091a1099fe87d5be\nImport the GECS profile from the Profiles editor by selecting the Import Profile… button in the dropdown actions of the New Profile button.\n\nWhen you select Import Profile…, you are prompted for the URL of a GitHub gist or the file location of a profile via an Import Profile dialog. Paste the link above and click Create button below.\n\nAccept any installations or suggestions offered by extensions. Now, you are ready to go!",
+    "crumbs": [
+      "Setting Up"
+    ]
+  },
+  {
+    "objectID": "lessons/setting-up.html#uv",
+    "href": "lessons/setting-up.html#uv",
+    "title": "Setting Up",
+    "section": "uv",
+    "text": "uv\nuv is a modern Python package and project manager. It helps us create isolated environments, install dependencies, lock exact package versions, and even manage Python itself when needed.\nHere we will use the terminal because uv is typically installed from the command line rather than through a graphical installer.\n\n\n\n\n\n\nThat’s the reason we went to such lengths to install Ubuntu on Windows. Now, you are able to access a much larger range of applications which are inaccessible to graphical user interface (GUI) users.\n\n\n\nWe will use the VS Code terminal to do the installation. To open the terminal select View &gt; Terminal from the menu bar, or press the Ctrl/Cmd+` keyboard shortcut. A terminal window will open at the bottom.\n\nTo install uv, run the following command in your terminal:\ncurl -LsSf https://astral.sh/uv/install.sh | sh\nTo verify that uv got installed successfully, restart the terminal. An easy way is to close it and open a new one. Another way is to type the following for Ubuntu users:\nsource ~/.bashrc\nmacOS users need to type:\nsource ~/.zshrc\nOK, now that the terminal is reset, type:\nwhich uv\nYou will see a path to the uv executable, often something like /Users/username/.local/bin/uv, where username is your chosen username.",
+    "crumbs": [
+      "Setting Up"
+    ]
+  },
+  {
+    "objectID": "lessons/setting-up.html#sec-github",
+    "href": "lessons/setting-up.html#sec-github",
+    "title": "Setting Up",
+    "section": "GitHub",
+    "text": "GitHub\nGitHub is a widely used platform to store, manage, share, and collaborate with others on software projects. An account is free and you can upgrade to Pro for free as a student (see the tip below). Sign up here.\n\n\n\n\n\n\nTipGitHub Education\n\n\n\n\n\nAs a student, you can get a free GitHub Pro account as part of GitHub Education alongside other perks. Once you have a basic account, follow this link.\nYou can use a photo of your student ID card (both-sides) or other eligible documents listed on here.\n\n\n\n\nMulti-factor Authentication\nSince 2023, GitHub requires all accounts to have multi-factor authentication (2FA) for extra security. Here are the recommended options:\nRecommended: Passkeys\nPasskeys are the most secure and convenient option. They work on most devices and browsers without requiring a separate app.\nOther 2FA Options:\n\nAuthenticator App (e.g., Google Authenticator, Duo Mobile) - Install on your smartphone and add GitHub\nText Message (SMS) - Receive authentication codes via text (check if your country is supported)\nHardware Security Key - Use devices like YubiKey or Google Titan\n\nFor detailed setup instructions, see GitHub’s 2FA configuration guide.",
+    "crumbs": [
+      "Setting Up"
+    ]
+  },
+  {
+    "objectID": "lessons/setting-up.html#starship",
+    "href": "lessons/setting-up.html#starship",
+    "title": "Setting Up",
+    "section": "Starship",
+    "text": "Starship\nStarship is by far the most widely used shell prompt. It is a customizable prompt that controls how your terminal looks when you type a command. It is pretty and versatile.\n\nTo install Starship open VS Code terminal by selecting View &gt; Terminal from the menu bar, or by pressing the Ctrl/Cmd+` keyboard shortcut. A terminal window will open at the bottom. Then type:\ncurl -sS https://starship.rs/install.sh | sh\nNext, you will need to tell the terminal to start Starship every time you open a new terminal. This is similar to how Windows or macOS asks you if you want to run a program every time you start your computer.\nWindows/Ubuntu users must execute in their terminal the following:\necho 'eval \"$(starship init bash)\"' &gt;&gt; ~/.bashrc\nmacOS users have a very similar command:\necho 'eval \"$(starship init zsh)\"' &gt;&gt; ~/.zshrc\nAfter you restart the terminal, close it and open a new one, you should see the change in how it looks like. You can explore all the different looks you can access with Starship here.",
+    "crumbs": [
+      "Setting Up"
+    ]
+  },
+  {
+    "objectID": "lessons/setting-up.html#setup-and-installation-guides",
+    "href": "lessons/setting-up.html#setup-and-installation-guides",
+    "title": "Setting Up",
+    "section": "Setup and installation guides",
+    "text": "Setup and installation guides\n\nHow to Install Ubuntu on Windows (Step-by-Step Guide for Beginners) by Subha Mondal\nWindows Subsystem for Linux Documentation",
+    "crumbs": [
+      "Setting Up"
+    ]
+  },
+  {
+    "objectID": "lessons/setting-up.html#tools-and-platforms",
+    "href": "lessons/setting-up.html#tools-and-platforms",
+    "title": "Setting Up",
+    "section": "Tools and platforms",
+    "text": "Tools and platforms\n\nVisual Studio Code\n\nVisual Studio Code Official Website\nVS Code WSL Extension Guide\nVS Code Remote WSL Documentation\nVS Code Terminal Getting Started\n\n\n\nPackage Managers\n\nuv Documentation\nuv Installation Guide\n\n\n\nShell Customization\n\nStarship Shell Prompt\nStarship Presets",
+    "crumbs": [
+      "Setting Up"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html",
+    "href": "lessons/automation.html",
+    "title": "Automation",
+    "section": "",
+    "text": "This tutorial was adapted from the Automation and Make lesson by The Software Carpentries and reworked for gecs-make.\nPrefer a presentation first? View the Automation slides.\nAutomation turns a one-off analysis into a workflow you can repeat. In this project, we start with books in books/, count their words in counts/, and create interactive plots in figures/.\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    Book[\"books/dracula.txt\"]:::data --&gt; Counts[\"counts/dracula.tsv\"]:::output --&gt; Figure[\"figures/dracula.html\"]:::output\n    CountScript(\"scripts/count_words.py\"):::script -. creates .-&gt; Counts\n    PlotScript(\"scripts/plot_counts.py\"):::script -. creates .-&gt; Figure\n    classDef data fill:#dbeafe,stroke:#2563eb,color:#000\n    classDef output fill:#dcfce7,stroke:#16a34a,color:#000\n    classDef script fill:#fef3c7,stroke:#b45309,color:#000\nWe will first automate Dracula one file at a time. Only after that will we teach Make how to repeat the same workflow for every book.",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#set-up-the-project",
+    "href": "lessons/automation.html#set-up-the-project",
+    "title": "Automation",
+    "section": "Set up the project",
+    "text": "Set up the project\nClone the example project and install its locked dependencies:\ngit clone https://github.com/igorsdub/gecs-make.git\ncd gecs-make\nuv sync\nCheck that GNU Make is available:\nmake --version\nOn macOS, install GNU Make with brew install make if needed; Homebrew may call it gmake. On Ubuntu or WSL, use sudo apt install make.\n\nA first command target\nMake can name an action as well as build a file. Add this to a new Makefile in the project root:\n.PHONY: requirements\nrequirements:\n    uv sync\nNow this familiar setup command also has a Make entry point:\nmake requirements\n\n\n\n\n\n\nNoteWhat does .PHONY mean?\n\n\n\nrequirements is an action, not a file we want to create. .PHONY tells Make to run the recipe even if a file named requirements happens to exist.",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#first-make-a-count-table",
+    "href": "lessons/automation.html#first-make-a-count-table",
+    "title": "Automation",
+    "section": "First: make a count table",
+    "text": "First: make a count table\nAdd this rule below requirements:\ncounts/dracula.tsv: books/dracula.txt scripts/count_words.py\n    uv run python scripts/count_words.py books/dracula.txt counts/dracula.tsv\nRun it with:\nmake counts/dracula.tsv\nThere are three parts to a rule:\n\nTarget — counts/dracula.tsv, the file we want Make to create.\nPrerequisites — books/dracula.txt and scripts/count_words.py, the input book and the code that reads it.\nRecipe — the indented uv run python ... command that creates the target.\n\nBefore running the recipe, Make checks whether the target exists and whether either prerequisite is newer. If the target is missing or out of date, Make runs the recipe. Run the command a second time to see Make skip work that is already current.\n\n\n\n\n\n\nTipCode is an input too\n\n\n\nThe counting script is listed as a prerequisite on purpose. If you change the code, Make rebuilds the count table even when the book itself has not changed.\n\n\n\n\n\n\n\n\nWarningRecipe lines begin with a TAB\n\n\n\nEach recipe line in a Makefile must begin with a literal TAB character, not spaces. Otherwise Make usually reports missing separator.\nIn VS Code, select the recipe lines and use Command Palette → Convert Indentation to Tabs. The example project includes an .editorconfig file that helps compatible editors keep this setting.",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#next-turn-counts-into-a-plot",
+    "href": "lessons/automation.html#next-turn-counts-into-a-plot",
+    "title": "Automation",
+    "section": "Next: turn counts into a plot",
+    "text": "Next: turn counts into a plot\nAdd a second rule:\nfigures/dracula.html: counts/dracula.tsv scripts/plot_counts.py\n    uv run python scripts/plot_counts.py counts/dracula.tsv figures/dracula.html\nNow ask for the final output:\nmake figures/dracula.html\nMake notices that the HTML plot needs the count table. It builds counts/dracula.tsv first if necessary, then runs the plotting recipe. The resulting dependency chain is a directed acyclic graph (DAG): each arrow has a direction, and the workflow cannot loop back on itself.\n\n\n\n\n\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    Book[\"books/dracula.txt\"]:::data --&gt; Counts[\"counts/dracula.tsv\"]:::output --&gt; Figure[\"figures/dracula.html\"]:::output\n    CountScript(\"scripts/count_words.py\"):::script -. prerequisite .-&gt; Counts\n    PlotScript(\"scripts/plot_counts.py\"):::script -. prerequisite .-&gt; Figure\n    classDef data fill:#dbeafe,stroke:#2563eb,color:#000\n    classDef output fill:#dcfce7,stroke:#16a34a,color:#000\n    classDef script fill:#fef3c7,stroke:#b45309,color:#000",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#from-one-book-to-every-book",
+    "href": "lessons/automation.html#from-one-book-to-every-book",
+    "title": "Automation",
+    "section": "From one book to every book",
+    "text": "From one book to every book\nThe two Dracula rules work, but copying them for every title would be tedious. We will generalize the same plan in small pieces.\n\nGive repeated commands names\nAt the top of the Makefile, add variables for the parts we repeat:\nPYTHON := uv run python\nCOUNT_SCRIPT := scripts/count_words.py\nPLOT_SCRIPT := scripts/plot_counts.py\nThen the Dracula recipe can use those names:\n    $(PYTHON) $(COUNT_SCRIPT) books/dracula.txt counts/dracula.tsv\nVariables keep shared information in one place. If the command or script path changes, update it once.\n\n\nFind the books that really exist\nwildcard searches the directory when Make reads the file. Add:\nBOOK_FILES := $(wildcard books/*.txt)\n\n.PHONY: print-books\nprint-books:\n    @printf \"%s\\n\" $(BOOK_FILES)\nTry it:\nmake print-books\nThe leading @ hides the printf command itself, leaving only the filenames in the output.\n\n\nDerive the output filenames\npatsubst transforms every matching book path into another path. Add these variables and the two small inspection targets:\nCOUNT_FILES := $(patsubst books/%.txt,counts/%.tsv,$(BOOK_FILES))\nFIGURE_FILES := $(patsubst books/%.txt,figures/%.html,$(BOOK_FILES))\n\n.PHONY: print-counts print-figures\nprint-counts:\n    @printf \"%s\\n\" $(COUNT_FILES)\n\nprint-figures:\n    @printf \"%s\\n\" $(FIGURE_FILES)\nFor example, patsubst changes books/moby_dick.txt into counts/moby_dick.tsv. Use make print-counts and make print-figures to inspect the lists before building anything.\n\n\nReplace the Dracula rules with pattern rules\nThe % means “the same filename stem.” These two rules work for Dracula, Frankenstein, and any other matching book automatically:\ncounts/%.tsv: books/%.txt $(COUNT_SCRIPT)\n    @mkdir -p $(@D)\n    $(PYTHON) $(COUNT_SCRIPT) $&lt; $@\n\nfigures/%.html: counts/%.tsv $(PLOT_SCRIPT)\n    @mkdir -p $(@D)\n    $(PYTHON) $(PLOT_SCRIPT) $&lt; $@\n$&lt; is the first prerequisite and $@ is the target currently being built. In the first rule, that means “read this book and write this count table.” mkdir -p $(@D) makes sure the output directory exists before the script writes its file.\nFinally, add an all target that depends on every HTML plot:\n.PHONY: all\nall: $(FIGURE_FILES)\nNow Make can build the complete project:\nmake all\nAdd another .txt file to books/ and rerun make all. The file lists and pattern rules pick it up without any new handwritten analysis rule.\n\n\n\n\n\n\nNoteOptional commands and the project graph\n\n\n\n\n\nThe full project Makefile also provides a few convenience targets:\n.PHONY: clean help\n\nclean:\n    rm -f $(COUNT_FILES) $(FIGURE_FILES) $(FIGURE_FILES:.html=.png) figures/workflow.svg\n\nhelp:\n    @printf \"Available targets:\\n\"\n    @printf \"  make requirements           Install locked dependencies with uv sync\\n\"\n    @printf \"  make print-books            List input book files\\n\"\n    @printf \"  make all                    Build HTML plots for all books\\n\"\n    @printf \"  make clean                  Remove generated files\\n\"\nUse make clean to remove generated count tables, plots, companion PNGs, and the workflow graphic. make help prints the main entry points.\nThe optional make dag target uses makefile-graph and Graphviz to render a compact projection of the real project. It shows four representative books so the graph stays readable. Install the graph tool first if necessary:\ngo install github.com/dnaeon/makefile-graph/cmd/makefile-graph@latest\nmake dag\nIn the generated graph, blue rounded boxes are files and gold boxes are Python scripts. The arrows show the data flow from source book through count table to HTML figure.\n\n\n\nProject-generated DAG for four representative books",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/automation.html#takeaway",
+    "href": "lessons/automation.html#takeaway",
+    "title": "Automation",
+    "section": "Takeaway",
+    "text": "Takeaway\nMake is most useful when your work produces files from other files. First name one output and its inputs. Then use variables, file lists, and pattern rules to apply that same plan to a whole directory of inputs.",
+    "crumbs": [
+      "Automation"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html",
+    "href": "lessons/testing.html",
+    "title": "Testing",
+    "section": "",
+    "text": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.\nBrian W. Kernighan\nTesting gives us a way to check that code behaves as expected. In this lesson we will use pytest with the gecs-venv book-analysis project.\nThe basic development loop is:\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"primaryColor\": \"#dbeafe\", \"primaryBorderColor\": \"#2563eb\", \"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    A(Write code):::step edge1@==&gt; B(Run tests):::step\n    edge1@{ animate: slow }\n    B edge2@==&gt; C(Read failures):::step\n    edge2@{ animate: slow }\n    C edge3@==&gt; D(Fix code):::step\n    edge3@{ animate: slow }\n    D edge4@==&gt; A\n    edge4@{ animate: slow }\n    classDef step fill:#cfe9e5,stroke:transparent,color:#000\nIt is a big expectation to adhere to this loop, but it is a good goal. Let’s start by writing a few tests for the existing code.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#work-on-a-branch",
+    "href": "lessons/testing.html#work-on-a-branch",
+    "title": "Testing",
+    "section": "Work on a branch",
+    "text": "Work on a branch\nBefore changing the project, create a new Git branch called testing. A branch gives you a separate line of work, so you can experiment without changing the existing code on main.\nFirst, clone the example repository and open it in VS Code:\ngit clone https://github.com/igorsdub/gecs-venv\ncd gecs-venv\ncode .\nIn VS Code:\n\nOpen the Source Control panel.\nSelect the current branch name, usually main, in the Source Control view or status bar.\nChoose Create new branch.\nEnter testing and press Enter.\n\nYou can also open the Command Palette with Cmd/Ctrl+Shift+P, type Git: Create Branch, and select that command. Enter testing when VS Code asks for the branch name.\n\n\n\n\n\n\nNoteThe terminal alternative\n\n\n\n\n\nFrom the gecs-venv directory, run:\ngit switch -c testing\ngit branch --show-current\nThe second command should print testing.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#set-up-the-project",
+    "href": "lessons/testing.html#set-up-the-project",
+    "title": "Testing",
+    "section": "Set up the project",
+    "text": "Set up the project\nThe project contains books, analysis scripts, and generated word-count files and plots:\nbooks/                         input novels\nscripts/count_words.py         extracts and counts words\nscripts/get_summary.py         prints book metadata\nscripts/plot_counts.py         creates plots\nscripts/run_book_analysis.py   combines the workflow\nThe project uses a virtual environment to isolate its dependencies. We will use the uv command from the gecs-venv project to manage the environment. If you have not intialized the environment yet, run:\nuv sync\nRight now, we only missing pytest for testing. Add pytest for development:\nuv add --dev pytest\nuv run runs commands inside the project environment:\nuv run pytest",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#unit-tests",
+    "href": "lessons/testing.html#unit-tests",
+    "title": "Testing",
+    "section": "Unit tests",
+    "text": "Unit tests\nA unit test checks one small piece of behavior on its own. Each script in this project contains one or more units, such as a function that extracts words or writes a count file. We can write several tests for each unit.\nThe first units we will test are:\n\nextract_words() in count_words.py;\ncount_word_frequencies() in count_words.py; and\nparse_counts_file() in plot_counts.py.\n\nThe relationship looks like this:\n\n\n\n\n\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"primaryColor\": \"#ecfdf5\", \"primaryBorderColor\": \"#16a34a\", \"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    C[count_words.py]:::unit --&gt; T[tests/test_count_words.py]:::unit\n    P[plot_counts.py]:::unit --&gt; U[tests/test_plot_counts.py]:::unit\n    T --&gt; T1[lowercasing]:::unit\n    T --&gt; T2[punctuation]:::unit\n    T --&gt; T3[file output]:::unit\n    U --&gt; U1[count-file parsing]:::unit\n    classDef unit fill:#e6dff1,stroke:transparent,color:#000",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#test-driven-development",
+    "href": "lessons/testing.html#test-driven-development",
+    "title": "Testing",
+    "section": "Test-driven development",
+    "text": "Test-driven development\n\nSmash first, analyze later.\nDating advice from a CERN researcher\n\nThis is also a useful way to think about test-driven development, or TDD. Before writing the implementation, write a test that describes the behavior you want. The test should fail at first because the code does not do that thing yet. Then write the smallest amount of code needed to make the test pass.\nwrite a failing test → write code → run the test → improve the code\nFor example, the current regular expression does not support accented words. Write a test for the behavior we would like to add:\nfrom scripts.count_words import extract_words\n\n\ndef test_extract_words_handles_accented_words():\n    assert extract_words(\"café\") == [\"café\"]\nAdd this test to tests/test_count_words.py and run it. It should fail because the current pattern only matches ASCII letters and numbers. That failure is useful: it tells us what behavior to implement. After the test passes, we can improve the implementation while keeping the test as a safety net.\nNow return to the simpler tests below. They describe behavior that the current implementation already supports.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#write-a-first-test",
+    "href": "lessons/testing.html#write-a-first-test",
+    "title": "Testing",
+    "section": "Write a first test",
+    "text": "Write a first test\nThe extract_words() function turns text into lowercase words:\nimport re\n\n\ndef extract_words(text):\n    return re.findall(r\"\\b[a-z0-9]+\\b\", text.lower())\nCreate a tests directory and a file named tests/test_count_words.py:\nfrom scripts.count_words import extract_words\n\n\ndef test_extract_words_lowercases_text():\n    result = extract_words(\"The QUICK brown fox\")\n\n    assert result == [\"the\", \"quick\", \"brown\", \"fox\"]\nThe regular expression explains what the function accepts:\n\ntext.lower() makes matching case-insensitive;\n\\b identifies word boundaries; and\n[a-z0-9]+ matches one or more ASCII letters or numbers.\n\nBecause the pattern uses ASCII letters, it does not currently handle accented words such as café. That is a limitation we can document or fix later.\nThe assert statement compares the result with the behavior we expect. Pytest finds files named test_*.py and functions named test_* automatically.\nRun the test from the repository root:\nuv run pytest\nTry changing one expected word and run the test again. The failure report shows where the test failed and compares the actual and expected values. Restore the correct expectation afterward.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#test-file-output-safely",
+    "href": "lessons/testing.html#test-file-output-safely",
+    "title": "Testing",
+    "section": "Test file output safely",
+    "text": "Test file output safely\ncount_word_frequencies() reads a book and writes a count file. A test should not overwrite a real file in counts/. The pytest tmp_path fixture gives each test a fresh temporary directory.\nAdd this test to tests/test_count_words.py:\nfrom scripts.count_words import count_word_frequencies\n\n\ndef test_count_word_frequencies_writes_sorted_counts(tmp_path):\n    input_path = tmp_path / \"example.txt\"\n    output_path = tmp_path / \"example.tsv\"\n    input_path.write_text(\"Red blue red!\", encoding=\"utf-8\")\n\n    count_word_frequencies(input_path, output_path)\n\n    assert output_path.read_text(encoding=\"utf-8\") == (\n        \"      2 red\\n\"\n        \"      1 blue\\n\"\n    )\nThe test creates its own input file, runs the function, and checks the generated output. The temporary directory is removed after the test.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#test-several-examples",
+    "href": "lessons/testing.html#test-several-examples",
+    "title": "Testing",
+    "section": "Test several examples",
+    "text": "Test several examples\nSometimes one function should work for several different inputs. Instead of writing a separate test function for every example, give pytest a list of examples:\nimport pytest\n\nfrom scripts.count_words import extract_words\n\n\n@pytest.mark.parametrize(\n    (\"text\", \"expected\"),\n    [\n        (\"HELLO\", [\"hello\"]),\n        (\"one, two\", [\"one\", \"two\"]),\n        (\"version 3\", [\"version\", \"3\"]),\n    ],\n)\ndef test_extract_words_examples(text, expected):\n    assert extract_words(text) == expected\nPytest runs this test once for each row. If one example fails, pytest identifies that example in the failure report.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#test-another-unit",
+    "href": "lessons/testing.html#test-another-unit",
+    "title": "Testing",
+    "section": "Test another unit",
+    "text": "Test another unit\nThe plotting script has a parse_counts_file() function that reads a count file. It can be tested without opening a browser or creating a plot.\nCreate tests/test_plot_counts.py:\nfrom scripts.plot_counts import parse_counts_file\n\n\ndef test_parse_counts_file_reads_counts(tmp_path):\n    counts_path = tmp_path / \"counts.tsv\"\n    counts_path.write_text(\n        \"      4 the\\n\"\n        \"      2 book\\n\",\n        encoding=\"utf-8\",\n    )\n\n    words, counts = parse_counts_file(counts_path)\n\n    assert words == [\"the\", \"book\"]\n    assert counts == [4, 2]\nNow we have several tests for individual units. They are fast and help us find which part of the project has a problem.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#integration-testing",
+    "href": "lessons/testing.html#integration-testing",
+    "title": "Testing",
+    "section": "Integration testing",
+    "text": "Integration testing\nUnit tests check individual pieces. For example, count_word_frequencies() is tested as part of count_words.py, and parse_counts_file() is tested as part of plot_counts.py.\nAn integration test checks that the two scripts work together: the counting script creates a count file, and the plotting script uses that file to create a figure.\n\n\n\n\n\n%%{init: {\"flowchart\": {\"curve\": \"basis\"}, \"theme\": \"base\", \"themeVariables\": {\"primaryColor\": \"#fff7ed\", \"primaryBorderColor\": \"#ea580c\", \"lineColor\": \"#64748b\", \"fontFamily\": \"Arial\"}}}%%\nflowchart LR\n    U1[Unit test 1]:::part --&gt; S1\n    U2[Unit test 2]:::part --&gt; S2\n    U1 ~~~ U2\n    subgraph integration[Integration test]\n        S1[Script 1]:::part --&gt;|Script 1 output| S2[Script 2]:::part\n    end\n    classDef part fill:#f2d6c9,stroke:transparent,color:#000\n\n\n\n\n\n\n\n\n\n\n\n\nThe diagram is misaligning the unit tests but I could not fix it 😢.\n\n\n\nThe unit tests sit outside the Integration test box and check one script each. The Integration test evaluates both scripts together, with the output of Script 1 becoming the input to Script 2.\nCreate tests/test_workflow.py:\nfrom scripts.count_words import count_word_frequencies\nfrom scripts.plot_counts import plot_word_counts\n\n\ndef test_small_book_workflow(tmp_path):\n    book_path = tmp_path / \"mini_book.txt\"\n    counts_path = tmp_path / \"counts\" / \"mini_book.tsv\"\n    figure_path = tmp_path / \"figures\" / \"mini_book.html\"\n    book_path.write_text(\"The cat sat. The cat slept.\", encoding=\"utf-8\")\n    counts_path.parent.mkdir()\n    figure_path.parent.mkdir()\n\n    count_word_frequencies(book_path, counts_path)\n    plot_word_counts(counts_path, figure_path)\n\n    assert counts_path.exists()\n    assert figure_path.exists()\n    assert figure_path.with_suffix(\".png\").exists()\nThis test follows the same path as the real workflow: book → count file → plot. It calls plot_word_counts(), which uses Altair for the interactive HTML chart and vl-convert-python for PNG export, so it does not require a locally available browser.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#run-the-tests",
+    "href": "lessons/testing.html#run-the-tests",
+    "title": "Testing",
+    "section": "Run the tests",
+    "text": "Run the tests\nUse these commands from the repository root:\n# Run every test\nuv run pytest\n\n# Run one test file\nuv run pytest tests/test_count_words.py\n\n# Run tests with a matching name\nuv run pytest -k extract_words\n\n# Show each test name\nuv run pytest -v\nThe important habit is to run the tests whenever you change the code. Tests make the development loop visible and help protect the behavior of the analysis.\nWhen all tests pass, the testing branch is ready to be committed and reviewed.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#wrapping-up",
+    "href": "lessons/testing.html#wrapping-up",
+    "title": "Testing",
+    "section": "Wrapping up",
+    "text": "Wrapping up\nSave the work on the testing branch and ask for it to be reviewed before it becomes part of main.\nIn VS Code:\n\nOpen Source Control and review the changes.\nEnter a message such as Add pytest examples and select Commit.\nSelect Publish Branch or Sync Changes to push testing to GitHub.\nOpen the repository on GitHub and choose Compare & pull request.\nSet main as the base branch and testing as the compare branch.\nDescribe the lesson changes, then create the pull request.\n\nThe final shape of the work is:\n\n\n\n\n\n%%{init: {\"theme\": \"base\", \"themeVariables\": {\"git0\": \"#2563eb\", \"git1\": \"#db2777\", \"gitBranchLabel0\": \"#ffffff\", \"gitBranchLabel1\": \"#ffffff\", \"commitLabelColor\": \"#111827\", \"commitLabelBackground\": \"#f8fafc\"}}}%%\ngitGraph LR:\n    commit id: \"start\" tag: \"main\"\n    commit id: \"setup\"\n    branch testing\n    commit id: \"tests\"\n    commit id: \"fixes\" type: HIGHLIGHT\n    checkout main\n    commit id: \"main-work\"\n    merge testing\n\n\n\n\n\n\nThe pink testing branch contains the new work. The pull request reviews that work, and the merge commit brings it back into the blue main branch.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/testing.html#summary",
+    "href": "lessons/testing.html#summary",
+    "title": "Testing",
+    "section": "Summary",
+    "text": "Summary\nPytest tests are ordinary Python functions with names beginning with test_. Assertions describe expected behavior, tmp_path provides safe temporary files, and one test can be run with several examples.\nFor this project, begin by testing individual functions. Then add an integration test to check that count_words.py creates the count-file output consumed by plot_counts.py.",
+    "crumbs": [
+      "Testing"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html",
+    "href": "lessons/terminal.html",
+    "title": "Terminal",
+    "section": "",
+    "text": "“Graphical user interfaces make easy tasks easy, while command line interfaces make difficult tasks possible.”\nWilliam Shotts, The Linux Command Line: A Complete Introduction\nIf there is one software skill you had to learn, it would be working with a terminal. It is ubiquitous! It has been around since 1970s and is likely to stay, unlike other tools. Thus, investing your time learning how to use it properly is worth it.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#moving-between-directories",
+    "href": "lessons/terminal.html#moving-between-directories",
+    "title": "Terminal",
+    "section": "Moving between directories",
+    "text": "Moving between directories\nTo move to a different directory, use the cd (change directory) command:\ncd /usr\npwd\nYou’re now in the /usr directory. Notice how pwd shows a different path. You can use both absolute paths (starting from the root /) and relative paths (starting from your current location).\nSome useful shortcuts for relative paths:\n\ncd . - stay in the current directory\ncd .. - go up one level to the parent directory\ncd - - go back to the previous directory\ncd ~ - go to your home directory\ncd (with no arguments) - also goes to your home directory\n\nTry these out:\ncd ..\npwd\ncd -\npwd\ncd ~\npwd",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#listing-directory-contents",
+    "href": "lessons/terminal.html#listing-directory-contents",
+    "title": "Terminal",
+    "section": "Listing directory contents",
+    "text": "Listing directory contents\nTo see what’s in your current directory, use the ls (list) command:\nls\nThis shows the files and directories in your current location. You can also list the contents of a specific directory without changing to it:\nls /usr\nls ~",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#viewing-file-contents",
+    "href": "lessons/terminal.html#viewing-file-contents",
+    "title": "Terminal",
+    "section": "Viewing file contents",
+    "text": "Viewing file contents\nTo see the contents of a file, you can use the cat (concatenate) command:\ncat /etc/hostname\nThis displays the contents of the file directly in the terminal.\nFor larger files, you might want to use a pager to view them one screen at a time. The less command is perfect for this:\nless /etc/profile\nInside less, you can use arrow keys to scroll, Page Up/Page Down for larger jumps, and q to quit.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#options-and-arguments",
+    "href": "lessons/terminal.html#options-and-arguments",
+    "title": "Terminal",
+    "section": "Options and arguments",
+    "text": "Options and arguments\nMost commands accept options (also called flags or switches) and arguments. The general format is:\ncommand -options arguments\nOptions typically start with a hyphen (-) or double hyphen (--). Let’s see this in action:\nls -l\nThe -l option shows a “long” listing with more details. Try:\nls -t\nThe -t option sorts files by modification time. You can combine multiple options:\nls -lt\nThis combines -l and -t to show details sorted by time.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#important-rules",
+    "href": "lessons/terminal.html#important-rules",
+    "title": "Terminal",
+    "section": "Important rules",
+    "text": "Important rules\n\n\n\n\n\n\nTry to avoid any spaces in your directory and file names. Shell interprets space as separator between options or arguments. Space in names will most likely break programs, producing errors.\nYou can use spaces by including names in parentheses or quotes, but that’s an unnecessary complication.\n\n\n\n\n\n\n\n\n\nCommands are case sensitive. ls is not the same as LS, Ls, or lS. Try it yourself!",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#directories",
+    "href": "lessons/terminal.html#directories",
+    "title": "Terminal",
+    "section": "Directories",
+    "text": "Directories\nLets create our first object using the terminal. While in your home directory ~, type:\nmkdir oist\nCheck with ls what happened. mkdir stands for make directory.\nLooks nice! Let’s go inside.\ncd oist\nAnd, check check it out.\nls\nKind of boring here. There is nothing inside. Let’s make some more directories inside.\nmkdir lab1 lab2 lab3 lab4 lab5\nThere’s something a little different about that command. So far we’ve only seen commands that work on their own (cd, pwd) or that have a single item afterwards (cd -, cd ~/Desktop/). But this time we’ve added five things after the mkdir command. Those things are referred to as parameters or arguments, and different commands can accept different numbers of arguments. The mkdir command expects at least one argument, whereas the cd command can work with zero or one, but no more. See what happens when you try to pass the wrong number of parameters to a command:\nmkdir\ncd /etc/ ~/Desktop/\nNotice that mkdir created all the folders in one directory. It didn’t create lab3/ inside lab2/ inside lab1/, or any other nested structure. But sometimes it’s handy to be able to do exactly that, and mkdir does have a way:\nmkdir -p lab4/levelE/48\nls\nYou can try to run without -p and see which error message you get.\nmkdir lab5/levelD/23\nI find this behaviour annoying. The same goes for creating files in non-existent subdirectories but I am sure there is a good reason behind such restriction.\ncd lab4\nls\ncd levelE\nls\ncd ../..\nThe “-p” that we used is called an option or a switch (in this case it means “create the parent directories, too”). Options are used to modify the way in which a command operates, allowing a single command to behave in a variety of different ways. Unfortunately, due to quirks of history and human nature, options can take different forms in different commands. You’ll often see them as single characters preceded by a hyphen (as in this case), or as longer words preceded by two hyphens. The single character form allows for multiple options to be combined, though not all commands will accept that. And to confuse matters further, some commands don’t clearly identify their options at all, whether or not something is an option is dictated purely by the order of the arguments! You don’t need to worry about all the possibilities, just know that options exist and they can take several different forms. For example the following all mean exactly the same thing:\n# These commands are equivalent\nmkdir --parents --verbose lab5/levelDE\nmkdir -p --verbose lab5/levelDE\nmkdir -p -v lab5/levelDE\nmkdir -pv lab5/levelDE",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#files",
+    "href": "lessons/terminal.html#files",
+    "title": "Terminal",
+    "section": "Files",
+    "text": "Files\nMany labs, right? Can we keep a log of them? ls just printed them but can we store this command output in a file? That’s where redirecton comes into play.\nSuppose we wanted to capture the output of that command as a text file that we can look at or manipulate further. All we need to do is to add the greater-than character (“&gt;”) to the end of our command line, followed by the name of the file to write to:\nls &gt; lab.log\nThis time there’s nothing printed to the screen, because the output is being redirected to our file instead. If you just run ls on its own you should see that the lab.log file has been created. We can use the cat command to look at its content:\ncat lab.log\nOkay, so it’s not exactly what was displayed on the screen previously, but it contains all the same data, and it’s in a more useful format for further processing.\nLet’s look at another command, echo:\necho \"VISION, CHALLENGES, INNOVATION\"\nYes, echo just prints its arguments back out again (hence the name). But combine it with a redirect, and you’ve got a way to easily create small files. Let’s redirect these words into a file that will represent the Prof. Sydney Brenner statue located at the Center Court.\n\n\n\nDr. Brenner’s statue presented by Okinawa Prefecture and the Council for Promotion of OIST https://www.oist.jp/image/dr-sydney-brenners-statue\n\n\necho \"VISION, CHALLENGES, INNOVATION\" &gt; sydney_brenner.statue\ncat sydney_brenner.statue\n\n\n\n\n\n\nImportantFile extension\n\n\n\nLinux-type systems do not care about file extensions. Files can have no extensions at all and be absolutely fine. Try redirecting the words output to file named sydney_brenner and see if you can inspect it.\n\n\nWe have one statue but why stop here? It is not improbable that Prof. Svante Pääbo will get his statute at OIST in the future. For his statue engraving we will choose something more personal.\necho \"I really wanted to discover mummies, like Indiana Jones.\" &gt; svante_paabo.statue\ncat svante_paabo.statue\nHowever, cat is more than just a file viewer - its name comes from ‘concatenate’, meaning “to link together”. If you pass more than one filename to cat it will output each of them, one after the other, as a single block of text:\ncat sydney_brenner.statue svante_paabo.statue\nWhere you want to pass multiple file names to a single command, there are some useful shortcuts that can save you a lot of typing if the files have similar names. A question mark (“?”) can be used to indicate “any single character” within the file name. An asterisk (“*”) can be used to indicate “zero or more characters”. These are sometimes referred to as “wildcard” characters. A couple of examples might help, the following commands all do the same thing:\ncat sydney_brenner.statue svante_paabo.statue\ncat *.statue\nThat is where file extension .statue that we came up with is useful. We can match all statue files no matter how many there are. lab.log has been omitted. This simple syntax makes selective manipulation of files an easy task.\n\n\n\n\n\n\nAs you might have guessed, this capability also means that you need to escape file names with “?” or “*” characters in them, too. It’s usually better to avoid any punctuation in file names if you want to manipulate them from the command line.\n\n\n\nWe have not used ? character above. A somewhat artificial example with our current setup would be to list only the lab directories and their subdirectories:\nls lab?\nThus we only look at what is inside the directories that start with “lab”.\nGoing back to the statues. Let’s join all our files together into a single new file, then view it:\ncat *.statue &gt; nobel_motivation.txt\ncat nobel_motivation.txt\nWhat do you think will happen if we run those two commands a second time? Will the computer complain, because the file already exists? Will it append the text to the file, so it contains two copies? Or will it replace it entirely? Give it a try to see what happens, but to avoid typing the commands again you can use the Up Arrow and Down Arrow keys to move back and forth through the history of commands you’ve used. Press the Up Arrow a couple of times to get to the first cat and press Enter to run it, then do the same again to get to the second.\nAs you can see, the file looks the same. That’s not because it’s been left untouched, but because the shell clears out all the content of the file before it writes the output of your cat command into it. Because of this, you should be extra careful when using redirection to make sure that you don’t accidentally overwrite a file you need. If you do want to append to, rather than replace, the content of the files, double up on the greater-than character “&gt;&gt;”:\ncat *.statue &gt;&gt; nobel_motivation.txt\necho 'I want my statue too!' &gt;&gt; nobel_motivation.txt\ncat nobel_motivation.txt\nRepeat the first cat and the echo a few more times, using the Up Arrow for convenience until your text document is so large that it won’t all fit in the terminal at once when you use cat to display it. In order to see the whole file we now need to use a different program, called a pager (because it displays your file one “page” at a time). The standard pager of old was called more, because it puts a line of text at the bottom of each page that says “–More–” to indicate that you haven’t read everything yet. These days there’s a far better pager that you should use instead: because it replaces more, the programmers decided to call it less.\nless nobel_motivation.txt\nWhen viewing a file through less you can use the Up Arrow, Down Arrow, Page Up, Page Down, Home and End keys to move through your file. Give them a try to see the difference between them. When you’ve finished viewing your file, press q to quit less and return to the command line.\n\n\n\n\n\n\nTipGood naming practice\n\n\n\nWhen you consider both case sensitivity and escaping, a good rule of thumb is to keep your file names all lower case, with only letters, numbers, underscores and hyphens. For files there’s usually also a dot and a few characters on the end to indicate the type of file it is (referred to as the “file extension”). This guideline may seem restrictive, but if you end up using the command line with any frequency you’ll be glad you stuck to this pattern.\n\n\nIf we want to move Sydney to show him the latest lab, Lab 5, how do we do that? Also, is the file we created created empty? How can we check that? ls will not work. We will see how files can be manipulated in the next section.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#renaming-files",
+    "href": "lessons/terminal.html#renaming-files",
+    "title": "Terminal",
+    "section": "Renaming files",
+    "text": "Renaming files\nThe mv command doesn’t just move files between directories—it’s also used to rename them. When you move a file to the same directory but give it a new name, you’re effectively renaming it.\nFor example, let’s rename one of our statue files:\nmv sydney_brenner.statue brenner_sydney.statue\ncat brenner_sydney.statue\nThe file has been renamed, not moved to a different location.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#copying-files",
+    "href": "lessons/terminal.html#copying-files",
+    "title": "Terminal",
+    "section": "Copying files",
+    "text": "Copying files\nSometimes you want to create a duplicate of a file. This is where the cp (copy) command comes in:\ncp brenner_sydney.statue sydney_brenner.statue\nls *.statue\nYou now have two files: the original and the last-name-first copy. The cp command can also work with directories, but you need to use an option to do so. To copy an entire directory and all its contents, use the -r option (which stands for “recursive”):\ncp -r lab4 lab0\nls\nThis creates a complete copy of lab4/ and all the files inside it, called lab0/.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#deleting-files-and-directories",
+    "href": "lessons/terminal.html#deleting-files-and-directories",
+    "title": "Terminal",
+    "section": "Deleting files and directories",
+    "text": "Deleting files and directories\nTo remove files, use the rm (remove) command. Be careful with this—once deleted, files are generally gone for good!\nrm brenner_sydney.statue\nls *.statue\nTo be honest, there is only one Lab0. To remove a directory, add the -r option:\nrm -r lab0\nls\n\n\n\n\n\n\nCautionWarning: rm is permanent\n\n\n\nUnlike moving files to a trash or recycle bin on a graphical interface, rm permanently deletes files. There is no undo! Always double-check your command before pressing Enter.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#downloading-files-from-the-web",
+    "href": "lessons/terminal.html#downloading-files-from-the-web",
+    "title": "Terminal",
+    "section": "Downloading files from the web",
+    "text": "Downloading files from the web\nAnother powerful command you encountered during the setup process is curl (Client URL). It’s used to transfer data from or to a server, often for downloading files or scripts from the internet:\ncurl -fsSL https://pixi.sh/install.sh | sh\nThis command downloads the Pixi installation script and pipes it directly to sh (the shell) for execution. Let’s break down the options:\n\n-f - Fail silently on server errors\n-s - Silent mode (don’t show progress)\n-S - Show errors even in silent mode\n-L - Follow redirects if the URL has moved\n\nYou can also use curl to download files and save them:\ncurl -O https://example.com/file.txt\nThe -O option saves the file with its original name.\n\n\n\n\n\n\nBe cautious when piping downloaded scripts directly to a shell interpreter (| sh or | bash). Only do this with scripts from trusted sources, as they will execute with your user privileges. During setup, you used this method with official installation scripts from Pixi and Starship.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#reloading-configuration-files",
+    "href": "lessons/terminal.html#reloading-configuration-files",
+    "title": "Terminal",
+    "section": "Reloading configuration files",
+    "text": "Reloading configuration files\nWhen you modify configuration files like .bashrc or .zshrc, the changes won’t take effect until you start a new terminal session. However, you can reload the configuration without closing your terminal using the source command:\nsource ~/.bashrc\nOr for Zsh users:\nsource ~/.zshrc\nThis reads and executes the commands from the specified file in your current shell session. You used this command during setup to activate Pixi after installation.\n\n\n\n\n\n\nYou can view the contents of your configuration files using cat ~/.bashrc or less ~/.bashrc to see what customizations you’ve made.\n\n\n\nAs you progress through more advanced topics, you’ll encounter many more hidden files and directories. Configuration files, cache directories, and version control metadata (like .git/) all use the dot-prefix convention. This naming strategy keeps your file system organized and separates system/application configuration from your regular working files. In future lessons, we’ll explore how these hidden files and directories make it very convenient to manage complex configurations without cluttering your workspace.",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#terminology",
+    "href": "lessons/terminal.html#terminology",
+    "title": "Terminal",
+    "section": "Terminology",
+    "text": "Terminology\nAny terminology is confusing until you repeat it many times. Starting from the left in the figure below, terminal or more properly terminal emulator is a text-based input/output program that communicates with your computer. You type commands in a command line or a command line interface (CLI). The command is passed to shell which is a command line interpreter (confusingly, it can be abbreviated as CLI as well, but thankfully no one does that). Next, shell talks to operating system (OS). OS is agnostic to hardware and could be run on different physical machines. At the core of any OS is kernel. Finally, kernel talks to the hardware (CPU, GPU, RAM, disk, etc.).\nOnly reason I give this detail that some times people use these terms interchangeably.\n\n\n\n\n\nflowchart LR\n    H[Hardware]\n\n    subgraph OS[Operating System]\n        K[Kernel]\n    end\n\n    S[Shell]\n\n    subgraph T[Terminal]\n        C[Command Line]\n    end\n\n    T --- S --- OS --- H\n\n    %% Single hue (blue), different lightness\n    classDef l1 fill:#eaf2fb,stroke:transparent,color:#000\n    classDef l2 fill:#d0e2f2,stroke:transparent,color:#000\n    classDef l3 fill:#9ecae1,stroke:transparent,color:#000\n    classDef l4 fill:#6baed6,stroke:transparent,color:#000\n\n    %% Apply styles\n    class H l1\n    class OS l2\n    class K l4\n    class S l2\n    class T l2\n    class C l4\n\n    %% Remove subgraph borders\n    style OS fill:#d0e2f2,stroke-width:0px\n    style T fill:#d0e2f2,stroke-width:0px",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
+    "objectID": "lessons/terminal.html#a-brief-history-of-operating-systems",
+    "href": "lessons/terminal.html#a-brief-history-of-operating-systems",
+    "title": "Terminal",
+    "section": "A brief history of operating systems",
+    "text": "A brief history of operating systems\nWhen you look at most operating systems, you see that most of them stem from UNIX. Then they branch into derivatives like Linux, which is the most prominent “child”. Windows, on the other hand, is isolated from UNIX and only the recent introduction of WSL allowed it to use UNIX-based tools with ease.\n\n\n\nEvolution of operating systems, its kernels, and distributions. https://www.reddit.com/r/coolguides/comments/k1lopj/os_family_tree/",
+    "crumbs": [
+      "Terminal"
+    ]
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
@@ -7,73 +427,752 @@
     "text": "flowchart LR\n  A[Data] --&gt; B[Clean] --&gt; C[Analysis] --&gt; D[Results] --&gt; E[Figures] --&gt; F[Paper]\n\n  subgraph GECS[GECS]\n    direction LR\n    B\n    C\n    D\n    E\n  end\n\n  style GECS fill:#eef,stroke:#66f,stroke-width:2px\n\n\n\n\n\n\n\n\n\n\n\n\nflowchart LR\n  subgraph GECS\n    direction TB\n    B1 --&gt; B2 --&gt; B3 --&gt; B1\n  end\n  A(Raw Data) --&gt; GECS --&gt; Z(Paper)"
   },
   {
-    "objectID": "01_command_line_interface.html",
-    "href": "01_command_line_interface.html",
-    "title": "1. Command Line Interface",
-    "section": "",
-    "text": "The feared terminal ☠️",
-    "crumbs": [
-      "1. Command Line Interface"
-    ]
-  },
-  {
-    "objectID": "00_setting_up.html",
-    "href": "00_setting_up.html",
-    "title": "0. Setting Up",
-    "section": "",
-    "text": "An integrated development environment (IDE)",
-    "crumbs": [
-      "0. Setting Up"
-    ]
-  },
-  {
-    "objectID": "00_setting_up.html#windows-subsystem-linux",
-    "href": "00_setting_up.html#windows-subsystem-linux",
-    "title": "0. Setting Up",
-    "section": "Windows Subsystem Linux",
-    "text": "Windows Subsystem Linux\nInstallatino manual for WSL",
-    "crumbs": [
-      "0. Setting Up"
-    ]
-  },
-  {
-    "objectID": "00_setting_up.html#profiles",
-    "href": "00_setting_up.html#profiles",
-    "title": "0. Setting Up",
-    "section": "Profiles",
-    "text": "Profiles\n\nProfiles can be used to customize VS Code for students to ease the use in a classroom setting. Profiles allow educators to quickly share a customized VS Code setup with students.\nVS Code manual\n\nStored in settings.json file\nhttps://code.visualstudio.com/docs/configure/profiles\nhttps://code.visualstudio.com/docs/configure/profiles#_share-profiles\nhttps://code.visualstudio.com/docs/configure/profiles#_import",
-    "crumbs": [
-      "0. Setting Up"
-    ]
-  },
-  {
-    "objectID": "00_setting_up.html#workspaces",
-    "href": "00_setting_up.html#workspaces",
-    "title": "0. Setting Up",
-    "section": "Workspaces",
-    "text": "Workspaces\nAny use? A workspace for GECS.",
-    "crumbs": [
-      "0. Setting Up"
-    ]
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Good Enough Computing in Science (GECS)Mini Course at OIST",
+    "title": "Good Enough Computing in Science (GECS)",
     "section": "",
-    "text": "flowchart LR\nA[Experiment] --&gt; B[Data]\n\n%% Parallel paths (layout only)\nsubgraph Reproducible\ndirection TB\nC(**GECS**)\nend\n\nsubgraph Irreproducible\ndirection TB\nE[Ad-hoc]\nend\n\nB --&gt; C\nB --&gt; E\n\nC --&gt; G[Results]\nE --&gt; G\n\n%% Emphasize GECS edges\nlinkStyle 1 stroke-width:4px\nlinkStyle 3 stroke-width:4px\n\n%% Node styles\nclassDef gecs fill:#cfe9e5,stroke:transparent,color:#000\nclassDef adhoc fill:#eeeeee,stroke:transparent,color:#000\nclassDef neutral fill:#f7f7f7,stroke:transparent,color:#000\nclassDef results fill:#e6dff1,stroke:transparent,color:#000\n\n%% Apply styles\nclass C gecs\nclass E adhoc\nclass A,B neutral\nclass G results\n\n%% Make subgraphs invisible\nstyle Reproducible fill:transparent,stroke-width:0px\nstyle Irreproducible fill:transparent,stroke-width:0px",
+    "text": "flowchart LR\nA[Experiment] --&gt; B[Data]\n\n%% Parallel paths (layout only)\nsubgraph Reproducible\ndirection TB\nC(**GECS**)\nend\n\nsubgraph Irreproducible\ndirection TB\nE[Ad hoc]\nend\n\nB edge1@==&gt; C\nedge1@{ animate: slow }\nC edge2@==&gt; G[Results]\nedge2@{ animate: slow }\n\nB -.-&gt; E\nE -.-x G\n\n%% Node styles\nclassDef gecs fill:#cfe9e5,stroke:transparent,color:#000\nclassDef adhoc fill:#eeeeee,stroke:transparent,color:#000\nclassDef neutral fill:#f7f7f7,stroke:transparent,color:#000\nclassDef results fill:#e6dff1,stroke:transparent,color:#000\n\n%% Apply styles\nclass C gecs\nclass E adhoc\nclass A,B neutral\nclass G results\n\n%% Make subgraphs invisible\nstyle Reproducible fill:transparent,stroke-width:0px\nstyle Irreproducible fill:transparent,stroke-width:0px",
     "crumbs": [
       "Home"
     ]
   },
   {
-    "objectID": "index.html#setting-up",
-    "href": "index.html#setting-up",
-    "title": "Good Enough Computing in Science (GECS)Mini Course at OIST",
-    "section": "Setting up",
-    "text": "Setting up\nIf you need help with configuring your computer for the course, a seession will be held on January 14 Wednesday at the Cafe Private Room during the lunchtime, 12:00-13:00. See Setting up section.",
+    "objectID": "index.html#getting-started",
+    "href": "index.html#getting-started",
+    "title": "Good Enough Computing in Science (GECS)",
+    "section": "Getting Started",
+    "text": "Getting Started\nMake sure to have your computer ready for the course. Please check out the Setting Up section. Those who are not familiar with terminal should also check out the Terminal section.\nIf you need help with configuring your computer for the course or have any questions before the course starts, a special session will be held on the first week.\nDate and time: July 8 Wednesday 12:00-13:00\nLocation: C102 (The Cafe Tancha meeting room)",
     "crumbs": [
       "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#drop-ins",
+    "href": "index.html#drop-ins",
+    "title": "Good Enough Computing in Science (GECS)",
+    "section": "Drop-ins",
+    "text": "Drop-ins\nAfter every session there will be a drop-in the following week. You can come with questions regarding the course or related stuff.\nDate and time: Wednesday 12:00-13:00\nLocation: C102 (The Cafe Tancha meeting room)",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#acknowledgements",
+    "href": "index.html#acknowledgements",
+    "title": "Good Enough Computing in Science (GECS)",
+    "section": "Acknowledgements",
+    "text": "Acknowledgements\nArthur Turrell, Greg Wilson and The Carpentries, Justin Bois, Richard McElreath, and the MulQuaBio collective.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#references",
+    "href": "index.html#references",
+    "title": "Good Enough Computing in Science (GECS)",
+    "section": "References",
+    "text": "References\n\n“Good artists copy, great artists steal.”\n— Pablo Picasso\n\n\nCoding for Economists by Arthur Turrell\nPython for Data Science by Arthur Turrell\nbootcamp by Justin Bois\nResearch Software Engineering with Python by The Carpentries\nThe Multilingual Quantitative Biologist by the MulQuaBio collective",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "slides/automation.html#automation-makes-analysis-repeatable",
+    "href": "slides/automation.html#automation-makes-analysis-repeatable",
+    "title": "Automation with Make",
+    "section": "Automation makes analysis repeatable",
+    "text": "Automation makes analysis repeatable\nWe want a workflow that we can run again:\n\nfor a new input file;\nafter changing the code; and\nwithout remembering every command by hand."
+  },
+  {
+    "objectID": "slides/automation.html#one-giant-script-hides-the-workflow",
+    "href": "slides/automation.html#one-giant-script-hides-the-workflow",
+    "title": "Automation with Make",
+    "section": "One giant script hides the workflow",
+    "text": "One giant script hides the workflow\n\n\n\n\nIntermediate results disappear.\nFailures are harder to locate.\nChanging one step means reading a large program."
+  },
+  {
+    "objectID": "slides/automation.html#save-the-steps-that-matter",
+    "href": "slides/automation.html#save-the-steps-that-matter",
+    "title": "Automation with Make",
+    "section": "Save the steps that matter",
+    "text": "Save the steps that matter\nSplit work into small scripts and files that can be checked independently.\n\n\n\nEach output is a checkpoint: inspect it, test it, or reuse it."
+  },
+  {
+    "objectID": "slides/automation.html#modular-workflows-leave-two-questions",
+    "href": "slides/automation.html#modular-workflows-leave-two-questions",
+    "title": "Automation with Make",
+    "section": "Modular workflows leave two questions",
+    "text": "Modular workflows leave two questions\n\nNew data arrives. How do we run the same workflow for the new file?\nCode changes. Must we rerun everything, or only the affected part?"
+  },
+  {
+    "objectID": "slides/automation.html#make-records-the-plan",
+    "href": "slides/automation.html#make-records-the-plan",
+    "title": "Automation with Make",
+    "section": "Make records the plan",
+    "text": "Make records the plan\n# Makefile: a small description of the workflow\noutput-file: input-file script\n    command input-file output-file\nMake reads rules like this to learn:\n\nwhich file to create;\nwhich files it depends on; and\nwhich command creates it."
+  },
+  {
+    "objectID": "slides/automation.html#our-book-workflow",
+    "href": "slides/automation.html#our-book-workflow",
+    "title": "Automation with Make",
+    "section": "Our book workflow",
+    "text": "Our book workflow\ngecs-make turns books into count tables and interactive figures."
+  },
+  {
+    "objectID": "slides/automation.html#first-output-draculas-count-table",
+    "href": "slides/automation.html#first-output-draculas-count-table",
+    "title": "Automation with Make",
+    "section": "First output: Dracula’s count table",
+    "text": "First output: Dracula’s count table\ncounts/dracula.tsv: books/dracula.txt scripts/count_words.py\n    uv run python scripts/count_words.py books/dracula.txt counts/dracula.tsv\n\n\nTarget\nThe file to create.\n\nPrerequisites\nThe input data and code it needs.\n\nRecipe\nThe tab-indented command that creates the target."
+  },
+  {
+    "objectID": "slides/automation.html#add-the-final-figure",
+    "href": "slides/automation.html#add-the-final-figure",
+    "title": "Automation with Make",
+    "section": "Add the final figure",
+    "text": "Add the final figure\nfigures/dracula.html: counts/dracula.tsv scripts/plot_counts.py\n    uv run python scripts/plot_counts.py counts/dracula.tsv figures/dracula.html\nmake figures/dracula.html\nMake builds counts/dracula.tsv first when needed, then makes the HTML figure."
+  },
+  {
+    "objectID": "slides/automation.html#draculas-real-project-graph",
+    "href": "slides/automation.html#draculas-real-project-graph",
+    "title": "Automation with Make",
+    "section": "Dracula’s real project graph",
+    "text": "Dracula’s real project graph\nThe graph comes from the project’s Make rules, not from a hand-drawn diagram.\n\nDracula DAG generated by makefile-graph"
+  },
+  {
+    "objectID": "slides/automation.html#a-changed-book-or-counting-script-rebuilds-downstream-work",
+    "href": "slides/automation.html#a-changed-book-or-counting-script-rebuilds-downstream-work",
+    "title": "Automation with Make",
+    "section": "A changed book or counting script rebuilds downstream work",
+    "text": "A changed book or counting script rebuilds downstream work\n\n\n\nThe count table is no longer trustworthy, so Make rebuilds it and every output that depends on it."
+  },
+  {
+    "objectID": "slides/automation.html#a-changed-plotting-script-starts-later",
+    "href": "slides/automation.html#a-changed-plotting-script-starts-later",
+    "title": "Automation with Make",
+    "section": "A changed plotting script starts later",
+    "text": "A changed plotting script starts later\n\n\n\nThe count table stays current. Only the figure needs to be made again."
+  },
+  {
+    "objectID": "slides/automation.html#name-shared-commands",
+    "href": "slides/automation.html#name-shared-commands",
+    "title": "Automation with Make",
+    "section": "Name shared commands",
+    "text": "Name shared commands\n# Run every Python command through uv.\nPYTHON := uv run python\n\n# Name the scripts used by our rules.\nCOUNT_SCRIPT := scripts/count_words.py\nPLOT_SCRIPT := scripts/plot_counts.py\nVariables make the Dracula rule shorter and keep shared details in one place."
+  },
+  {
+    "objectID": "slides/automation.html#discover-every-book-without-listing-it-by-hand",
+    "href": "slides/automation.html#discover-every-book-without-listing-it-by-hand",
+    "title": "Automation with Make",
+    "section": "Discover every book without listing it by hand",
+    "text": "Discover every book without listing it by hand\n# Find every text file already in books/.\nBOOK_FILES := $(wildcard books/*.txt)\n$ make print-books\nbooks/dracula.txt\nbooks/frankenstein.txt\nbooks/moby_dick.txt\nbooks/sherlock_holmes.txt\n…\nwildcard reads the book files that really exist. Add another .txt file and it joins the workflow."
+  },
+  {
+    "objectID": "slides/automation.html#derive-matching-paths-with-patsubst",
+    "href": "slides/automation.html#derive-matching-paths-with-patsubst",
+    "title": "Automation with Make",
+    "section": "Derive matching paths with patsubst",
+    "text": "Derive matching paths with patsubst\n# Pattern substitution: replace books/%.txt with counts/%.tsv.\nCOUNT_FILES := $(patsubst books/%.txt,counts/%.tsv,$(BOOK_FILES))\n\n# The same book names become figure paths.\nFIGURE_FILES := $(patsubst books/%.txt,figures/%.html,$(BOOK_FILES))\npatsubst means pattern substitution. % matches the changing book name, then inserts it into the new path."
+  },
+  {
+    "objectID": "slides/automation.html#one-rule-shape-works-for-every-book",
+    "href": "slides/automation.html#one-rule-shape-works-for-every-book",
+    "title": "Automation with Make",
+    "section": "One rule shape works for every book",
+    "text": "One rule shape works for every book\n# Turn any book text file into its matching count table.\ncounts/%.tsv: books/%.txt $(COUNT_SCRIPT)\n    $(PYTHON) $(COUNT_SCRIPT) $&lt; $@\n\n# Turn any count table into its matching HTML figure.\nfigures/%.html: counts/%.tsv $(PLOT_SCRIPT)\n    $(PYTHON) $(PLOT_SCRIPT) $&lt; $@\n\n$&lt; is the input; $@ is the output being built.\nThe % in each rule keeps the matching book name."
+  },
+  {
+    "objectID": "slides/automation.html#the-project-workflow-in-full",
+    "href": "slides/automation.html#the-project-workflow-in-full",
+    "title": "Automation with Make",
+    "section": "The project workflow in full",
+    "text": "The project workflow in full\nThe same rules describe every book and every dependency in the project.\n\nFour-book DAG generated by makefile-graph"
+  },
+  {
+    "objectID": "slides/automation.html#why-use-make",
+    "href": "slides/automation.html#why-use-make",
+    "title": "Automation with Make",
+    "section": "Why use Make",
+    "text": "Why use Make\n\nAutomated order: no need to remember the steps.\nReproducibility: someone else can run the same project command.\nModularity: scripts and intermediate outputs stay understandable.\nSelective rebuilding: timestamps identify what must run again."
+  },
+  {
+    "objectID": "lessons/vs-code.html",
+    "href": "lessons/vs-code.html",
+    "title": "VS Code",
+    "section": "",
+    "text": "In this tutorial you will get familiar with the functionality of VS Code. A powerful IDE as it is, VS Code has a lot of features. However, even if you know the basics it will get you a long way. This tutorial is heavily based on the official Tutorial: Get started with Visual Studio Code.\n\nStart Up\n\nOpen Visual Studio Code. Then open a folder with File &gt; Open Folder… or Cmd+O. On Linux/WSL users, you will first have to start a remote WSL session. With the WSL extension installed, you will see a new Status bar item at the far left.\n\nThe Remote Status bar item can quickly show you in which context VS Code is running (local or remote) and clicking on the item will bring up the WSL extension commands.\n\n\n\n\n\n\n\nAlternatively, WSL users can open their Linux terminal, create a directory in their Linux distribution file system, change their directory and open it in VS Code WSL remote with code .:\ncd\nmkdir vscode101\ncd vscode101\ncode .\nNote the . in front of code. You need to tell VS Code what you are opening. Later, we will see that you can open any file or directory with this command.\n\n\n\nSelect New Folder and create a new folder named vscode101. Then select Select Folder (Open on macOS) to open the folder in VS Code.\nOn the Workspace Trust dialog, select Yes, I trust the authors to enable all features in the workspace. If you do not see this dialog, then you probably have already opened this area before.\n\n\n\n\n\n\nWorkspace Trust lets you decide whether code in your project folder can be executed by VS Code. When you download code from the internet, you should first review it to make sure it’s safe to run. Get more info about Workspace Trust.\n\n\n\n\n\n\nYou should now see the Explorer view on the left, showing the name of the folder. Alongside terminal commands like ls, tree, and other commands, you can use the Explorer view to view and manage the files and folders in your workspace.\n\n\n\n\n\n\n\nWhen you open a folder in VS Code, VS Code can restore the UI state for that folder, such as the open files, the active view, and the layout of the editor. You can also configure settings that only apply to that folder, or define debug configurations. Get more info about workspaces.\n\n\n\n\nVS Code now considers the folder you’ve opened a workspace. You can also use code . in your terminal, especially for WSL users, to start a WSL remote session.\n\n\nInterface and Layout\n\nSidebar\nCode editor\nTerminal\n\n\n\nSettings\n\nAutosave\nWord wrap\nTheme customization\nGECS profile configuration\n\n\n\nSearching and Replacing\n\nSearch in a file\nSearch across files\n\n\n\nShortcuts\n\nLayout: Cmd+B for the Sidebar, Ctrl+` for the Terminal\nCode editor: Cmd+D for selecting the expression, Opt+Up/Down to move a line, Opt+Shift+F to format a document\nGeneral: Cmd+Shift+P for the Command Palette, Cmd+P for the File and Open Editors search bar\n\n\n\nReferences\n\nhttps://code.visualstudio.com/docs/getstarted/getting-started\nhttps://code.visualstudio.com/docs/remote/wsl-tutorial",
+    "crumbs": [
+      "VS Code"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html",
+    "href": "lessons/version-control.html",
+    "title": "Version Control",
+    "section": "",
+    "text": "If I could turn back time\nCher, If I Could Turn Back Time 1989\nVersion control tracks changes to your files, lets you undo mistakes, and makes collaboration easy. Once you start using it, you’ll wonder how you worked without it!",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#creating-github-account",
+    "href": "lessons/version-control.html#creating-github-account",
+    "title": "Version Control",
+    "section": "Creating GitHub account",
+    "text": "Creating GitHub account\nIf you don’t already have a GitHub account, check the Setting Up section.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#installing-git",
+    "href": "lessons/version-control.html#installing-git",
+    "title": "Version Control",
+    "section": "Installing Git",
+    "text": "Installing Git\nVS Code uses the Git installed on your computer.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nCheck that Git is available with:\ngit --version\nIf you get an error, please see this webpage from The Software Carpentries for installation steps.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#setting-up-git",
+    "href": "lessons/version-control.html#setting-up-git",
+    "title": "Version Control",
+    "section": "Setting up Git",
+    "text": "Setting up Git\nWe will use VS Code as our main teaching interface, but Git still needs your name and email once on each computer.\nOpen VS Code. If needed, use File &gt; Open Folder to choose the folder where you want to work.\n\n\n\n\n\n\nTipOpen folder like a VS Coder\n\n\n\nYou can also open the Command Palette with Ctrl/Cmd+Shift+P and run Open Folder.\n\n\nUse your own name and email instead of Alfredo’s. For GitHub, it is easiest if this email matches your GitHub account.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nOpen the terminal in VS Code with View &gt; Terminal or Ctrl/Cmd+` and run:\ngit config --global user.name \"Alfredo Linguini\"\ngit config --global user.email \"a.linguini@ratatouille.fr\"\ngit config --global init.defaultBranch main\n\n\n\n\n\n\n\n\n\nTipKeeping your email private\n\n\n\n\n\nIf you prefer not to show your personal email in commits, GitHub provides a no-reply email address. See GitHub’s instructions for keeping your email private.\n\n\n\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nReview these settings anytime with:\ngit config --list --global\n\n\n\n\n\n\n\n\n\nTipWindows users\n\n\n\n\n\nIf you are on Windows, doing this lesson inside WSL usually leads to fewer Git and shell problems. In VS Code, use WSL: New Window or WSL: Reopen Folder in WSL.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#places-to-create-git-repositories",
+    "href": "lessons/version-control.html#places-to-create-git-repositories",
+    "title": "Version Control",
+    "section": "Places to create Git repositories",
+    "text": "Places to create Git repositories\nUsually you want one repository for one project folder. If recipes is already a Git repository, you do not need to create another repository inside recipes/desserts just to track dessert files. The main recipes repository will already track subfolders.\n\n\n\n\n\n\nNoteNested repositories\n\n\n\n\n\nNested repositories are usually confusing for beginners. If you accidentally run git init inside a subfolder, Git treats that inner folder as a separate repository with separate history.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#commit-message",
+    "href": "lessons/version-control.html#commit-message",
+    "title": "Version Control",
+    "section": "Commit message",
+    "text": "Commit message\nWhich of the following commit messages is most helpful?\n\n\"changes\"\n\"change lemon for lime\"\n\"use lime in guacamole recipe\"\n\n\n\n\n\n\n\nNoteSolution\n\n\n\n\n\nAnswer 3 is best. Good commit messages are short, descriptive, and make the change easy to understand later.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#committing-multiple-files",
+    "href": "lessons/version-control.html#committing-multiple-files",
+    "title": "Version Control",
+    "section": "Committing multiple files",
+    "text": "Committing multiple files\nVS Code also makes it easy to commit related changes from multiple files together.\n\nAdd rough prices to guacamole.md.\nCreate a new file groceries.md with ingredient prices from a market.\nReview both files in Source Control.\nStage both files.\nCommit them together with one message.\n\n\n\n\n\n\n\nNoteOne possible result\n\n\n\n\n\nYou might end up with something like:\n# Guacamole\n## Ingredients\n* avocado (1.35)\n* lime (0.64)\n* salt (2)\n## Instructions\nand\n# Market A\n* avocado: 1.35 per unit\n* lime: 0.64 per unit\n* salt: 2 per kg\nA good commit message would be Add ingredient prices and market list.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#compare-your-current-file-to-the-last-commit",
+    "href": "lessons/version-control.html#compare-your-current-file-to-the-last-commit",
+    "title": "Version Control",
+    "section": "Compare your current file to the last commit",
+    "text": "Compare your current file to the last commit\nAdd one temporary line to guacamole.md, save the file, and open it from Source Control.\nThe diff editor compares your current file with the last committed version. For most beginners, this is the most important history view to learn first.\nIf you decide the change was a mistake, right-click the file in Source Control and choose Discard Changes.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nFrom the terminal, you would usually inspect and discard the change like this:\ngit diff guacamole.md\ngit restore guacamole.md",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#view-earlier-commits",
+    "href": "lessons/version-control.html#view-earlier-commits",
+    "title": "Version Control",
+    "section": "View earlier commits",
+    "text": "View earlier commits\nVS Code gives you two helpful history views:\n\nTimeline: shows the history of one file.\nSource Control Graph: shows the history of the whole repository.\n\n\n\n\nThe Timeline view for file history in VS Code.\n\n\nSource: VS Code Source Control Overview.\nTo use them:\n\nSelect guacamole.md in the Explorer and open the Timeline view.\nBrowse older file versions and commit messages.\nOpen the Source Control Graph to see the order of commits in the repository.\n\nThis is much easier for beginners than memorizing commit IDs early on.\n\n\n\nThe Source Control Graph view in VS Code.\n\n\nSource: VS Code Source Control Overview.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nThe terminal version of these history views is:\ngit log\ngit log guacamole.md",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#recovering-older-versions-of-a-file",
+    "href": "lessons/version-control.html#recovering-older-versions-of-a-file",
+    "title": "Version Control",
+    "section": "Recovering older versions of a file",
+    "text": "Recovering older versions of a file\nSuppose you edited guacamole.md and want to get back to the last committed version.\nIn VS Code:\n\nOpen Source Control.\nRight-click guacamole.md.\nChoose Discard Changes.\n\nThat restores the file to its most recently committed state.\nIf you want to inspect older versions first, use the Timeline for that file and open previous entries before deciding what to restore.\n\n\n\n\n\n\nNoteAdvanced: HEAD in terminal\n\n\n\n\n\nOn the command line, the most recent commit is called HEAD. The commit before it is HEAD~1, then HEAD~2, and so on.\nExamples:\ngit diff HEAD guacamole.md\ngit restore guacamole.md\ngit restore -s HEAD~1 guacamole.md\nYou do not need this syntax for the main VS Code workflow in this lesson.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#getting-rid-of-staged-changes",
+    "href": "lessons/version-control.html#getting-rid-of-staged-changes",
+    "title": "Version Control",
+    "section": "Getting rid of staged changes",
+    "text": "Getting rid of staged changes\nWhat if you staged a file and then changed your mind before committing?\nIn VS Code, you can unstage it in several ways:\n\nclick the - icon beside the file in Staged Changes,\nright-click and choose Unstage Changes,\ndrag it back from Staged Changes to Changes.\n\nAfter that, if you also want to throw away the edit entirely, use Discard Changes.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nThe command-line version is:\ngit restore --staged guacamole.md\ngit restore guacamole.md",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#explore-and-summarize-histories",
+    "href": "lessons/version-control.html#explore-and-summarize-histories",
+    "title": "Version Control",
+    "section": "Explore and summarize histories",
+    "text": "Explore and summarize histories\nImagine the recipes project has dozens of files and you want to answer questions like:\n\nWhich commit changed guacamole.md?\nWhen did the ingredient list change?\nWhat changed in that commit?\n\nIn VS Code:\n\nUse Timeline for file-by-file history.\nUse Source Control Graph for repository history.\nOpen commits on GitHub to inspect remote history and diffs.\n\nIf commit messages are vague, open the commit diff instead of guessing from the title alone.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nUseful history commands include:\ngit log guacamole.md\ngit log --patch guacamole.md",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#log-files",
+    "href": "lessons/version-control.html#log-files",
+    "title": "Version Control",
+    "section": "Log files",
+    "text": "Log files\nYou wrote a script that creates temporary files like log_01, log_02, and log_03.\nAdd a rule such as:\nlog_*\nto .gitignore.\nIf you later decide to track one of them anyway, that is an advanced case and is easier from the terminal.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nYou can override an ignore rule with:\ngit add -f log_01\ngit status --ignored",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#creating-a-remote-repository",
+    "href": "lessons/version-control.html#creating-a-remote-repository",
+    "title": "Version Control",
+    "section": "Creating a remote repository",
+    "text": "Creating a remote repository\nAfter you have a few local commits:\n\nOpen Source Control.\nChoose Publish to GitHub.\nSign in through the browser if VS Code prompts you.\nChoose whether the repository should be public or private.\nLet VS Code create the GitHub repository and push your existing commits.\n\nThis is the simplest beginner path because VS Code handles both repository creation and the first push.\n\n\n\nThe GitHub sign-in prompt in VS Code.\n\n\nSource: VS Code Collaborate on GitHub.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nThe closest terminal-based setup is:\ngit remote add origin https://github.com/USERNAME/recipes.git\ngit push -u origin main",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#understanding-remotes",
+    "href": "lessons/version-control.html#understanding-remotes",
+    "title": "Version Control",
+    "section": "Understanding remotes",
+    "text": "Understanding remotes\nOnce published, your repository has:\n\na local copy on your computer,\na remote copy on GitHub.\n\nVS Code will show sync information in the status bar and in Source Control. The most important remote actions are:\n\nFetch: check for remote updates without changing your files\nPull: download and apply remote updates\nPush: upload your local commits\nSync Changes: do the needed pull/push steps together\n\n\n\n\nFetch, pull, and push controls in VS Code.\n\n\nSource: VS Code Repositories and Remotes.\n\n\n\n\n\n\nNoteWhat is origin?\n\n\n\norigin is the default nickname Git gives to the main remote repository. You do not need to type it in VS Code, but you may still see the name in documentation and terminal examples.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#pushing-local-changes-to-a-remote",
+    "href": "lessons/version-control.html#pushing-local-changes-to-a-remote",
+    "title": "Version Control",
+    "section": "Pushing local changes to a remote",
+    "text": "Pushing local changes to a remote\nMake one more local commit in VS Code. After committing, VS Code should show that you have outgoing changes.\nUse Sync Changes or Push to send them to GitHub. Then refresh the repository page on GitHub and confirm that the new commit appears there.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nIn the terminal, you would usually do:\ngit push origin main\ngit pull origin main",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#github-view-of-history",
+    "href": "lessons/version-control.html#github-view-of-history",
+    "title": "Version Control",
+    "section": "GitHub view of history",
+    "text": "GitHub view of history\nOn GitHub, open the repository and explore the commits list. You can:\n\nopen a commit to view its diff,\ninspect when changes were made,\nreview history without leaving the browser.\n\nThis complements the VS Code Graph and Timeline views nicely.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#push-vs.-commit",
+    "href": "lessons/version-control.html#push-vs.-commit",
+    "title": "Version Control",
+    "section": "Push vs. commit",
+    "text": "Push vs. commit\nA commit saves a snapshot in your local repository. A push sends your local commits to the remote repository on GitHub.\n\n\n\n\n\n\nNoteAdvanced: manual remote setup\n\n\n\n\n\nIf you ever need to add a remote by hand, the terminal version looks like this:\ngit remote add origin https://github.com/USERNAME/recipes.git\ngit push -u origin main\ngit remote -v\n\n\n\n\n\n\n\n\n\nNoteAdvanced: use SSH instead of VS Code sign-in\n\n\n\n\n\nThis lesson does not require SSH.\nIf you later want SSH, the usual flow is:\n\nCreate a key pair with ssh-keygen.\nCopy the public key from ~/.ssh/id_ed25519.pub.\nAdd it to GitHub under Settings &gt; SSH and GPG keys.\nUse an SSH remote such as git@github.com:USERNAME/recipes.git.\n\nVS Code’s browser sign-in is simpler for most beginners, so that is our recommended default.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#create-and-publish-your-quarto-website",
+    "href": "lessons/version-control.html#create-and-publish-your-quarto-website",
+    "title": "Version Control",
+    "section": "Create and publish your Quarto website",
+    "text": "Create and publish your Quarto website\nStart by opening the template repository on GitHub and selecting Use this template to create your own website repository. Name it something like recipe-website and choose it to be public. Also, include all branches so you do not need to fiddle with Quarto.\n\n igorsdub/quarto-website \n\nNice, now you have your own website. Ain’t taht cool?! Clone that repository to your computer in VS Code. The main page of your website lives in the index.qmd file.\nDefault content of index.qmd is:\n---\ntitle: \"quarto-website\"\n---\n\nThis is a Quarto website.\n\nTo learn more about Quarto websites visit &lt;https://quarto.org/docs/websites&gt;.\nYou can add the guacamole recipe to your website by editing index.qmd and adding the following content or a receipe of your choice.\n\n\n\n\n\n\nNoteQuarto files are plain text\n\n\n\nQuarto pages are still plain-text source files, just like the Markdown files you used earlier. The collaboration ideas are the same, even though the project is now a website instead of a recipe note.\n\n\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nIf you prefer the terminal for setup and publishing, a common flow is:\ngit clone https://github.com/YOUR-USERNAME/recipe-website.git\ncd recipe-website\nquarto preview\nquarto publish gh-pages",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#fork-your-partners-repository",
+    "href": "lessons/version-control.html#fork-your-partners-repository",
+    "title": "Version Control",
+    "section": "Fork your partner’s repository",
+    "text": "Fork your partner’s repository\nInstead of adding each other as collaborators, use a fork-based workflow. Open your partner’s repository on GitHub and select Fork to create your own copy under your GitHub account.\nThis is safer and closer to how open-source collaboration usually works. You can make changes freely in your fork, but you still need the original owner to review and merge them.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nIf you use GitHub CLI, a fork-and-clone flow can look like this:\ngh repo fork PARTNER-USERNAME/recipe-website --clone\ncd recipe-website",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#clone-your-fork",
+    "href": "lessons/version-control.html#clone-your-fork",
+    "title": "Version Control",
+    "section": "Clone your fork",
+    "text": "Clone your fork\nNow clone your fork of your partner’s website repository in VS Code. Open Source Control, select Clone Repository or run Git: Clone from the Command Palette, paste the URL of your fork, choose a local parent folder, and open the cloned repository in VS Code.\nWhen you clone, Git automatically connects the local copy to your fork on GitHub.\n\n\n\nCloning a repository in VS Code.\n\n\nSource: VS Code Source Control Quickstart.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nClone your fork with:\ngit clone https://github.com/YOUR-USERNAME/recipe-website.git\ncd recipe-website",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#make-changes-to-your-partners-website",
+    "href": "lessons/version-control.html#make-changes-to-your-partners-website",
+    "title": "Version Control",
+    "section": "Make changes to your partner’s website",
+    "text": "Make changes to your partner’s website\nNow work on your fork of your partner’s Quarto website.\nGood beginner changes include:\n\nupdating text on index.qmd,\nimproving the about.qmd page,\nadding a recipe section,\nfixing navigation or headings in _quarto.yml.\n\nBefore you edit anything, pull or sync so your local copy of the fork is up to date.\nFor this exercise, make your changes on a new branch rather than directly on main. That keeps your work tidy and makes review much clearer.\nIn VS Code, create a new branch from main, edit one or more .qmd or configuration files, review the diff in Source Control, stage the files, commit with a clear message, and push the branch to your fork on GitHub.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nThe terminal version usually looks like:\ngit switch -c partner-edit\n# edit files\ngit add .\ngit commit -m \"Improve partner website homepage\"\ngit push -u origin partner-edit",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#open-a-pull-request-for-review",
+    "href": "lessons/version-control.html#open-a-pull-request-for-review",
+    "title": "Version Control",
+    "section": "Open a pull request for review",
+    "text": "Open a pull request for review\nAfter you push the branch, open a pull request so your partner can review the website changes before they are merged.\nYou can do this in two ways:\n\nuse the GitHub Pull Requests extension in VS Code, or\nopen the pull request directly on GitHub after pushing to your fork.\n\nIn either case, use your partner’s original repository main branch as the target, add a short title and description explaining the website edits, and submit the pull request.\n\n\n\nCreate a pull request from VS Code.\n\n\nSource: VS Code Collaborate on GitHub.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nIf you use GitHub CLI, you can open the pull request with:\ngh pr create --repo PARTNER-USERNAME/recipe-website --base main --head YOUR-USERNAME:partner-edit",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#review-approve-or-request-changes",
+    "href": "lessons/version-control.html#review-approve-or-request-changes",
+    "title": "Version Control",
+    "section": "Review, approve, or request changes",
+    "text": "Review, approve, or request changes\nNow switch roles and review the proposed website changes. You can:\n\ninspect the changed .qmd files,\ncomment on specific lines,\nrequest changes,\napprove the pull request,\nor reject it for now and ask for revisions.\n\nThis is the key moment where collaboration becomes more than simple file sharing. GitHub records the proposed edits, comments, and review decision in one place.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nIf you use GitHub CLI, you can review a pull request with commands like:\ngh pr checkout NUMBER\ngh pr review NUMBER --approve\ngh pr review NUMBER --request-changes --body \"Please revise the homepage text.\"\n\n\n\n\n\n\n\n\n\nTipWhen to add collaborators instead of forking\n\n\n\nIf you add someone as a collaborator, they can push changes directly to your repository. Only do that if you trust them and you are happy for them to have that level of access.\nForking is safer for this lesson because it keeps the original repository protected and makes the review step unavoidable.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#merge-the-approved-changes-and-pull-them-locally",
+    "href": "lessons/version-control.html#merge-the-approved-changes-and-pull-them-locally",
+    "title": "Version Control",
+    "section": "Merge the approved changes and pull them locally",
+    "text": "Merge the approved changes and pull them locally\nIf you approve the pull request, merge it on GitHub.\nAfter the merge, return to your original local repository in VS Code, use Pull or Sync Changes to bring the merged updates into the local copy, and open the Source Control Graph to confirm that the pull request introduced a branch history line that has now been merged back into main.\nThis is a great visual payoff for the lesson: you can see that the collaboration happened on a branch, then ended as a merge in the history graph.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nBack in your original repository, you would usually run:\ngit checkout main\ngit pull origin main\ngit log --graph --oneline --decorate",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#what-to-notice",
+    "href": "lessons/version-control.html#what-to-notice",
+    "title": "Version Control",
+    "section": "What to notice",
+    "text": "What to notice\nYou should have seen all of these ideas in one workflow:\n\ncreating a repository from a template,\npublishing a Quarto website,\nforking a partner’s repository,\ncloning your fork,\nediting .qmd website files,\npushing a branch to your fork,\nopening a pull request,\nreviewing and approving or rejecting changes,\npulling the merged result locally,\ninspecting the merge in the VS Code Graph.\n\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nThe command-line version of this workflow usually includes commands like:\ngit clone https://github.com/YOUR-USERNAME/PARTNER-WEBSITE-FORK.git\n#do some edits\ngit switch -c partner-edit\ngit add .\ngit commit -m \"Improve partner website homepage\"\ngit push -u origin partner-edit\ngit pull origin main",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#resolving-conflicts-in-vs-code",
+    "href": "lessons/version-control.html#resolving-conflicts-in-vs-code",
+    "title": "Version Control",
+    "section": "Resolving conflicts in VS Code",
+    "text": "Resolving conflicts in VS Code\nWhen a conflict appears:\n\nOpen Source Control and select the conflicted file.\nOpen the Merge Editor.\nCompare the current change and incoming change.\nUse VS Code’s buttons to accept one side, accept both, or edit a combined result manually.\nSave the file.\nStage the resolved file.\nCommit the merge result.\nPush or sync the repository.\n\n\n\n\nThe Merge Editor in VS Code.\n\n\nSource: VS Code Merge Conflicts.\nFor this lesson, a good final resolution for guacamole.md would be:\n# Guacamole\n## Ingredients\n* avocado\n* lime\n* salt\n## Instructions\n* peel the avocados and put them into a bowl.\nThis merge-editor workflow is much friendlier than trying to memorize conflict markers immediately.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/version-control.html#understanding-the-conflict-markers",
+    "href": "lessons/version-control.html#understanding-the-conflict-markers",
+    "title": "Version Control",
+    "section": "Understanding the conflict markers",
+    "text": "Understanding the conflict markers\nIf you ever open the raw file before resolving it, Git may insert markers like:\n&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD\n* peel the avocados\n=======\n* put one avocado into a bowl.\n&gt;&gt;&gt;&gt;&gt;&gt;&gt; incoming change\nThese markers are Git’s way of saying “I found two competing edits here.” VS Code’s merge tools help you resolve them without editing the markers by hand.\n\n\n\n\n\n\nNoteTerminal equivalent\n\n\n\n\n\nThe command-line version usually looks like:\ngit pull origin main\ngit add guacamole.md\ngit commit -m \"Merge changes from GitHub\"\ngit push origin main\n\n\n\nAfter the merge commit is pushed, other collaborators can pull normally and receive the already-resolved version.\nTo minimize conflicts:\n\nPull frequently from the remote repository.\nCommunicate with teammates about who is working on what.\nMake smaller, focused commits.",
+    "crumbs": [
+      "Version Control"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html",
+    "href": "lessons/virtual-environments.html",
+    "title": "Virtual Environments",
+    "section": "",
+    "text": "This lesson is adapted from Reproducible Machine Learning Workflows for Scientists by the Carpentries Incubator and rewritten to use uv.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#what-is-a-virtual-environment",
+    "href": "lessons/virtual-environments.html#what-is-a-virtual-environment",
+    "title": "Virtual Environments",
+    "section": "What is a virtual environment?",
+    "text": "What is a virtual environment?\nA virtual environment is a self-contained directory that contains a Python installation and all the packages required for a specific project. It lets us keep different projects separate, even when they need different package versions.\nThis separation is a key part of reproducible research. If we record exactly which Python version and packages a project uses, then other people can rebuild the same environment on their own machines.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#package-managers",
+    "href": "lessons/virtual-environments.html#package-managers",
+    "title": "Virtual Environments",
+    "section": "Package managers",
+    "text": "Package managers\nPython ships with venv and pip, and those tools still work. However, modern projects often need more than a manually managed virtual environment. We usually also want:\n\na clear project file that records dependencies\na lock file with exact resolved versions\na simple way to run commands inside the project environment\na convenient way to keep the environment reproducible\n\nThere are several tools for this job, including Conda, Mamba, Poetry, and uv. In this course we will use uv.\n\nWhy uv?\n\n\n\nuv by Astral\n\n\nuv is a blazingly fast Python package and project manager. If you have used Conda or Poetry before, you will feel the difference. It has a few advantages that make it a good fit for this course:\n\nFast: dependency resolution and installation are much faster than with older Python tooling.\nProject-local: each project gets its own .venv, which keeps dependencies isolated.\nPython-aware: uv can use an existing Python installation or download a managed one when needed.\nReproducible: it creates a uv.lock lock file with exact resolved package versions.\nConvenient: it lets us run project commands without manually activating the environment every time.\n\nYou can read more in the official documentation.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#installing-uv",
+    "href": "lessons/virtual-environments.html#installing-uv",
+    "title": "Virtual Environments",
+    "section": "Installing uv",
+    "text": "Installing uv\nIf you did not install uv during setup, do that first. On macOS, Linux, and Ubuntu under WSL, run:\ncurl -LsSf https://astral.sh/uv/install.sh | sh\nAfter installation, restart the terminal. You can also reload your shell manually.\nUbuntu users:\nsource ~/.bashrc\nmacOS users:\nsource ~/.zshrc\nTo verify that uv is available, run either:\nuv --version\nor\nwhich uv\nYou should see the installed version or the path to the uv executable.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#project-based-workflows",
+    "href": "lessons/virtual-environments.html#project-based-workflows",
+    "title": "Virtual Environments",
+    "section": "Project-based workflows",
+    "text": "Project-based workflows\nuv works well with a project-based workflow. That means the project’s dependencies, Python requirements, and virtual environment all live alongside the project files.\nPros\n\nEach project is isolated and does not interfere with software used by other projects.\nThe project can be recreated from a small set of tracked files, especially pyproject.toml and uv.lock.\nEditors like VS Code can easily discover the project’s .venv.\n\nCons\n\nEach project keeps its own environment, so repeated packages may use more disk space than a fully shared setup.\nYou still need to think carefully about which dependencies belong in the project.\nIt only supports Python projects.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#starting-a-project-with-uv-init",
+    "href": "lessons/virtual-environments.html#starting-a-project-with-uv-init",
+    "title": "Virtual Environments",
+    "section": "Starting a project with uv init",
+    "text": "Starting a project with uv init\nThe word init shows up in many developer tools. You already saw it in git init. It usually means “set up the basic files needed to start here.”\nWith uv, init can do two related things:\n\ncreate a brand new project directory for you\ninitialize a project in a directory that already exists\n\nLet’s start by creating a new project directory:\nuv init gecs-uv\nInitialized project `gecs-uv` at &lt;working-directory&gt;/gecs-uv\nThis creates the directory gecs-uv for you.\n\n\n\n\n\n\nNoteuv init flags\n\n\n\n\n\nIf you already had a project folder and wanted to initialize it in place, you could first cd into it and then run:\nuv init .\n\n\n\nIf you are curious about the other project templates and flags that uv supports, take a look at:\nuv init --help\nNow move into the new project directory and inspect its contents:\ncd gecs-uv\nls -a\n./\n../\n.git/\n.gitignore\n.python-version\nREADME.md\nmain.py\npyproject.toml\nuv init also initializes a Git repository by default, so you do not need to run git init yourself afterward.\nAt this point there is still no .venv and no uv.lock. Those appear when uv actually has to resolve and install an environment.\nuv also created a .python-version file for us. That file pins the default Python version for this project.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#the-project-manifest",
+    "href": "lessons/virtual-environments.html#the-project-manifest",
+    "title": "Virtual Environments",
+    "section": "The project manifest",
+    "text": "The project manifest\nLet’s inspect the main project file:\ncat pyproject.toml\n[project]\nname = \"gecs-uv\"\nversion = \"0.1.0\"\ndescription = \"Add your description here\"\nreadme = \"README.md\"\nrequires-python = \"&gt;=3.13\"\ndependencies = []\nAnd if you inspect .python-version:\ncat .python-version\n3.13\nThe most important fields here are:\n\n[project]: metadata about the project as a whole\nrequires-python: which Python versions the project supports\ndependencies: which Python packages belong in the project\n.python-version: the default Python version uv should use for this project\n\n\n\n\n\n\n\nNoteTOML files\n\n\n\n\n\npyproject.toml uses the TOML format. The name stands for Tom’s Obvious, Minimal Language, after Tom Preston-Werner, one of the creators of the format.\nTOML became popular because it is much easier for humans to read and edit than many older configuration formats. Python’s packaging ecosystem now uses it heavily, so you will keep seeing .toml files in modern projects.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#edit-the-description",
+    "href": "lessons/virtual-environments.html#edit-the-description",
+    "title": "Virtual Environments",
+    "section": "Edit the description",
+    "text": "Edit the description\nRight now the project description is still the placeholder text. Let’s fix that.\nOpen the file in VS Code:\ncode pyproject.toml\nIf the code command is not available in your terminal, you can also open pyproject.toml directly from the VS Code Explorer.\nReplace the description line with something meaningful, for example:\ndescription = \"A small reproducible project managed with uv\"\nYour pyproject.toml should now look like this:\n[project]\nname = \"gecs-uv\"\nversion = \"0.1.0\"\ndescription = \"A small reproducible project managed with uv\"\nreadme = \"README.md\"\nrequires-python = \"&gt;=3.13\"\ndependencies = []",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#version-control-from-the-start",
+    "href": "lessons/virtual-environments.html#version-control-from-the-start",
+    "title": "Virtual Environments",
+    "section": "Version control from the start",
+    "text": "Version control from the start\nBecause uv init already initialized Git for us, we can start tracking changes immediately:\ngit status --short\nYou should see the newly created files as untracked. Add them and make the first commit:\ngit add .\ngit commit -m \"Initialize uv project\"\nThis is a good habit. Instead of waiting until the very end, we will keep committing as the environment changes.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#create-the-environment",
+    "href": "lessons/virtual-environments.html#create-the-environment",
+    "title": "Virtual Environments",
+    "section": "Create the environment",
+    "text": "Create the environment\nNow let’s ask uv to create the environment explicitly:\nuv sync\nThis command resolves the project’s dependencies, creates the virtual environment, and makes sure the installed packages match the lock file.\nCheck the directory again:\nls -a\n./\n../\n.git/\n.gitignore\n.python-version\n.venv/\nREADME.md\nmain.py\npyproject.toml\nuv.lock\nTwo important things appeared:\n\n.venv/: this is the virtual environment itself. It contains the Python executable, installed package files, and all the other moving parts that make the environment run. This is the meat of the environment.\nuv.lock: this is the lock file. It is like taking a snapshot of your environment’s package versions at this moment in time.\n\nWhen someone else clones your repository and runs uv sync, uv uses that snapshot to rebuild the environment as closely as possible.\nLet’s also confirm that the starter program runs:\nuv run main.py\nHello from gecs-uv!\nSince uv.lock is now part of the project state, commit that change too:\ngit add uv.lock\ngit commit -m \"lock initial environment\"",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#activate-the-environment",
+    "href": "lessons/virtual-environments.html#activate-the-environment",
+    "title": "Virtual Environments",
+    "section": "Activate the environment",
+    "text": "Activate the environment\nSometimes it is still convenient to activate the environment directly, for example if you want to run several commands in a row without prefixing each one with uv run.\nFirst make sure the environment is up to date:\nuv sync\nThen activate it:\nsource .venv/bin/activate\nYour shell prompt will usually change and show something like (.venv) at the beginning. You can now run project tools directly:\npython\nTo leave the environment, run:\ndeactivate",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#add-packages",
+    "href": "lessons/virtual-environments.html#add-packages",
+    "title": "Virtual Environments",
+    "section": "Add packages",
+    "text": "Add packages\nBefore we move on to marimo, let’s install the packages we want available in this project:\nuv add numpy matplotlib\nuv updates both pyproject.toml and uv.lock, then installs the packages into .venv.\nCommit those dependency changes:\ngit add pyproject.toml uv.lock\ngit commit -m \"add plotting dependencies\"\nTo view the installed dependency tree, use:\nuv tree\nThis is often more helpful than a flat package list because it shows which packages depend on which other packages.\nIf you want to inspect the dependency graph in a platform-independent way, use:\nuv tree --universal\nThis is another reproducibility tool: one project manifest, one lock file, and one dependency graph that uv can recreate consistently across machines.\n\n\n\n\n\n\nTipPlatform-specific dependencies\n\n\n\n\n\nuv records a universal lock file and supports platform-specific dependencies through standard Python environment markers.\nFor example, if you needed a package only on Windows, you could write:\nuv add \"pywin32; sys_platform == 'win32'\"\nIf that changed your project’s dependency set, you would again commit the updated pyproject.toml and uv.lock.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#marimo",
+    "href": "lessons/virtual-environments.html#marimo",
+    "title": "Virtual Environments",
+    "section": "marimo",
+    "text": "marimo\n\n\n\nmarimo vs Jupyter\n\n\nFor data analysis, Jupyter notebooks have been the default for a long time. In this course, we will use marimo instead.\nFor this course, marimo has a few advantages:\n\nit is reactive, so dependent cells stay in sync\nit avoids a lot of hidden state problems that make notebooks hard to reproduce\nmarimo notebooks are stored as plain .py files, which makes them much friendlier to Git\n\nThat last point is especially important: you can use Git to track changes in a marimo notebook just like any other Python file.\nLet’s add marimo to the project:\nuv add marimo\nand check the dependency tree again:\nuv tree\nFinally, commit the changes to the project:\ngit add pyproject.toml uv.lock\ngit commit -m \"add marimo\"",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#running-commands-without-activation",
+    "href": "lessons/virtual-environments.html#running-commands-without-activation",
+    "title": "Virtual Environments",
+    "section": "Running commands without activation",
+    "text": "Running commands without activation\nOne of the nicest parts of uv is that you usually do not need to activate the environment manually. Instead, run commands through uv run.\nFirst, activate the environment\nsource .venv/bin/activate\nNow, we can explore marimo’s built-in plotting tutorial:\nmarimo tutorial plots\nThis will open a browser window with the tutorial. To run the tutorial, press Play button in the bottom right corner or press Ctrl/Cmd+ Shift + R to run all cells.\nOnce you are done, you can exit the tutorial and deactivate the environment by presing Red cross button (Shutdown) in the top-right corner of the browser page or Ctrl/Cmd + C in the terminal.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#global-tools",
+    "href": "lessons/virtual-environments.html#global-tools",
+    "title": "Virtual Environments",
+    "section": "Global tools",
+    "text": "Global tools\nuv can also install command-line tools into isolated environments and expose them on your PATH.\nFor example, to install bat, a nicer version of cat, run:\nuv tool install bat\nIf this is the first tool you install, uv may suggest adding its tool directory to your PATH. If needed, follow that suggestion with:\nuv tool update-shell\nTo list globally installed tools:\nuv tool list\nTo remove the tool again:\nuv tool uninstall bat\nThese tools are isolated from your project environments, which keeps your system utilities separate from your project dependencies.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#sandbox-with-uvx",
+    "href": "lessons/virtual-environments.html#sandbox-with-uvx",
+    "title": "Virtual Environments",
+    "section": "Sandbox with uvx",
+    "text": "Sandbox with uvx\nSometimes you do not want to create or grow a full project environment. You might just want to try a tool quickly in an isolated sandbox.\nThat is what uvx is for. It runs a command from a package in a temporary environment without adding that package to your project’s dependencies.\nLet’s introduce another tool by Astral called Ruff. Ruff is a fast Python linter that can help you find and fix code issues. Linter are special tools that analyze your code for potential errors, style violations, and other issues. If you want to lint the current project with Ruff without installing Ruff into the project environment. You can run:\nuvx ruff check .\n\n\n\n\n\n\nTipNeed extra isolation?\n\n\n\n\n\nIf you want an extra-isolated throwaway environment that does not interact with already installed packages, you can also use:\nuvx --isolated ruff check .\n\n\n\nLess serious but more fun.\nuvx pycowsay hello\nor try some classic games from freegames pacakage:\nuvx freegames play snake\nThis command will download the freegames package, run the snake game, and then remove the package again when you exit the game.\nFor the list of available games, run:\nuvx freegames list\nor check the freegames documentation.\nThis is handy when you just want to explore a tool, run a one-off check, or try something quickly without making your project environment bigger.\nOnce you are done playing, to deactivate the lessson’s environment, run:\ndeactivate",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#the-book-project",
+    "href": "lessons/virtual-environments.html#the-book-project",
+    "title": "Virtual Environments",
+    "section": "The book project",
+    "text": "The book project\nThroughout this lesson, we built a uv project from scratch. If you’d like to see a complete example project, you can access it on GitHub at https://github.com/igorsdub/gecs-venv.\nTo use this example project on your machine:\ncd ~\ngit clone https://github.com/igorsdub/gecs-venv.git\ncd gecs-venv\nThen follow the instructions in the README.md file to set up the project.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#your-turn",
+    "href": "lessons/virtual-environments.html#your-turn",
+    "title": "Virtual Environments",
+    "section": "Your turn",
+    "text": "Your turn\nNow it’s your turn! Create a new project with uv init, add some dependencies, and run a small Python program. Make sure to commit your changes as you go.\nThen publish your project to GitHub and share the link with your classmates and see if they can recreate your environment with uv sync.\nLet them to modify your code and create pull requests. You can then review their changes and merge them into your project.\nPull the changes from your classmates, run uv sync to update your environment with their changes, and see if everything still works as expected.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#recap",
+    "href": "lessons/virtual-environments.html#recap",
+    "title": "Virtual Environments",
+    "section": "Recap",
+    "text": "Recap\nIn this lesson, you:\n\ninstalled uv\nused uv init to start a project\nedited pyproject.toml\ncreated .venv and uv.lock with uv sync\nlearned that uv.lock is a snapshot of package versions\nadded marimo, numpy, and matplotlib\nran the marimo plotting tutorial\ncommitted the project in small steps as it evolved\n\nThat is already enough to build a small, reproducible Python project that others can recreate on their own machines.",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/virtual-environments.html#further-reading",
+    "href": "lessons/virtual-environments.html#further-reading",
+    "title": "Virtual Environments",
+    "section": "Further reading",
+    "text": "Further reading\n\nuv documentation\nInstallation guide\nCreating projects with uv\nmarimo gallery",
+    "crumbs": [
+      "Virtual Environments"
+    ]
+  },
+  {
+    "objectID": "lessons/project-structure.html",
+    "href": "lessons/project-structure.html",
+    "title": "Project Structure",
+    "section": "",
+    "text": "If you get hit by a bus today, will your colleagues be able to run your project tomorrow?\nThe Bus Factor\nSoftware projects can be messy. Imagine joining a lab and receiving a project folder left by a previous postdoc. It might look something like this:\nOK, probably not as extreme. Still, newcomers to data science often put everything into a single folder: data, scripts, figures, and tables. That can work if you only need to run an analysis once and no one else will ever need to repeat it, including yourself. That is rarely true in research, whether in academia or industry. In this lesson, we will look at practical ways to help colleagues—and your future self—understand and run a project. Let’s get organized.",
+    "crumbs": [
+      "Project Structure"
+    ]
+  },
+  {
+    "objectID": "lessons/project-structure.html#learning-objectives",
+    "href": "lessons/project-structure.html#learning-objectives",
+    "title": "Project Structure",
+    "section": "Learning objectives",
+    "text": "Learning objectives\nBy the end of this lesson, you should be able to:\n\nrecognize common problems in an unstructured project;\norganize files into meaningful directories;\napply consistent, portable naming conventions; and\ncreate a README that enables someone else to run the project.",
+    "crumbs": [
+      "Project Structure"
+    ]
+  },
+  {
+    "objectID": "lessons/project-structure.html#messy-project",
+    "href": "lessons/project-structure.html#messy-project",
+    "title": "Project Structure",
+    "section": "Messy project",
+    "text": "Messy project\n.\n├── analysis.sh\n├── book1.txt\n├── book102.txt\n├── book2.txt\n├── book3.txt\n├── book5.txt\n├── book55.txt\n├── book79.txt\n├── plot.sh\n└── summary.sh\nFirst, try to make sense of what the project is about and how to use it.\nOpen the messy project on GitHub\nYou can inspect the files directly on GitHub, or clone the repository if you want to run the scripts locally:\ngit clone https://github.com/igorsdub/gecs-messy-project.git\nOpen the cloned directory with VS Code (Cmd+O). Before reading the explanation below, inspect the files and try to answer these questions:\n\nWhat is this project trying to do?\nWhich files are inputs, scripts, and outputs?\nIn what order should the scripts be run?\nWhat would make this project difficult for a colleague to continue?",
+    "crumbs": [
+      "Project Structure"
+    ]
+  },
+  {
+    "objectID": "lessons/project-structure.html#structured-project",
+    "href": "lessons/project-structure.html#structured-project",
+    "title": "Project Structure",
+    "section": "Structured project",
+    "text": "Structured project\n.\n├── books                           &lt;-- Text files of books used for analysis\n│   ├── dracula.txt\n│   ├── frankenstein.txt\n│   ├── jane_eyre.txt\n│   ├── moby_dick.txt\n│   ├── README.md                   &lt;-- README for the book files\n│   ├── sense_and_sensibility.txt\n│   ├── sherlock_holmes.txt\n│   └── time_machine.txt\n├── counts                          &lt;-- Word count .tsv data\n├── figures                         &lt;-- Bar plots of word counts\n├── README.md                       &lt;-- README for the project\n└── scripts                         &lt;-- Scripts directory\n    ├── count_words.sh              &lt;-- Counts occurrences of a word in books\n    ├── get_summary.sh              &lt;-- Gets a book summary\n    └── plot_counts.sh              &lt;-- Plots count histogram in terminal window\nThis is the same project, but organized.\nOpen the structured project on GitHub\nCompare this repository with the messy version. Look for improvements in directory names, file names, documentation, and the separation of inputs, scripts, and generated outputs. If you cloned the messy project, clone this repository as well and open both directories in VS Code.",
+    "crumbs": [
+      "Project Structure"
+    ]
+  },
+  {
+    "objectID": "lessons/project-structure.html#directory-structure",
+    "href": "lessons/project-structure.html#directory-structure",
+    "title": "Project Structure",
+    "section": "Directory structure",
+    "text": "Directory structure\nHere is a minimal directory structure adapted from bvreede on GitHub. More elaborate structures exist, but this is a useful starting point for many projects.\nThe directory structure distinguishes three kinds of folders:\n\nRead-only (RO): not edited by either code or researcher. For example, raw_data should preserve the original data exactly as received.\nHuman-writeable (HW): edited by the researcher only, such as scripts and project documentation.\nProject-generated (PG): folders generated when running the code. These folders can be deleted or emptied and should be completely reconstituted when the project is run again.\n\n.\n├── README.md          &lt;- Description and how to run the project (HW)\n├── requirements.txt   &lt;- Python package requirements (HW)\n├── environment.yml    &lt;- Optional environment specification (HW)\n├── processed_data     &lt;- Processed data ready for analysis (PG)\n├── raw_data           &lt;- The original, immutable data dump (RO)\n├── scripts            &lt;- Scripts for this project (HW)\n└── results            &lt;- Project results: tables, figures, etc. (PG)",
+    "crumbs": [
+      "Project Structure"
+    ]
+  },
+  {
+    "objectID": "lessons/project-structure.html#naming-files-and-directories",
+    "href": "lessons/project-structure.html#naming-files-and-directories",
+    "title": "Project Structure",
+    "section": "Naming files and directories",
+    "text": "Naming files and directories\nJenny Bryan from The Carpentries has shared online slides showing how to name—and how not to name—files and directories. The presentation can be summarized as follows.\n\nKISS (Keep It Simple Stupid): use simple and consistent file names\n\nMachine readable\nHuman readable\nOrders well in a directory\n\nAvoid special characters and spaces where possible, especially if files will be used across different operating systems or tools.\nUse YYYY-MM-DD date format\nUse - to delimit words and _ to delimit sections\n\ni.e. 2019-01-19_my-data.csv\n\nLeft-pad numbers\n\ni.e. 01_my-data.csv vs 1_my-data.csv\nIf you don’t, file orders get messed up when you get to double-digits\n\n\nYou can use a variation of the above as long as you are consistent within a project.",
+    "crumbs": [
+      "Project Structure"
+    ]
+  },
+  {
+    "objectID": "lessons/project-structure.html#readme",
+    "href": "lessons/project-structure.html#readme",
+    "title": "Project Structure",
+    "section": "README",
+    "text": "README\nREADME, or README.md since Markdown is widely used for project documentation, is one of the most important files in your project. It enables new users—and your future self—to understand and run the project without a considerable struggle.\nA useful README should explain:\n\nthe purpose of the project;\nhow to install or activate the required environment;\nhow to run the analysis;\nwhat inputs the project expects;\nwhere it writes tables, figures, and other outputs; and\nwho created or maintains the project.\n\nMake a README does a great job in conveying this message in a single webpage. Check it out!",
+    "crumbs": [
+      "Project Structure"
+    ]
+  },
+  {
+    "objectID": "lessons/project-structure.html#project-template",
+    "href": "lessons/project-structure.html#project-template",
+    "title": "Project Structure",
+    "section": "Project template",
+    "text": "Project template\nInstead of creating project directory with all its supplementary files, software developers came up with a boilerplate structure that can be created in minutes. Cookie Cutter Data Science project is one of those. Although, the default template is aimed towards machine learning / data science researchers, you can find a simpler one shared by other researchers online. Another option, to create your own template that suits your needs.\n\nAlso, check out their Opinions page for project management tips. For reproducibility, record the software environment in a file such as requirements.txt, environment.yml, or a lockfile such as uv.lock or poetry.lock.",
+    "crumbs": [
+      "Project Structure"
+    ]
+  },
+  {
+    "objectID": "lessons/project-structure.html#project-organization-checklist",
+    "href": "lessons/project-structure.html#project-organization-checklist",
+    "title": "Project Structure",
+    "section": "Project organization checklist",
+    "text": "Project organization checklist\nBefore sharing a project, check that:\n\nthe README explains the purpose, setup, inputs, commands, and outputs;\nraw data is clearly separated from processed data and is not overwritten;\nscripts are grouped in one place and can be run in a clear order;\ngenerated results can be deleted and recreated; and\nfile and directory names are simple, descriptive, and consistent.",
+    "crumbs": [
+      "Project Structure"
     ]
   }
 ]
