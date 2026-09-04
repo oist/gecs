@@ -104,6 +104,15 @@ Year 2 · [@viyuetuki](https://github.com/viyuetuki)
 
 </div>
 
+<div style="flex: 0 1 180px; text-align: center;">
+
+<img src="images/olga-bagrova.jpg" alt="Olga Bagrova" style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%;">
+
+**Olga Bagrova**<br>
+Year 1 · [@Olga-Bagrova](https://github.com/olga-bagrova)
+
+</div>
+
 </div>
 
 # Manifesto
