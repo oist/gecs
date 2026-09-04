@@ -4,6 +4,7 @@ Set FontSize 46
 Set Width 1200
 Set Height 400
 Set TypingSpeed 50ms
+Set Theme "Builtin Light"
 
 # Clear the shell setup without capturing it.
 Hide
