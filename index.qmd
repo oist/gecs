@@ -78,9 +78,9 @@ If you need help with configuring your computer for the course, come to this one
 **Location:** C102 (The Cafe Tancha meeting room)\
 
 # Registration
-For official details, see [the Graduate School hosted website](https://groups.oist.jp/grad/event/good-enough-computing-science-gecs-mini-course) on TIDA.
+For official details, see [the Graduate School hosted website](https://groups.oist.jp/grad/event/mini-course-good-enough-coding-science-gecs) on TIDA.
 
-<button class="btn btn-primary" onclick="window.open('https://example.com/registration', '_blank')">Register Here</button>
+<button class="btn btn-primary" onclick="window.open('https://forms.cloud.microsoft/pages/responsepage.aspx?id=jfvA2Fa7u0SfSsWOdGVlLiSomztCAudOh1m7OGIuZhhUNTFaSUgwNFNKNzJUWTVRWUFHVjNNWVZZTiQlQCN0PWcu&route=shorturl', '_blank')">Register Here</button>
 
 # People
 
