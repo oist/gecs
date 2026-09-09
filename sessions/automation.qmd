@@ -1,250 +1,427 @@
 ---
-title: "Automation"
+title: "Automation and Publication"
 format: html
 ---
 
-> This tutorial was adapted from the [Automation and Make](https://swcarpentry.github.io/make-novice/) lesson by [The Software Carpentries](https://software-carpentry.org/) and reworked for `gecs-make`.
+> "A computer lets you make more mistakes faster than any invention in human history—with the possible exceptions of handguns and tequila."
+> 
+> — Mitch Ratcliffe
 
-Prefer a presentation first? [View the Automation slides](../slides/automation.qmd).
+In research, an analysis is rarely run just once. Datasets are updated, bug fixes are made to preprocessing scripts, colleagues request new figures, and reviewers ask for revisions months after submission.
 
-Automation turns a one-off analysis into a workflow you can repeat. In this project, we start with books in `books/`, count their words in `counts/`, and create interactive plots in `figures/`.
+If reproducing your figures requires remembering a 12-step sequence of manual terminal commands, subtle discrepancies will inevitably creep in. In this final session, we transform our research project into a fully reproducible, self-documenting pipeline:
+
+1. **Represent the project as a Directed Acyclic Graph (DAG)** of files and dependencies.
+2. **Encode the DAG in GNU Make** to automate incremental rebuilds without redundant computation.
+3. **Achieve one-command clean reproduction** (`make clean && make check && make all`).
+4. **Publish an interactive Marimo analysis** to the web using **GitHub Actions** and **GitHub Pages**.
+
+---
+
+## The Analysis Pipeline as a Directed Acyclic Graph (DAG)
+
+In the previous sessions, we developed code to download books, count words, fit Zipf's law, and visualize results. Let's look at the flow of data through our project.
+
+Every research workflow can be expressed as a **Directed Acyclic Graph (DAG)** where:
+- **Nodes** are files (data inputs, intermediate tables, code files, and final figures).
+- **Edges (arrows)** represent transformations (which files are needed to produce which outputs).
+- **Acyclic** means the workflow flows strictly forward; an output cannot be its own input.
+
+### Conceptual Workflow View
+
+At a high level, raw texts flow through counting, aggregation, and curve fitting to produce final figures and an interactive report:
 
 ```{mermaid}
-%%{init: {"flowchart": {"curve": "basis"}, "theme": "base", "themeVariables": {"lineColor": "#64748b", "fontFamily": "Arial"}}}%%
+%%{init: {"flowchart": {"curve": "basis"}, "theme": "base", "themeVariables": {"fontFamily": "Arial"}}}%%
 flowchart LR
-    Book["books/dracula.txt"]:::data --> Counts["counts/dracula.tsv"]:::output --> Figure["figures/dracula.html"]:::output
-    CountScript("scripts/count_words.py"):::script -. creates .-> Counts
-    PlotScript("scripts/plot_counts.py"):::script -. creates .-> Figure
-    classDef data fill:#dbeafe,stroke:#2563eb,color:#000
-    classDef output fill:#dcfce7,stroke:#16a34a,color:#000
-    classDef script fill:#fef3c7,stroke:#b45309,color:#000
+    Raw["data/raw/<br>(Raw Books)"] --> Inter["data/intermediate/<br>(Per-Book Counts)"]
+    Inter --> Proc["data/processed/<br>(Combined Counts)"]
+    Proc --> Fits["output/tables/<br>(Zipf Fits CSV)"]
+    Proc --> Figs["output/figures/<br>(Static & HTML Plots)"]
+    Proc --> Site["_site/<br>(Published Marimo App)"]
+    classDef data fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000
+    classDef out fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000
+    class Raw,Inter,Proc data
+    class Fits,Figs,Site out
 ```
 
-We will first automate Dracula one file at a time. Only after that will we teach Make how to repeat the same workflow for every book.
+### Data and Result Directory Semantics
 
-## Set up the project
+Notice how our directories reflect clear data life cycles:
 
-Clone the example project and install its locked dependencies:
+| Directory | Purpose | Version Controlled? | Example File |
+|:---|:---|:---:|:---|
+| `data/raw/` | Original immutable inputs (Gutenberg text files). | **Yes** | `data/raw/frankenstein.txt` |
+| `data/intermediate/` | Generated per-book count tables. | No (Git ignored) | `data/intermediate/frankenstein.csv` |
+| `data/processed/` | Combined, analysis-ready multi-book dataset. | No (Git ignored) | `data/processed/book-counts.csv` |
+| `output/tables/` | Reader-facing tabular summaries. | No (Git ignored) | `output/tables/zipf-fits.csv` |
+| `output/figures/` | Reader-facing plots (SVG and standalone HTML). | No (Git ignored) | `output/figures/zipf-law.svg` |
+| `_site/` | Complete published interactive Marimo web application. | No (Git ignored) | `_site/index.html` |
 
-```bash
-git clone https://github.com/igorsdub/gecs-make.git
-cd gecs-make
-uv sync
+::: {.callout-note title="Data vs. Output Distinction"}
+A table belongs under `data/` when another analysis script consumes it. A table belongs under `output/` when its primary audience is a human reader or reviewer. File format alone (`.csv`) does not determine whether something is data or output.
+:::
+
+### File-Level DAG for Dracula and Frankenstein
+
+Here is the exact file-level DAG that connects our Python modules to our input and output files:
+
+```{mermaid}
+%%{init: {"flowchart": {"curve": "basis"}, "theme": "base", "themeVariables": {"fontFamily": "Arial"}}}%%
+flowchart LR
+    D_txt["data/raw/dracula.txt"]:::raw --> D_csv["data/intermediate/dracula.csv"]:::inter
+    F_txt["data/raw/frankenstein.txt"]:::raw --> F_csv["data/intermediate/frankenstein.csv"]:::inter
+    Code_counts["src/bookstats/counts.py"]:::code -.-> D_csv
+    Code_counts -.-> F_csv
+
+    D_csv --> Combined["data/processed/book-counts.csv"]:::proc
+    F_csv --> Combined
+    Code_counts -.-> Combined
+
+    Combined --> Zipf_csv["output/tables/zipf-fits.csv"]:::out
+    Combined --> Fig_svg["output/figures/zipf-law.svg"]:::out
+    Combined --> Fig_html["output/figures/zipf-law.html"]:::out
+    Code_zipf["src/bookstats/zipf.py"]:::code -.-> Zipf_csv
+    Code_zipf -.-> Fig_svg
+    Code_zipf -.-> Fig_html
+
+    Combined --> Site["_site/index.html"]:::out
+    Code_viz["notebooks/visualize.py"]:::code -.-> Site
+
+    classDef raw fill:#e0e7ff,stroke:#4338ca,stroke-width:1.5px,color:#000
+    classDef inter fill:#f1f5f9,stroke:#64748b,stroke-width:1.5px,color:#000
+    classDef proc fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#000
+    classDef out fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#000
+    classDef code fill:#fef3c7,stroke:#b45309,stroke-dasharray: 5 5,color:#000
 ```
 
-Check that GNU Make is available:
+Notice that Python scripts (`src/bookstats/counts.py`, `src/bookstats/zipf.py`) are **prerequisites** just like data files! If you alter the word-tokenizing algorithm in `counts.py`, all downstream counts and figures must be updated.
+
+---
+
+## Encoding the DAG with GNU Make
+
+[GNU Make](https://www.gnu.org/software/make/) is a build automation tool that has been a standard in computing for decades. Make uses a configuration file called a `Makefile` to define targets, their prerequisites, and the commands needed to build them.
+
+Check that Make is installed on your machine:
 
 ```bash
 make --version
 ```
 
-On macOS, install GNU Make with `brew install make` if needed; Homebrew may call it `gmake`. On Ubuntu or WSL, use `sudo apt install make`.
+### The Anatomy of a Make Rule
 
-### A first command target
-
-Make can name an action as well as build a file. Add this to a new `Makefile` in the project root:
+Every rule in a `Makefile` has three components:
 
 ```makefile
-.PHONY: requirements
-requirements:
-	uv sync
+target: prerequisite1 prerequisite2
+	recipe_command
 ```
 
-Now this familiar setup command also has a Make entry point:
+- **Target**: The file you want Make to build (or an action name).
+- **Prerequisites**: The files required to produce the target.
+- **Recipe**: The shell command that creates the target.
+
+::: {.callout-warning title="Indentation Rule: Tabs Only!"}
+Every recipe line **must** start with a literal **TAB** character, not spaces. In VS Code, you can press **Cmd/Ctrl+Shift+P**, type `Convert Indentation to Tabs`, and select it.
+:::
+
+Let's inspect how Make decides whether to execute a recipe:
+1. Does the target exist? If not, run the recipe.
+2. Are any prerequisites newer than the target (by checking file modification timestamps)? If yes, run the recipe.
+3. If the target exists and is newer than all prerequisites, Make skips the recipe because the target is up to date!
+
+---
+
+## Building the Project Makefile
+
+Create a feature branch for automation:
 
 ```bash
-make requirements
+git switch -c add-automation
+```
+
+Create a file named `Makefile` in the root of your `bookstats` repository.
+
+### Public Targets and Conventions
+
+We establish clear public targets for our project:
+
+```makefile
+.POSIX:
+.PHONY: all check clean help site
+
+# Default target: builds all analysis tables and figures
+all: data/processed/book-counts.csv output/tables/zipf-fits.csv output/figures/zipf-law.svg output/figures/zipf-law.html
 ```
 
 ::: {.callout-note title="What does `.PHONY` mean?"}
-`requirements` is an action, not a file we want to create. `.PHONY` tells Make to run the recipe even if a file named `requirements` happens to exist.
+A `.PHONY` declaration tells Make that a target is an action (like `clean` or `check`), rather than a physical file on disk. This prevents collisions if a file with that name ever exists.
 :::
 
-## First: make a count table
+### Code Quality Check Target
 
-Add this rule below `requirements`:
+Add a target to run all our linting, formatting, and test checks in one step:
 
 ```makefile
-counts/dracula.tsv: books/dracula.txt scripts/count_words.py
-	uv run python scripts/count_words.py books/dracula.txt counts/dracula.tsv
+# Run linter and automated test suite
+check:
+	uv run ruff check .
+	uv run ruff format --check .
+	uv run pytest -v
 ```
 
-Run it with:
+Try running it:
 
 ```bash
-make counts/dracula.tsv
+make check
 ```
 
-There are three parts to a rule:
+### Pattern Rules for Intermediate Per-Book Counts
 
-- **Target** — `counts/dracula.tsv`, the file we want Make to create.
-- **Prerequisites** — `books/dracula.txt` and `scripts/count_words.py`, the input book and the code that reads it.
-- **Recipe** — the indented `uv run python ...` command that creates the target.
-
-Before running the recipe, Make checks whether the target exists and whether either prerequisite is newer. If the target is missing or out of date, Make runs the recipe. Run the command a second time to see Make skip work that is already current.
-
-::: {.callout-tip title="Code is an input too"}
-The counting script is listed as a prerequisite on purpose. If you change the code, Make rebuilds the count table even when the book itself has not changed.
-:::
-
-::: {.callout-warning title="Recipe lines begin with a TAB"}
-Each recipe line in a Makefile must begin with a literal TAB character, not spaces. Otherwise Make usually reports `missing separator`.
-
-In VS Code, select the recipe lines and use **Command Palette → Convert Indentation to Tabs**. The example project includes an `.editorconfig` file that helps compatible editors keep this setting.
-:::
-
-## Next: turn counts into a plot
-
-Add a second rule:
+Instead of writing a separate rule for every single book in `data/raw/`, Make allows us to define a **pattern rule** using the `%` wildcard (stem matching):
 
 ```makefile
-figures/dracula.html: counts/dracula.tsv scripts/plot_counts.py
-	uv run python scripts/plot_counts.py counts/dracula.tsv figures/dracula.html
+RAW_BOOKS = $(wildcard data/raw/*.txt)
+INTERMEDIATE_COUNTS = $(patsubst data/raw/%.txt,data/intermediate/%.csv,$(RAW_BOOKS))
+
+# Pattern rule: Raw book -> Intermediate per-book word count CSV
+data/intermediate/%.csv: data/raw/%.txt src/bookstats/counts.py
+	@mkdir -p data/intermediate
+	uv run python -m bookstats.counts $< $@
 ```
 
-Now ask for the final output:
+Here:
+- `$<` is an automatic variable representing the **first prerequisite** (e.g. `data/raw/dracula.txt`).
+- `$@` is an automatic variable representing the **target** (e.g. `data/intermediate/dracula.csv`).
+- `$(wildcard ...)` and `$(patsubst ...)` dynamically discover any books added by the user—whether *Frankenstein*, *Dracula*, or any other novel from Project Gutenberg!
+
+### Aggregate Counts and Result Outputs
+
+Add the rules to combine counts and produce the reader-facing Zipf fit table and figures:
+
+```makefile
+PROCESSED_DATA = data/processed/book-counts.csv
+FIT_TABLE = output/tables/zipf-fits.csv
+FIGURE_SVG = output/figures/zipf-law.svg
+FIGURE_HTML = output/figures/zipf-law.html
+
+# Combined processed dataset
+$(PROCESSED_DATA): $(INTERMEDIATE_COUNTS) src/bookstats/counts.py
+	@mkdir -p data/processed
+	uv run python -m bookstats.counts --combine $(INTERMEDIATE_COUNTS) -o $@
+
+# Reader-facing Zipf fit summary table
+$(FIT_TABLE): $(PROCESSED_DATA) src/bookstats/zipf.py
+	@mkdir -p output/tables
+	uv run python -m bookstats.zipf $< --table $@
+
+# Reader-facing figures: SVG and standalone interactive HTML
+$(FIGURE_SVG) $(FIGURE_HTML): $(PROCESSED_DATA) src/bookstats/zipf.py
+	@mkdir -p output/figures
+	uv run python -m bookstats.zipf $< --svg $(FIGURE_SVG) --html $(FIGURE_HTML)
+```
+
+### Publishing the Interactive Marimo Website
+
+Add the target that exports our interactive Marimo notebook into a standalone HTML publication artifact:
+
+```makefile
+SITE_INDEX = _site/index.html
+
+# Interactive Marimo application publication artifact
+$(SITE_INDEX): $(PROCESSED_DATA) notebooks/visualize.py
+	@mkdir -p _site
+	uv run marimo export html notebooks/visualize.py -o $@
+
+site: $(SITE_INDEX)
+```
+
+### Clean and Help Targets
+
+Finally, add targets to clean generated artifacts and display help:
+
+```makefile
+# Clean all generated, non-committed data, output artifacts, and website build
+clean:
+	rm -rf data/intermediate data/processed output _site .pytest_cache .ruff_cache
+
+# Display available Make targets
+help:
+	@echo "Available make targets:"
+	@echo "  all    - Build processed data, fit tables, and figures (default)"
+	@echo "  check  - Run Ruff linting/formatting checks and pytest test suite"
+	@echo "  clean  - Remove all generated data, outputs, and build artifacts"
+	@echo "  site   - Export interactive Marimo website to _site/index.html"
+	@echo "  help   - Show this help message"
+```
+
+---
+
+## Observing Incremental Rebuilds
+
+The magic of build automation is **incremental computation**.
+
+1. Run `make all`. Make runs the counting scripts, combines tables, and produces figures.
+2. Run `make all` a second time immediately. Make prints:
+   ```text
+   make: Nothing to be done for `all'.
+   ```
+   Because no files were modified, Make executes **zero commands**.
+3. Now touch a single book:
+   ```bash
+   touch data/raw/dracula.txt
+   make all
+   ```
+   Watch Make's output carefully:
+   - Make rebuilds `data/intermediate/dracula.csv`.
+   - Make **does not** rebuild `data/intermediate/frankenstein.csv`!
+   - Because intermediate Dracula counts changed, Make rebuilds `data/processed/book-counts.csv`, `output/tables/zipf-fits.csv`, and the figures.
+4. Now modify `notebooks/visualize.py`:
+   ```bash
+   touch notebooks/visualize.py
+   make site
+   ```
+   Make rebuilds `_site/index.html`, but does **not** re-parse books or re-fit tables.
+
+---
+
+## The Ultimate Test: Clean One-Command Reproduction
+
+To prove that your project is fully reproducible and has no hidden manual dependencies, run:
 
 ```bash
-make figures/dracula.html
+make clean
+make check
+make all
+make site
 ```
 
-Make notices that the HTML plot needs the count table. It builds `counts/dracula.tsv` first if necessary, then runs the plotting recipe. The resulting dependency chain is a **directed acyclic graph** (DAG): each arrow has a direction, and the workflow cannot loop back on itself.
+In under 10 seconds, Make cleans all intermediate state, validates code quality and tests, regenerates the full analysis from raw texts, and compiles the interactive website.
+
+Commit the Makefile:
+
+```bash
+git add Makefile
+git commit -m "feat: encode full analysis DAG in Makefile"
+```
+
+---
+
+## Continuous Integration and Publication: GitHub Actions & Pages
+
+Now that our analysis pipeline is automated locally, we can deploy a robot in the cloud to run this exact pipeline whenever changes are pushed to GitHub.
+
+Create a GitHub Actions workflow file at `.github/workflows/publish.yml`:
+
+```yaml
+name: Check and Publish
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          version: "latest"
+
+      - name: Set up Python 3.12
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: uv sync --frozen
+
+      - name: Run code quality checks and tests
+        run: make check
+
+      - name: Run analysis pipeline
+        run: make all
+
+      - name: Build publication website
+        run: make site
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+### Enabling GitHub Pages
+
+1. Commit and push the workflow:
+   ```bash
+   git add .github/workflows/publish.yml
+   git commit -m "ci: automate testing, DAG pipeline, and GitHub Pages deployment"
+   git push -u origin add-automation
+   ```
+2. Merge the Pull Request on GitHub into `main`.
+3. In your repository on GitHub, navigate to **Settings → Pages**.
+4. Under **Build and deployment → Source**, select **GitHub Actions**.
 
 ```{mermaid}
-%%{init: {"flowchart": {"curve": "basis"}, "theme": "base", "themeVariables": {"lineColor": "#64748b", "fontFamily": "Arial"}}}%%
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Arial"}}}%%
 flowchart LR
-    Book["books/dracula.txt"]:::data --> Counts["counts/dracula.tsv"]:::output --> Figure["figures/dracula.html"]:::output
-    CountScript("scripts/count_words.py"):::script -. prerequisite .-> Counts
-    PlotScript("scripts/plot_counts.py"):::script -. prerequisite .-> Figure
-    classDef data fill:#dbeafe,stroke:#2563eb,color:#000
-    classDef output fill:#dcfce7,stroke:#16a34a,color:#000
-    classDef script fill:#fef3c7,stroke:#b45309,color:#000
+    Push["git push origin main"] --> Action["GitHub Actions Runner"]
+    Action --> Sync["uv sync --frozen"]
+    Sync --> Check["make check (Ruff & Pytest)"]
+    Check --> Build["make all & make site"]
+    Build --> Pages["Deploy to GitHub Pages URL"]
+    classDef git fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#000
+    classDef pub fill:#dcfce7,stroke:#16a34a,stroke-width:2px,color:#000
+    class Push,Action,Sync,Check,Build git
+    class Pages pub
 ```
 
-## From one book to every book
+Within 1–2 minutes, the GitHub Action will finish running `make check`, `make all`, and `make site`, and will publish your interactive Marimo analysis to `https://<your-username>.github.io/bookstats/`!
 
-The two Dracula rules work, but copying them for every title would be tedious. We will generalize the same plan in small pieces.
+---
 
-### Give repeated commands names
+## OIST Transfer Task & Reflection
 
-At the top of the Makefile, add variables for the parts we repeat:
+Reflect on your scientific computing workflows at OIST:
 
-```makefile
-PYTHON := uv run python
-COUNT_SCRIPT := scripts/count_words.py
-PLOT_SCRIPT := scripts/plot_counts.py
-```
+1. **Map your DAG**: On paper or in a markdown file, sketch the Directed Acyclic Graph of one of your active research projects. What are the raw instruments/sequencer files? What intermediate files are generated? What figures end up in manuscripts?
+2. **Identify Bottlenecks**: Are there steps you currently run by copying and pasting terminal commands? Could a single `Makefile` rule eliminate the risk of forgetting a step?
+3. **Continuous Verification**: How could automated tests and linting in GitHub Actions protect your group's shared code repository from accidental regressions?
 
-Then the Dracula recipe can use those names:
+---
 
-```makefile
-	$(PYTHON) $(COUNT_SCRIPT) books/dracula.txt counts/dracula.tsv
-```
+## Congratulations!
 
-Variables keep shared information in one place. If the command or script path changes, update it once.
+Across four sessions, you have progressed from an empty folder to a published, reproducible scientific research project:
+- **Session 1**: Managed version control, branches, issues, and peer code reviews on GitHub.
+- **Session 2**: Built an isolated, reproducible environment with `uv`, modularized scripts into an installable Python package, and created an interactive Marimo exploratory app.
+- **Session 3**: Enforced formatting with Ruff, guarded commits with pre-commit hooks, applied Test-Driven Development with pytest, and derived descriptive Zipf fits.
+- **Session 4**: Encoded the end-to-end dependency DAG in GNU Make, verified one-command reproduction, and published an interactive analysis to GitHub Pages with GitHub Actions.
 
-### Find the books that really exist
-
-`wildcard` searches the directory when Make reads the file. Add:
-
-```makefile
-BOOK_FILES := $(wildcard books/*.txt)
-
-.PHONY: print-books
-print-books:
-	@printf "%s\n" $(BOOK_FILES)
-```
-
-Try it:
-
-```bash
-make print-books
-```
-
-The leading `@` hides the `printf` command itself, leaving only the filenames in the output.
-
-### Derive the output filenames
-
-`patsubst` transforms every matching book path into another path. Add these variables and the two small inspection targets:
-
-```makefile
-COUNT_FILES := $(patsubst books/%.txt,counts/%.tsv,$(BOOK_FILES))
-FIGURE_FILES := $(patsubst books/%.txt,figures/%.html,$(BOOK_FILES))
-
-.PHONY: print-counts print-figures
-print-counts:
-	@printf "%s\n" $(COUNT_FILES)
-
-print-figures:
-	@printf "%s\n" $(FIGURE_FILES)
-```
-
-For example, `patsubst` changes `books/moby_dick.txt` into `counts/moby_dick.tsv`. Use `make print-counts` and `make print-figures` to inspect the lists before building anything.
-
-### Replace the Dracula rules with pattern rules
-
-The `%` means “the same filename stem.” These two rules work for Dracula, Frankenstein, and any other matching book automatically:
-
-```makefile
-counts/%.tsv: books/%.txt $(COUNT_SCRIPT)
-	@mkdir -p $(@D)
-	$(PYTHON) $(COUNT_SCRIPT) $< $@
-
-figures/%.html: counts/%.tsv $(PLOT_SCRIPT)
-	@mkdir -p $(@D)
-	$(PYTHON) $(PLOT_SCRIPT) $< $@
-```
-
-`$<` is the first prerequisite and `$@` is the target currently being built. In the first rule, that means “read this book and write this count table.” `mkdir -p $(@D)` makes sure the output directory exists before the script writes its file.
-
-Finally, add an `all` target that depends on every HTML plot:
-
-```makefile
-.PHONY: all
-all: $(FIGURE_FILES)
-```
-
-Now Make can build the complete project:
-
-```bash
-make all
-```
-
-Add another `.txt` file to `books/` and rerun `make all`. The file lists and pattern rules pick it up without any new handwritten analysis rule.
-
-::: {.callout-note collapse="true" title="Optional commands and the project graph"}
-
-The full project Makefile also provides a few convenience targets:
-
-```makefile
-.PHONY: clean help
-
-clean:
-	rm -f $(COUNT_FILES) $(FIGURE_FILES) $(FIGURE_FILES:.html=.png) figures/workflow.svg
-
-help:
-	@printf "Available targets:\n"
-	@printf "  make requirements           Install locked dependencies with uv sync\n"
-	@printf "  make print-books            List input book files\n"
-	@printf "  make all                    Build HTML plots for all books\n"
-	@printf "  make clean                  Remove generated files\n"
-```
-
-Use `make clean` to remove generated count tables, plots, companion PNGs, and the workflow graphic. `make help` prints the main entry points.
-
-The optional `make dag` target uses [makefile-graph](https://github.com/dnaeon/makefile-graph) and [Graphviz](https://graphviz.org/) to render a compact projection of the real project. It shows four representative books so the graph stays readable. Install the graph tool first if necessary:
-
-```bash
-go install github.com/dnaeon/makefile-graph/cmd/makefile-graph@latest
-make dag
-```
-
-In the generated graph, blue rounded boxes are files and gold boxes are Python scripts. The arrows show the data flow from source book through count table to HTML figure.
-
-![Project-generated DAG for four representative books](/images/automation-project-dag.svg){fig-alt="A generated directed acyclic graph that shows Dracula, Frankenstein, Moby-Dick, and Sherlock Holmes flowing from text files through count tables to HTML figures. Gold script nodes provide the count and plot steps."}
-
-:::
-
-## Takeaway
-
-Make is most useful when your work produces files from other files. First name one output and its inputs. Then use variables, file lists, and pattern rules to apply that same plan to a whole directory of inputs.
+These principles form the bedrock of transparent, reproducible, and good-enough scientific research.
