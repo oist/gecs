@@ -3,7 +3,9 @@ title: "Git and GitHub Collaboration"
 format: html
 ---
 
-> "Collaboration is the cornerstone of scientific progress. Transparent, version-controlled workflows ensure that progress is reproducible, auditable, and shared."
+> If I could turn back time
+>
+> Cher, *If I Could Turn Back Time* (1989)
 
 In this session, you will start a cumulative research project from an initially empty repository. You will document the project, acquire plain-text book data from Project Gutenberg, publish the repository to GitHub, and collaborate with a partner using an issue-driven fork, branch, pull request, and merge commit workflow.
 

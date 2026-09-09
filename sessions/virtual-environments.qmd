@@ -3,7 +3,9 @@ title: "Reproducible Projects"
 format: html
 ---
 
-> "Reproducibility begins with declaring what our software needs to run. If an environment cannot be rebuilt from version-controlled configuration, an analysis cannot be trusted to produce the same results tomorrow."
+> If you get hit by a bus today, will your colleagues be able to run your project tomorrow?
+>
+> [The Bus Factor](https://en.wikipedia.org/wiki/Bus_factor)
 
 ![Python Environment by [xkcd](https://xkcd.com/1987/)](https://imgs.xkcd.com/comics/python_environment.png)
 
