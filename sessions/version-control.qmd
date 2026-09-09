@@ -1,11 +1,13 @@
 ---
-title: "Version Control"
+title: "Git and GitHub Collaboration"
 format: html
 ---
 
 > "Collaboration is the cornerstone of scientific progress. Transparent, version-controlled workflows ensure that progress is reproducible, auditable, and shared."
 
 In this session, you will start a cumulative research project from an initially empty repository. You will document the project, acquire plain-text book data from Project Gutenberg, publish the repository to GitHub, and collaborate with a partner using an issue-driven fork, branch, pull request, and merge commit workflow.
+
+![Two ways to manage project history: (*Left*) A precarious stack of ambiguously named files that easily breaks. (*Right*) Version control acts like a dial, letting you navigate project history reliably.](https://raw.githubusercontent.com/the-turing-way/the-turing-way/refs/heads/main/book/figures/project-history.svg)
 
 ::: {.callout-note title="Recovery Checkpoint: git-collaboration" collapse="true"}
 If you join late or need to reset your project to the verified end state of this session, you can download the prepared snapshot from the canonical reference repository:
@@ -29,6 +31,24 @@ By the end of this two-hour session, you will be able to:
 
 ---
 
+## The Collaboration Workflow
+
+The diagram below shows how you and your partner collaborate during this session:
+
+```{mermaid}
+gitGraph
+   commit id: "docs: initialize README"
+   commit id: "data: add Frankenstein"
+   branch add-dracula
+   checkout add-dracula
+   commit id: "data: add Dracula"
+   commit id: "docs: record Dracula"
+   checkout main
+   merge add-dracula id: "Merge PR #1: add-dracula"
+```
+
+---
+
 ## The Course Project: Gutenberg Book Analysis
 
 Throughout GECS, each participant builds their own independent repository (such as `gutenberg-analysis`). We analyze word distributions and test power-law relationships (Zipf's law) across classic literature from [Project Gutenberg](https://www.gutenberg.org/).
@@ -49,7 +69,7 @@ gutenberg-analysis/
 
 ---
 
-## Step 1: Create an Empty Repository and Initialize Git
+## Create an Empty Repository and Initialize Git
 
 We use **VS Code** as our primary interface. Adjacent terminal commands are provided in collapsible callouts for learners who prefer the command line.
 
@@ -58,6 +78,8 @@ We use **VS Code** as our primary interface. Adjacent terminal commands are prov
 3. Click **New Folder**, name it `gutenberg-analysis`, and click **Open**.
 4. In the Activity Bar on the left, click the **Source Control** icon (`Ctrl+Shift+G` or `Cmd+Shift+G`).
 5. Click **Initialize Repository**.
+
+![Initialize a local repository in VS Code.](/images/version-control_vscode_initialize-repository_official.png)
 
 ::: {.callout-tip title="Terminal equivalent" collapse="true"}
 ```bash
@@ -71,7 +93,7 @@ VS Code initializes a hidden `.git/` directory. Your folder is now a Git reposit
 
 ---
 
-## Step 2: Author a Minimal README
+## Author a Minimal README
 
 A project should always introduce itself. Create a minimal `README.md` in the root of your workspace:
 
@@ -119,6 +141,9 @@ The leading 5-digit number is the official Project Gutenberg ebook ID padded wit
 3. Save the file (`Cmd+S` / `Ctrl+S`).
 4. Switch to the **Source Control** view.
 5. Click the **`+`** icon next to `README.md` to stage the file.
+
+![Stage changes in the VS Code Source Control view.](/images/version-control_vscode_stage-changes.png)
+
 6. Enter the commit message:
    ```text
    docs: initialize project with README
@@ -134,7 +159,7 @@ git commit -m "docs: initialize project with README"
 
 ---
 
-## Step 3: Download and Name Your First Book
+## Download and Name Your First Book
 
 Project Gutenberg assigns every public domain work an integer eBook ID. To ensure consistent sorting and unambiguous file paths, our project uses the following convention:
 
@@ -182,11 +207,13 @@ curl -sL https://www.gutenberg.org/cache/epub/84/pg84.txt -o 00084_frankenstein.
 
 ---
 
-## Step 4: Commit Added Files Individually
+## Commit Added Files Individually
 
 A fundamental principle of version control is **atomic commits**: each commit should represent one focused, logical change.
 
 Do not bundle raw data additions and documentation updates into a single giant commit.
+
+![The Source Control view showing changed and unstaged files in VS Code.](/images/version-control_vscode_source-control_changes.png)
 
 1. In Source Control, stage `00084_frankenstein.txt` only by clicking its **`+`** icon.
 2. Commit with the message:
@@ -211,12 +238,15 @@ git commit -m "docs: record Frankenstein in README book table"
 
 ---
 
-## Step 5: Publish Your Repository to GitHub
+## Publish Your Repository to GitHub
 
 To collaborate, your repository must exist on a shared remote server.
 
 1. In the VS Code Source Control view, click **Publish Branch** (or **Publish to GitHub**).
 2. If prompted, authorize VS Code to access your GitHub account.
+
+![The GitHub sign-in prompt in VS Code.](/images/version-control_vscode_github-signin.png)
+
 3. Choose **Publish to GitHub public repository** (`<your-username>/gutenberg-analysis`).
 4. Once published, click **Open on GitHub** in the popup notification to inspect your public repository in the browser.
 
@@ -233,7 +263,7 @@ git push -u origin main
 
 ---
 
-## Step 6: Pair Up with a Partner
+## Pair Up with a Partner
 
 Form pairs with a neighbor. You do not need to be on the same operating system (a macOS user can partner with a Linux or Windows/WSL user).
 
@@ -241,11 +271,11 @@ Identify:
 - **Partner A**: The repository owner for the first round.
 - **Partner B**: The contributor for the first round.
 
-You will swap roles in Step 12 so both partners complete both roles.
+You will swap roles later so both partners complete both roles.
 
 ---
 
-## Step 7: Issue-Driven Collaboration
+## Issue-Driven Collaboration
 
 Professional software and scientific projects use **issues** to propose, discuss, and track changes before code is written.
 
@@ -273,7 +303,7 @@ You can propose **any book** that you find interesting from Project Gutenberg fo
 
 ---
 
-## Step 8: Fork versus Clone
+## Fork versus Clone
 
 When you contribute to someone else's public GitHub repository, you typically do not have direct write/push permissions to their repository. Attempting to push directly to their `main` branch will result in `Permission denied (HTTP 403)`.
 
@@ -300,6 +330,8 @@ To propose changes, we use the **Fork and Pull Request** workflow:
    - Paste the URL of **your fork** (`https://github.com/<partner-b>/gutenberg-analysis.git`).
    - Select a local directory (e.g. your projects folder) and click **Open**.
 
+![Cloning a repository in VS Code.](/images/version-control_vscode_clone-repository.png)
+
 ::: {.callout-tip title="Terminal equivalent" collapse="true"}
 ```bash
 git clone https://github.com/<partner-b>/gutenberg-analysis.git
@@ -309,7 +341,7 @@ cd gutenberg-analysis
 
 ---
 
-## Step 9: Create a Short-Lived Feature Branch
+## Create a Short-Lived Feature Branch
 
 Never work directly on `main` when contributing a change. A feature branch isolates your modifications from the stable `main` branch.
 
@@ -330,7 +362,7 @@ git checkout -b add-dracula
 
 ---
 
-## Step 10: Add the Proposed Book and Update the Inventory
+## Add the Proposed Book and Update the Inventory
 
 On your `add-dracula` branch:
 
@@ -358,7 +390,7 @@ curl -sL https://www.gutenberg.org/cache/epub/345/pg345.txt -o 00345_dracula.txt
 
 ---
 
-## Step 11: Commit, Push, and Open a Pull Request
+## Commit, Push, and Open a Pull Request
 
 1. In VS Code Source Control, stage `00345_dracula.txt` and commit:
    ```text
@@ -368,7 +400,7 @@ curl -sL https://www.gutenberg.org/cache/epub/345/pg345.txt -o 00345_dracula.txt
    ```text
    docs: record Dracula in README book table (Closes #1)
    ```
-   *(Replace `#1` with the actual issue number from Step 7).*
+   *(Replace `#1` with the actual issue number).*
 3. Click the **Publish Branch** button in Source Control. This pushes `add-dracula` to your fork on GitHub.
 4. Navigate to your fork on GitHub in your browser.
 5. GitHub will display a banner: *"add-dracula had recent pushes. Compare & pull request"*. Click **Compare & pull request**.
@@ -378,6 +410,8 @@ curl -sL https://www.gutenberg.org/cache/epub/345/pg345.txt -o 00345_dracula.txt
    Closes #1
    ```
 8. Click **Create pull request**.
+
+![Create a pull request from VS Code or GitHub.](/images/version-control_vscode_create-pull-request-view.png)
 
 ::: {.callout-tip title="Terminal equivalent" collapse="true"}
 ```bash
@@ -393,7 +427,7 @@ git push -u origin add-dracula
 
 ---
 
-## Step 12: Review and Merge with a Merge Commit
+## Review and Merge with a Merge Commit
 
 Now switch roles: **Partner A** reviews the pull request submitted by **Partner B**.
 
@@ -417,7 +451,7 @@ Now switch roles: **Partner A** reviews the pull request submitted by **Partner 
 
 ---
 
-## Step 13: Clean Up the Completed Branch
+## Clean Up the Completed Branch
 
 Once a branch has been merged into `main`, its job is done. Retaining merged feature branches clutters the repository.
 
@@ -436,15 +470,20 @@ Notice that Git requires you to switch away from a branch before you can delete 
 
 ---
 
-## Step 14: Pull Merged Changes and Inspect History
+## Pull Merged Changes and Inspect History
 
 Now **Partner A** syncs their local clone to pull the new commits from GitHub:
 
 1. In VS Code, open the Source Control view.
-2. Click the `...` (More Actions) menu at the top of the Source Control panel, and select **Pull**.
+2. Click the `...` (More Actions) menu at the top of the Source Control panel, and select **Pull** (or use the Sync status bar button).
+
+![Fetch, pull, and push controls in VS Code.](/images/version-control_vscode_sync-fetch-pull-push.png)
+
 3. In the Source Control Graph (or using Git Graph extension / terminal), inspect the history:
 
-```mermaid
+![The Source Control Graph view in VS Code showing branch and merge commits.](/images/version-control_vscode_source-control-graph.png)
+
+```{mermaid}
 gitGraph
    commit id: "docs: initialize README"
    commit id: "data: add Frankenstein"
@@ -453,7 +492,7 @@ gitGraph
    commit id: "data: add Dracula"
    commit id: "docs: record Dracula"
    checkout main
-   merge add-dracula id: "Merge PR #1 from partner/add-dracula"
+   merge add-dracula id: "Merge PR #1: add-dracula"
 ```
 
 ::: {.callout-tip title="Terminal equivalent" collapse="true"}
@@ -469,7 +508,7 @@ You can clearly see the separate line of development branching out from `main`, 
 
 ## Now Swap Roles!
 
-Repeat Steps 7 through 14 with the roles reversed:
+Repeat the workflow with the roles reversed:
 - **Partner A** opens an issue, forks **Partner B's** repository, creates a feature branch, and opens a PR.
 - **Partner B** reviews, approves, merges via a merge commit, and deletes the branch.
 

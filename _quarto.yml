@@ -17,13 +17,13 @@ website:
         href: sessions/setting-up.qmd
       - section: "Sessions"
         contents:
-          - text: "Version Control"
+          - text: "Git and GitHub Collaboration"
             href: sessions/version-control.qmd
-          - text: "Virtual Environments"
+          - text: "Reproducible Projects"
             href: sessions/virtual-environments.qmd
-          - text: "Testing"
+          - text: "Code Quality and Testing"
             href: sessions/testing.qmd
-          - text: "Automation"
+          - text: "Automation and Publication"
             href: sessions/automation.qmd
       - section: "Reference"
         contents:

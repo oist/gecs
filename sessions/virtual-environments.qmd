@@ -1,9 +1,11 @@
 ---
-title: "Virtual Environments"
+title: "Reproducible Projects"
 format: html
 ---
 
 > "Reproducibility begins with declaring what our software needs to run. If an environment cannot be rebuilt from version-controlled configuration, an analysis cannot be trusted to produce the same results tomorrow."
+
+![Python Environment by [xkcd](https://xkcd.com/1987/)](https://imgs.xkcd.com/comics/python_environment.png)
 
 In Session 1, you created an empty repository, documented its purpose, added raw literature data from Project Gutenberg, and practiced collaborative Git workflows. Your project had a clean but flat structure: a `README.md` and plain-text book files.
 
@@ -75,7 +77,7 @@ In the examples below, we demonstrate commands using Mary Shelley's *Frankenstei
 
 ---
 
-## Milestone 1: Declaring the Environment (`set-up-venv`)
+## Declaring the Environment (`set-up-venv`)
 
 ### Why Virtual Environments?
 
@@ -85,7 +87,7 @@ A **virtual environment** is an isolated folder (conventionally named `.venv/`) 
 
 ### Why `uv`?
 
-![uv by Astral](https://astral.sh/)
+![uv by [Astral](https://astral.sh/)](/images/virtual-environments_UV.png)
 
 [Astral `uv`](https://docs.astral.sh/uv/) is a fast, modern Python package and project manager written in Rust. It replaces `pip`, `venv`, `pip-tools`, and `poetry` with a unified tool that:
 - Pins the project's exact Python interpreter version.
@@ -93,7 +95,7 @@ A **virtual environment** is an isolated folder (conventionally named `.venv/`) 
 - Generates a universal lock file (`uv.lock`) for cross-platform reproducibility.
 - Automatically handles virtual environment creation and execution without requiring constant manual shell activation.
 
-### Step 1: Create the Feature Branch
+### Create the Feature Branch
 
 In VS Code:
 1. Open your `gutenberg-analysis` repository.
@@ -106,7 +108,7 @@ git checkout -b set-up-venv
 ```
 :::
 
-### Step 2: Pin Python 3.12 and Initialize `uv`
+### Pin Python 3.12 and Initialize `uv`
 
 Open the VS Code Integrated Terminal (`Ctrl+\`` or `Cmd+\``). Make sure you are in your project root:
 
@@ -136,7 +138,7 @@ Inspect the newly created files in the VS Code Explorer:
 - **`.python-version`**: contains `3.12`. It informs `uv` which Python interpreter must be used for this project. If Python 3.12 is not installed on your system, `uv` will automatically download an isolated, standalone build of Python 3.12 on demand!
 - **`pyproject.toml`**: the standardized project manifest defining metadata, Python requirements, and dependencies.
 
-### Step 3: Inspect and Update `pyproject.toml`
+### Inspect and Update `pyproject.toml`
 
 Open `pyproject.toml` in VS Code. It will look like this:
 
@@ -158,7 +160,7 @@ description = "A cumulative research project analyzing Project Gutenberg word di
 
 Notice `dependencies = []`. It is currently empty because we have not declared any third-party packages yet.
 
-### Step 4: Ensure `.venv/` is Ignored by Git
+### Ensure `.venv/` is Ignored by Git
 
 Look at your `.gitignore` file. If `uv init` did not create one or if `.venv` is missing, open `.gitignore` and ensure it includes:
 
@@ -175,7 +177,7 @@ __pycache__/
 3. **Reproducibility**: We commit the *declarations* (`pyproject.toml` and `uv.lock`), not the *artifacts* (`.venv/`). Anyone can recreate the exact environment on any computer with `uv sync`.
 :::
 
-### Step 5: Create and Test the Environment
+### Create and Test the Environment
 
 Tell `uv` to resolve dependencies and build the virtual environment:
 
@@ -218,7 +220,7 @@ deactivate
 
 The `(gutenberg-analysis)` prefix disappears. With `uv`, you will rarely need to activate environments manually because `uv run` handles execution transparently.
 
-### Step 6: Configure VS Code's Python Interpreter
+### Configure VS Code's Python Interpreter
 
 To ensure VS Code provides autocomplete, linting, and type checking using your project environment:
 1. Press `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux) to open the Command Palette.
@@ -227,7 +229,7 @@ To ensure VS Code provides autocomplete, linting, and type checking using your p
 
 VS Code will remember this setting in your workspace.
 
-### Step 7: Commit, Push, Review, and Merge Milestone 1
+### Commit, Push, Review, and Merge Milestone 1
 
 Check your changes in the VS Code Source Control panel:
 - Staged/Untracked: `.python-version`, `pyproject.toml`, `uv.lock`, `.gitignore`.
@@ -246,7 +248,7 @@ Check your changes in the VS Code Source Control panel:
 
 ---
 
-## Milestone 2: Undeclared Dependencies (`add-word-counting`)
+## Undeclared Dependencies (`add-word-counting`)
 
 ### The Concept: Imports vs. Dependencies
 
@@ -257,7 +259,7 @@ A common misconception among beginner programmers is that Python automatically k
 
 Let's experience this failure firsthand.
 
-### Step 1: Create the Feature Branch
+### Create the Feature Branch
 
 In VS Code:
 1. Create and switch to branch `add-word-counting`:
@@ -265,7 +267,7 @@ In VS Code:
    git checkout -b add-word-counting
    ```
 
-### Step 2: Add the Word Counting Script
+### Add the Word Counting Script
 
 Download or copy the starter script [`count_words.py`](https://github.com/oist/gecs/raw/main/assets/scripts/count_words.py) into your repository root:
 
@@ -294,7 +296,7 @@ import polars as pl
 
 Notice line 13: `import polars as pl`.
 
-### Step 3: Experience the Intentional Failure
+### Experience the Intentional Failure
 
 Attempt to run the script inside your project using plain Python:
 
@@ -319,7 +321,7 @@ ModuleNotFoundError: No module named 'polars'
 
 The script asks for `polars`, but `polars` is not in our environment because it was never declared in `pyproject.toml`.
 
-### Step 4: Declare and Resolve the Dependency
+### Declare and Resolve the Dependency
 
 Use `uv add` to declare `polars`:
 
@@ -348,7 +350,7 @@ Look at what changed:
 Unlike older tools where you ran `pip install polars` and then manually remembered to run `pip freeze > requirements.txt`, `uv add` updates `pyproject.toml`, locks the versions in `uv.lock`, and installs them into `.venv/` in one atomic operation.
 :::
 
-### Step 5: Run the Script Successfully
+### Run the Script Successfully
 
 Now run the script using `uv run`:
 
@@ -378,9 +380,9 @@ was,1018
 ...
 ```
 
-### Step 6: Commit, Push, Review, and Merge Milestone 2
+### Commit, Push, Review, and Merge Milestone 2
 
-Remove the generated CSV file before committing (we will organize outputs properly in Milestone 3):
+Remove the generated CSV file before committing (we will organize outputs properly in the next milestone):
 
 ```bash
 rm *.csv
@@ -398,7 +400,7 @@ rm *.csv
 
 ---
 
-## Milestone 3: Separating Data from Code (`separate-data`)
+## Separating Data from Code (`separate-data`)
 
 Right now, our repository root has raw books (`00084_frankenstein.txt`), Python scripts (`count_words.py`), and configuration files all mixed together. When analysis scripts generate intermediate tables, where should they go?
 
@@ -448,13 +450,13 @@ gutenberg-analysis/
 └── scripts/           # Standalone executable scripts
 ```
 
-### Step 1: Create the Feature Branch
+### Create the Feature Branch
 
 ```bash
 git checkout -b separate-data
 ```
 
-### Step 2: Create Directories and Move Files
+### Create Directories and Move Files
 
 In VS Code Explorer (or terminal):
 1. Create folders: `data/raw`, `data/intermediate`, and `scripts`.
@@ -471,7 +473,7 @@ mv count_words.py scripts/
 
 Check `git status`: Git automatically tracks file renames without losing history!
 
-### Step 3: Run the Script with Clear Separation
+### Run the Script with Clear Separation
 
 Run the script reading from `data/raw/` and writing to `data/intermediate/`:
 
@@ -487,7 +489,7 @@ uv run python scripts/count_words.py data/raw/00345_dracula.txt data/intermediat
 
 Both intermediate count files are now neatly isolated in `data/intermediate/`.
 
-### Step 4: Ignore Generated Intermediate Data
+### Ignore Generated Intermediate Data
 
 Intermediate files are derived artifacts that can be regenerated at any time by running our script. We do not want them cluttering Git diffs.
 
@@ -503,7 +505,7 @@ data/intermediate/
 data/processed/
 ```
 
-### Step 5: Inspect the Project Tree
+### Inspect the Project Tree
 
 In VS Code Explorer, expand the folders. Your project structure now looks like:
 
@@ -535,7 +537,7 @@ If not installed:
 - Ubuntu / Debian / WSL: `sudo apt install tree`
 :::
 
-### Step 6: Commit, Push, Review, and Merge Milestone 3
+### Commit, Push, Review, and Merge Milestone 3
 
 1. Stage changes (`.gitignore`, the moved files, etc.).
 2. Commit: `refactor: organize project into data/raw, data/intermediate, and scripts`.
@@ -549,19 +551,19 @@ If not installed:
 
 ---
 
-## Milestone 4: Creating a Reusable Package (`create-package`)
+## Creating a Reusable Package (`create-package`)
 
 Right now, our counting logic lives inside `scripts/count_words.py`. If we want to reuse `extract_words()` and `count_words()` inside automated unit tests (Session 3), a data pipeline (Session 4), or an interactive visualization notebook, importing from a script inside a `scripts/` directory is clumsy and error-prone.
 
 In professional software development, reusable logic lives in a **package** under `src/`, while scripts, notebooks, and tests import from that package.
 
-### Step 1: Create the Feature Branch
+### Create the Feature Branch
 
 ```bash
 git checkout -b create-package
 ```
 
-### Step 2: Build the `src/` Package Structure
+### Build the `src/` Package Structure
 
 Create the package directory:
 
@@ -729,7 +731,7 @@ __all__ = [
 ]
 ```
 
-### Step 3: Configure `pyproject.toml` for the `src/` Layout
+### Configure `pyproject.toml` for the `src/` Layout
 
 To make `bookstats` installable in editable mode by `uv`, add the build system specification to `pyproject.toml`:
 
@@ -776,9 +778,11 @@ uv run python -m bookstats.counts --combine data/intermediate/*.csv -o data/proc
 Combined 2 books into data/processed/book-counts.csv
 ```
 
-### Step 4: Interactive Visualization with Marimo
+### Interactive Visualization with Marimo
 
 Now that our package produces structured count data, let's explore it interactively!
+
+![marimo vs Jupyter](/images/virtual-environments_marimoVsJupyter.png)
 
 Instead of traditional Jupyter notebooks (which save binary outputs, execution counts, and JSON diffs that pollute Git), we use [Marimo](https://marimo.io/). Marimo notebooks are stored as **pure Python scripts**, making them 100% Git-friendly, reproducible, and reactive.
 
@@ -813,7 +817,7 @@ Marimo will open an interactive interface in your browser:
 
 Press `Ctrl+C` in your terminal when you are ready to shut down the Marimo server.
 
-### Step 5: Update the Project `README.md`
+### Update the Project `README.md`
 
 Update your repository's `README.md` to reflect the new structure and provide exact instructions so anyone can reproduce your environment and run your analysis:
 
@@ -858,7 +862,7 @@ uv run marimo edit notebooks/visualize.py
 ```
 ```
 
-### Step 6: Commit, Push, Review, and Merge Milestone 4
+### Commit, Push, Review, and Merge Milestone 4
 
 1. Remove any legacy `scripts/count_words.py` file (its logic is now safely inside `src/bookstats/counts.py`):
    ```bash
