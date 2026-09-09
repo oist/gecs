@@ -3,535 +3,951 @@ title: "Virtual Environments"
 format: html
 ---
 
-> This lesson is adapted from [Reproducible Machine Learning Workflows for Scientists](https://carpentries-incubator.github.io/reproducible-ml-workflows/) by the Carpentries Incubator and rewritten to use [uv](https://docs.astral.sh/uv/).
+> "Reproducibility begins with declaring what our software needs to run. If an environment cannot be rebuilt from version-controlled configuration, an analysis cannot be trusted to produce the same results tomorrow."
 
-![Python Environment by [xkcd](https://xkcd.com/1987/)](https://imgs.xkcd.com/comics/python_environment.png)
+In Session 1, you created an empty repository, documented its purpose, added raw literature data from Project Gutenberg, and practiced collaborative Git workflows. Your project had a clean but flat structure: a `README.md` and plain-text book files.
 
-## What is a virtual environment?
+In this session, you will turn that raw repository into a **reproducible research project**. You will declare a pinned Python environment, experience and resolve an undeclared dependency, perform a controlled data overwrite to motivate strict directory boundaries (`data/raw/`, `data/intermediate/`, `scripts/`), refactor counting logic into a reusable Python package (`src/bookstats/`), and launch an interactive Marimo visualization.
 
-A virtual environment is a self-contained directory that contains a Python installation and all the packages required for a specific project. It lets us keep different projects separate, even when they need different package versions.
+::: {.callout-note title="Recovery Checkpoints" collapse="true"}
+If you need to catch up or compare your project against the canonical reference repository ([`bookstats`](https://github.com/oist/bookstats)), you can inspect the milestone tags:
 
-This separation is a key part of reproducible research. If we record exactly which Python version and packages a project uses, then other people can rebuild the same environment on their own machines.
+- Tag [`venv-declared`](https://github.com/oist/bookstats/tree/venv-declared): Python 3.12 pinned, `pyproject.toml`, `uv.lock`, `.gitignore`.
+- Tag [`word-counting`](https://github.com/oist/bookstats/tree/word-counting): `count_words.py` starter script, `polars` declared dependency.
+- Tag [`data-separated`](https://github.com/oist/bookstats/tree/data-separated): `data/raw/`, `data/intermediate/`, `scripts/` separation.
+- Tag [`bookstats-package`](https://github.com/oist/bookstats/tree/bookstats-package): `src/bookstats/` package layout, `counts.py`, `notebooks/visualize.py` with Marimo & Altair.
+:::
 
-## Package managers
+## Learning Outcomes
 
-Python ships with `venv` and `pip`, and those tools still work. However, modern projects often need more than a manually managed virtual environment. We usually also want:
+By the end of this two-hour session, you will be able to:
 
--   a clear project file that records dependencies
--   a lock file with exact resolved versions
--   a simple way to run commands inside the project environment
--   a convenient way to keep the environment reproducible
+1. Pin Python 3.12 and initialize a reproducible environment inside an existing, non-empty repository using `uv`.
+2. Inspect and explain the role of `.python-version`, `pyproject.toml`, `uv.lock`, and `.gitignore`.
+3. Distinguish between Python runtime imports (expressed in source code) and declared project dependencies (recorded in `pyproject.toml`).
+4. Experience an intentional `ModuleNotFoundError` for an undeclared dependency and resolve it cleanly with `uv add`.
+5. Execute commands in the project environment both via manual activation (`source .venv/bin/activate`) and direct execution (`uv run`).
+6. Perform a controlled data overwrite exercise to motivate the physical separation of immutable raw data (`data/raw/`), generated artifacts (`data/intermediate/`), and code (`scripts/`, `src/`).
+7. Refactor exploratory scripts into a clean, reusable `src/` package layout (`src/bookstats/`) with a public module interface.
+8. Connect an interactive Marimo visualization notebook (`notebooks/visualize.py`) to processed project data.
+9. Document reproducible environment setup (`uv sync`) and execution instructions in `README.md`.
 
-There are several tools for this job, including Conda, Mamba, Poetry, and `uv`. In this course we will use `uv`.
+---
 
-### Why uv?
+## The Branch and Pull-Request Workflow
 
-![uv by [Astral](https://astral.sh/)](/images/virtual-environments_UV.png)
+Just as in Session 1, every major enhancement in this session is developed on a short-lived feature branch, committed atomically, reviewed via a pull request, merged into `main` with a merge commit, and deleted:
 
-`uv` is a blazingly fast Python package and project manager. If you have used Conda or Poetry before, you will feel the difference. It has a few advantages that make it a good fit for this course:
-
--   **Fast**: dependency resolution and installation are much faster than with older Python tooling.
--   **Project-local**: each project gets its own `.venv`, which keeps dependencies isolated.
--   **Python-aware**: `uv` can use an existing Python installation or download a managed one when needed.
--   **Reproducible**: it creates a `uv.lock` lock file with exact resolved package versions.
--   **Convenient**: it lets us run project commands without manually activating the environment every time.
-
-You can read more in the [official documentation](https://docs.astral.sh/uv/).
-
-## Installing uv
-
-If you did not install `uv` during setup, do that first. On macOS, Linux, and Ubuntu under WSL, run:
-
-``` bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+```{mermaid}
+gitGraph
+   commit id: "data-added (Session 1)"
+   branch set-up-venv
+   checkout set-up-venv
+   commit id: "chore: pin python 3.12 and init uv"
+   commit id: "chore: ignore .venv"
+   checkout main
+   merge set-up-venv id: "Merge PR #2: set-up-venv"
+   branch add-word-counting
+   checkout add-word-counting
+   commit id: "feat: add count_words script"
+   commit id: "build: add polars dependency"
+   checkout main
+   merge add-word-counting id: "Merge PR #3: add-word-counting"
+   branch separate-data
+   checkout separate-data
+   commit id: "refactor: separate data into raw and intermediate"
+   checkout main
+   merge separate-data id: "Merge PR #4: separate-data"
+   branch create-package
+   checkout create-package
+   commit id: "feat: package counting logic in src/bookstats"
+   commit id: "feat: add marimo visualization notebook"
+   checkout main
+   merge create-package id: "Merge PR #5: create-package"
 ```
 
-After installation, restart the terminal. You can also reload your shell manually.
+If you are working with a partner, swap review duties on each pull request. If working solo, review your own pull request diff on GitHub before merging.
 
-Ubuntu users:
+::: {.callout-tip}
+**Choose Any Project Gutenberg Books**:
+In the examples below, we demonstrate commands using Mary Shelley's *Frankenstein* (`00084_frankenstein.txt`) and Bram Stoker's *Dracula* (`00345_dracula.txt`). Feel free to analyze those or replace them with any books you and your partner selected in Session 1!
+:::
 
-``` bash
-source ~/.bashrc
-```
+---
 
-macOS users:
+## Milestone 1: Declaring the Environment (`set-up-venv`)
 
-``` zsh
-source ~/.zshrc
-```
+### Why Virtual Environments?
 
-To verify that `uv` is available, run either:
+In scientific computing, different projects often require different versions of libraries (for example, Polars 1.x vs 0.20, or PyTorch 2.2 vs 2.1). If you install all packages into a single global Python installation, upgrading a package for one project will inevitably break another.
 
-``` bash
-uv --version
-```
+A **virtual environment** is an isolated folder (conventionally named `.venv/`) containing a dedicated Python executable and installed packages for a single project.
 
-or
+### Why `uv`?
 
-``` bash
-which uv
-```
+![uv by Astral](https://astral.sh/)
 
-You should see the installed version or the path to the `uv` executable.
+[Astral `uv`](https://docs.astral.sh/uv/) is a fast, modern Python package and project manager written in Rust. It replaces `pip`, `venv`, `pip-tools`, and `poetry` with a unified tool that:
+- Pins the project's exact Python interpreter version.
+- Resolves and downloads packages in milliseconds.
+- Generates a universal lock file (`uv.lock`) for cross-platform reproducibility.
+- Automatically handles virtual environment creation and execution without requiring constant manual shell activation.
 
-## Project-based workflows
+### Step 1: Create the Feature Branch
 
-`uv` works well with a project-based workflow. That means the project's dependencies, Python requirements, and virtual environment all live alongside the project files.
+In VS Code:
+1. Open your `gutenberg-analysis` repository.
+2. Click the branch indicator in the bottom-left Status Bar (or open the Source Control panel).
+3. Select **Create Branch...** and name it `set-up-venv`.
 
-**Pros**
-
--   Each project is isolated and does not interfere with software used by other projects.
--   The project can be recreated from a small set of tracked files, especially `pyproject.toml` and `uv.lock`.
--   Editors like VS Code can easily discover the project's `.venv`.
-
-**Cons**
-
--   Each project keeps its own environment, so repeated packages may use more disk space than a fully shared setup.
--   You still need to think carefully about which dependencies belong in the project.
--   It only supports Python projects.
-
-## Starting a project with `uv init`
-
-The word `init` shows up in many developer tools. You already saw it in `git init`. It usually means "set up the basic files needed to start here."
-
-With `uv`, `init` can do two related things:
-
--   create a brand new project directory for you
--   initialize a project in a directory that already exists
-
-Let's start by creating a new project directory:
-
-``` bash
-uv init gecs-uv
-```
-
-``` output
-Initialized project `gecs-uv` at <working-directory>/gecs-uv
-```
-
-This creates the directory `gecs-uv` for you. 
-
-::: {.callout-note collapse="true" title="uv init flags"}
-If you already had a project folder and wanted to initialize it in place, you could first `cd` into it and then run:
-
-``` bash
-uv init .
+::: {.callout-tip title="Terminal equivalent" collapse="true"}
+```bash
+git checkout -b set-up-venv
 ```
 :::
 
+### Step 2: Pin Python 3.12 and Initialize `uv`
 
-If you are curious about the other project templates and flags that `uv` supports, take a look at:
+Open the VS Code Integrated Terminal (`Ctrl+\`` or `Cmd+\``). Make sure you are in your project root:
 
-``` bash
-uv init --help
+```bash
+uv python pin 3.12
 ```
 
-Now move into the new project directory and inspect its contents:
-
-``` bash
-cd gecs-uv
-ls -a
+```output
+Pinned `.python-version` to `3.12`
 ```
 
-``` output
-./
-../
-.git/
-.gitignore
-.python-version
-README.md
-main.py
-pyproject.toml
+Now initialize the project manifest in place without overwriting existing files:
+
+```bash
+uv init --bare
 ```
 
-`uv init` also initializes a Git repository by default, so you do **not** need to run `git init` yourself afterward.
-
-At this point there is still no `.venv` and no `uv.lock`. Those appear when `uv` actually has to resolve and install an environment.
-
-`uv` also created a `.python-version` file for us. That file pins the default Python version for this project.
-
-## The project manifest
-
-Let's inspect the main project file:
-
-``` bash
-cat pyproject.toml
+```output
+Initialized project `gutenberg-analysis`
 ```
 
-``` toml
+::: {.callout-note title="Why --bare?"}
+Running `uv init` without flags in an existing directory can create boilerplate `hello.py` or sample files. The `--bare` flag creates only the fundamental packaging manifest (`pyproject.toml`) and respects your existing files.
+:::
+
+Inspect the newly created files in the VS Code Explorer:
+- **`.python-version`**: contains `3.12`. It informs `uv` which Python interpreter must be used for this project. If Python 3.12 is not installed on your system, `uv` will automatically download an isolated, standalone build of Python 3.12 on demand!
+- **`pyproject.toml`**: the standardized project manifest defining metadata, Python requirements, and dependencies.
+
+### Step 3: Inspect and Update `pyproject.toml`
+
+Open `pyproject.toml` in VS Code. It will look like this:
+
+```toml
 [project]
-name = "gecs-uv"
+name = "gutenberg-analysis"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 dependencies = []
 ```
 
-And if you inspect `.python-version`:
+Update the `description` to describe your scientific goal:
 
-``` bash
-cat .python-version
+```toml
+description = "A cumulative research project analyzing Project Gutenberg word distributions"
 ```
 
-``` output
-3.13
-```
+Notice `dependencies = []`. It is currently empty because we have not declared any third-party packages yet.
 
-The most important fields here are:
+### Step 4: Ensure `.venv/` is Ignored by Git
 
--   **`[project]`**: metadata about the project as a whole
--   **`requires-python`**: which Python versions the project supports
--   **`dependencies`**: which Python packages belong in the project
--   **`.python-version`**: the default Python version `uv` should use for this project
+Look at your `.gitignore` file. If `uv init` did not create one or if `.venv` is missing, open `.gitignore` and ensure it includes:
 
-::: {.callout-note collapse="true" title="TOML files"}
-`pyproject.toml` uses the **TOML** format. The name stands for **Tom's Obvious, Minimal Language**, after Tom Preston-Werner, one of the creators of the format.
-
-TOML became popular because it is much easier for humans to read and edit than many older configuration formats. Python's packaging ecosystem now uses it heavily, so you will keep seeing `.toml` files in modern projects.
-:::
-
-## Edit the description
-
-Right now the project description is still the placeholder text. Let's fix that.
-
-Open the file in VS Code:
-
-``` bash
-code pyproject.toml
-```
-
-If the `code` command is not available in your terminal, you can also open `pyproject.toml` directly from the VS Code Explorer.
-
-Replace the description line with something meaningful, for example:
-
-``` toml
-description = "A small reproducible project managed with uv"
-```
-
-Your `pyproject.toml` should now look like this:
-
-``` toml
-[project]
-name = "gecs-uv"
-version = "0.1.0"
-description = "A small reproducible project managed with uv"
-readme = "README.md"
-requires-python = ">=3.13"
-dependencies = []
-```
-
-## Version control from the start
-
-Because `uv init` already initialized Git for us, we can start tracking changes immediately:
-
-``` bash
-git status --short
-```
-
-You should see the newly created files as untracked. Add them and make the first commit:
-
-``` bash
-git add .
-git commit -m "Initialize uv project"
-```
-
-This is a good habit. Instead of waiting until the very end, we will keep committing as the environment changes.
-
-## Create the environment
-
-Now let's ask `uv` to create the environment explicitly:
-
-``` bash
-uv sync
-```
-
-This command resolves the project's dependencies, creates the virtual environment, and makes sure the installed packages match the lock file.
-
-Check the directory again:
-
-``` bash
-ls -a
-```
-
-``` output
-./
-../
-.git/
-.gitignore
-.python-version
+```gitignore
 .venv/
-README.md
-main.py
-pyproject.toml
-uv.lock
+__pycache__/
+*.pyc
 ```
 
-Two important things appeared:
+::: {.callout-important}
+### Why Must `.venv/` Never Be Committed to Git?
+1. **Size**: A virtual environment can contain thousands of files totaling hundreds of megabytes.
+2. **Platform Specificity**: Binaries, symlinks, and dynamic libraries inside `.venv/` are compiled specifically for your operating system and CPU architecture (e.g. macOS ARM64 vs Linux x86_64). Committing `.venv/` will break the project for collaborators on different platforms.
+3. **Reproducibility**: We commit the *declarations* (`pyproject.toml` and `uv.lock`), not the *artifacts* (`.venv/`). Anyone can recreate the exact environment on any computer with `uv sync`.
+:::
 
--   **`.venv/`**: this is the virtual environment itself. It contains the Python executable, installed package files, and all the other moving parts that make the environment run. This is the meat of the environment.
--   **`uv.lock`**: this is the lock file. It is like taking a snapshot of your environment's package versions at this moment in time.
+### Step 5: Create and Test the Environment
 
-When someone else clones your repository and runs `uv sync`, `uv` uses that snapshot to rebuild the environment as closely as possible.
+Tell `uv` to resolve dependencies and build the virtual environment:
 
-Let's also confirm that the starter program runs:
-
-``` bash
-uv run main.py
-```
-
-``` output
-Hello from gecs-uv!
-```
-
-Since `uv.lock` is now part of the project state, commit that change too:
-
-``` bash
-git add uv.lock
-git commit -m "lock initial environment"
-```
-
-## Activate the environment
-
-Sometimes it is still convenient to activate the environment directly, for example if you want to run several commands in a row without prefixing each one with `uv run`.
-
-First make sure the environment is up to date:
-
-``` bash
+```bash
 uv sync
 ```
 
-Then activate it:
+```output
+Resolved 1 package in 2ms
+Prepared 1 package in 1ms
+Installed 1 package in 1ms
+ + gutenberg-analysis==0.1.0 (from file://...)
+```
 
-``` bash
+Notice two new items:
+1. `uv.lock`: A generated lock file recording exact package versions, hashes, and platform markers. **`uv.lock` must be committed to Git.**
+2. `.venv/`: The local virtual environment directory (greyed out in VS Code Explorer because it is ignored).
+
+Let's activate and deactivate the environment once in your terminal to understand how traditional activation works:
+
+```bash
 source .venv/bin/activate
 ```
 
-Your shell prompt will usually change and show something like `(.venv)` at the beginning. You can now run project tools directly:
+Notice the prompt prefix changes: `(gutenberg-analysis) $`. You can check which Python executable is currently active:
 
-``` bash
-python
+```bash
+which python
 ```
 
-To leave the environment, run:
+```output
+.../gutenberg-analysis/.venv/bin/python
+```
 
-``` bash
+Now deactivate it:
+
+```bash
 deactivate
 ```
 
-## Add packages
+The `(gutenberg-analysis)` prefix disappears. With `uv`, you will rarely need to activate environments manually because `uv run` handles execution transparently.
 
-Before we move on to marimo, let's install the packages we want available in this project:
+### Step 6: Configure VS Code's Python Interpreter
 
-``` bash
-uv add numpy matplotlib
+To ensure VS Code provides autocomplete, linting, and type checking using your project environment:
+1. Press `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Windows/Linux) to open the Command Palette.
+2. Type and select **Python: Select Interpreter**.
+3. Choose the option labeled `('.venv': venv) .venv/bin/python`.
+
+VS Code will remember this setting in your workspace.
+
+### Step 7: Commit, Push, Review, and Merge Milestone 1
+
+Check your changes in the VS Code Source Control panel:
+- Staged/Untracked: `.python-version`, `pyproject.toml`, `uv.lock`, `.gitignore`.
+
+1. Stage all changes.
+2. Commit with message: `chore: pin python 3.12 and initialize uv environment`.
+3. Publish/push the branch to GitHub:
+   ```bash
+   git push -u origin set-up-venv
+   ```
+4. On GitHub, open a pull request titled **"Set up virtual environment with uv"**.
+5. Review the diff (verify `.venv` is NOT in the PR!).
+6. Merge using **Create a merge commit**.
+7. Delete the remote branch on GitHub.
+8. In VS Code, switch back to `main`, pull the merge commit (`git pull origin main`), and delete the local `set-up-venv` branch (`git branch -d set-up-venv`).
+
+---
+
+## Milestone 2: Undeclared Dependencies (`add-word-counting`)
+
+### The Concept: Imports vs. Dependencies
+
+A common misconception among beginner programmers is that Python automatically knows what packages to install by reading `import` statements in scripts.
+
+- **`import polars as pl`** in Python code is a **runtime request**: it tells Python's interpreter, *"Look in the active `sys.path` for a module named `polars`; if not found, crash."*
+- **`dependencies = ["polars"]`** in `pyproject.toml` is a **project declaration**: it tells package managers, *"This project requires the distribution package `polars` from the Python Package Index (PyPI)."*
+
+Let's experience this failure firsthand.
+
+### Step 1: Create the Feature Branch
+
+In VS Code:
+1. Create and switch to branch `add-word-counting`:
+   ```bash
+   git checkout -b add-word-counting
+   ```
+
+### Step 2: Add the Word Counting Script
+
+Download or copy the starter script [`count_words.py`](https://github.com/oist/gecs/raw/main/assets/scripts/count_words.py) into your repository root:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/oist/gecs/main/assets/scripts/count_words.py -o count_words.py
 ```
 
-`uv` updates both `pyproject.toml` and `uv.lock`, then installs the packages into `.venv`.
+Open `count_words.py` in VS Code and inspect its docstring and structure:
 
-Commit those dependency changes:
+```python
+"""Count word frequencies in a plain-text book and save results to CSV.
 
-``` bash
-git add pyproject.toml uv.lock
-git commit -m "add plotting dependencies"
+Usage:
+    python count_words.py INPUT OUTPUT
+
+Example:
+    python count_words.py 00084_frankenstein.txt 00084_frankenstein.csv
+"""
+
+import re
+import sys
+from pathlib import Path
+import polars as pl
+...
 ```
 
-To view the installed dependency tree, use:
+Notice line 13: `import polars as pl`.
 
-``` bash
-uv tree
+### Step 3: Experience the Intentional Failure
+
+Attempt to run the script inside your project using plain Python:
+
+```bash
+python count_words.py 00084_frankenstein.txt 00084_frankenstein.csv
 ```
 
-This is often more helpful than a flat package list because it shows which packages depend on which other packages.
+Or run it via `uv run`:
 
-If you want to inspect the dependency graph in a platform-independent way, use:
-
-``` bash
-uv tree --universal
+```bash
+uv run python count_words.py 00084_frankenstein.txt 00084_frankenstein.csv
 ```
 
-This is another reproducibility tool: one project manifest, one lock file, and one dependency graph that `uv` can recreate consistently across machines.
+Both commands fail with the exact same error:
 
-::: {.callout-tip collapse="true" title="Platform-specific dependencies"}
-
-`uv` records a universal lock file and supports platform-specific dependencies through standard Python environment markers.
-
-For example, if you needed a package only on Windows, you could write:
-
-``` bash
-uv add "pywin32; sys_platform == 'win32'"
+```output
+Traceback (most recent call last):
+  File ".../count_words.py", line 13, in <module>
+    import polars as pl
+ModuleNotFoundError: No module named 'polars'
 ```
 
-If that changed your project's dependency set, you would again commit the updated `pyproject.toml` and `uv.lock`.
+The script asks for `polars`, but `polars` is not in our environment because it was never declared in `pyproject.toml`.
 
+### Step 4: Declare and Resolve the Dependency
+
+Use `uv add` to declare `polars`:
+
+```bash
+uv add polars
+```
+
+```output
+Resolved 6 packages in 120ms
+Prepared 6 packages in 250ms
+Installed 6 packages in 15ms
+ + polars==1.x.x
+ + pyarrow==...
+```
+
+Look at what changed:
+1. Open `pyproject.toml`:
+   ```toml
+   dependencies = [
+       "polars>=1.x.x",
+   ]
+   ```
+2. Open `uv.lock`: `uv` recorded the exact version of Polars and all its dependencies, along with cryptographic hashes.
+
+::: {.callout-note title="uv resolves and syncs automatically"}
+Unlike older tools where you ran `pip install polars` and then manually remembered to run `pip freeze > requirements.txt`, `uv add` updates `pyproject.toml`, locks the versions in `uv.lock`, and installs them into `.venv/` in one atomic operation.
 :::
 
-## marimo
+### Step 5: Run the Script Successfully
 
-![marimo vs Jupyter](/images/virtual-environments_marimoVsJupyter.png)
+Now run the script using `uv run`:
 
-For data analysis, Jupyter notebooks have been the default for a long time. In this course, we will use [marimo](https://docs.marimo.io/) instead.
-
-For this course, marimo has a few advantages:
-
--   it is **reactive**, so dependent cells stay in sync
--   it avoids a lot of **hidden state** problems that make notebooks hard to reproduce
--   marimo notebooks are stored as plain **`.py` files**, which makes them much friendlier to Git
-
-That last point is especially important: you can use Git to track changes in a marimo notebook just like any other Python file.
-
-Let's add marimo to the project:
-``` bash
-uv add marimo
-```
-and check the dependency tree again:
-``` bash
-uv tree
+```bash
+uv run python count_words.py 00084_frankenstein.txt 00084_frankenstein.csv
 ```
 
-Finally, commit the changes to the project:
-``` bash
-git add pyproject.toml uv.lock
-git commit -m "add marimo"
+*(Or substitute your chosen book's `.txt` filename).*
+
+```output
+Wrote 7055 unique word counts to 00084_frankenstein.csv
 ```
 
-## Running commands without activation
+Open `00084_frankenstein.csv` in VS Code. You will see word frequencies sorted from most common to least common:
 
-One of the nicest parts of `uv` is that you usually do not need to activate the environment manually. Instead, run commands through `uv run`.
-
-First, activate the environment
-``` bash
-source .venv/bin/activate
+```csv
+word,count
+the,4187
+and,2973
+i,2848
+of,2643
+to,2093
+my,1771
+a,1579
+in,1427
+was,1018
+...
 ```
 
-Now, we can explore marimo's built-in plotting tutorial:
+### Step 6: Commit, Push, Review, and Merge Milestone 2
 
-``` bash
-marimo tutorial plots
-```
-This will open a browser window with the tutorial. To run the tutorial, press **Play button** in the bottom right corner or press **Ctrl/Cmd+ Shift + R** to run all cells.
+Remove the generated CSV file before committing (we will organize outputs properly in Milestone 3):
 
-Once you are done, you can exit the tutorial and deactivate the environment by presing **Red cross** button (Shutdown) in the top-right corner of the browser page or **Ctrl/Cmd + C** in the terminal.
-
-
-## Global tools
-
-`uv` can also install command-line tools into isolated environments and expose them on your `PATH`.
-
-For example, to install [`bat`](https://github.com/sharkdp/bat), a nicer version of `cat`, run:
-
-``` bash
-uv tool install bat
+```bash
+rm *.csv
 ```
 
-If this is the first tool you install, `uv` may suggest adding its tool directory to your `PATH`. If needed, follow that suggestion with:
+1. Stage `count_words.py`, `pyproject.toml`, and `uv.lock`.
+2. Commit: `feat: add word-counting script and declare polars dependency`.
+3. Push to GitHub:
+   ```bash
+   git push -u origin add-word-counting
+   ```
+4. Open a pull request: **"Add word-counting script with Polars dependency"**.
+5. Review and merge via **Create a merge commit**.
+6. Switch to `main`, pull, and delete the `add-word-counting` branch locally.
 
-``` bash
-uv tool update-shell
+---
+
+## Milestone 3: Separating Data from Code (`separate-data`)
+
+Right now, our repository root has raw books (`00084_frankenstein.txt`), Python scripts (`count_words.py`), and configuration files all mixed together. When analysis scripts generate intermediate tables, where should they go?
+
+Let's see what happens when inputs and outputs are not cleanly separated.
+
+### The Controlled Overwrite Exercise
+
+Imagine you or a collaborator make a small typo in the terminal and accidentally supply the **input raw text path** as the **output CSV path**:
+
+```bash
+# DO NOT PANIC: This is a controlled demonstration of Git recovery!
+uv run python count_words.py 00084_frankenstein.txt 00084_frankenstein.txt
 ```
 
-To list globally installed tools:
+Now open `00084_frankenstein.txt` in VS Code!
 
-``` bash
-uv tool list
-```
+The novel has been overwritten by CSV comma-separated word counts! If this were uncommitted research data on a shared drive without version control, your raw data would be permanently destroyed.
 
-To remove the tool again:
+### Restoring Raw Data with Git
 
-``` bash
-uv tool uninstall bat
-```
+Because our raw book was committed to Git in Session 1, recovery takes one click:
 
-These tools are isolated from your project environments, which keeps your system utilities separate from your project dependencies.
+1. Open the **Source Control** panel in VS Code (`Ctrl+Shift+G` or `Cmd+Shift+G`).
+2. Under **Changes**, locate `00084_frankenstein.txt`.
+3. Hover over the file and click the **Discard Changes** icon (the circular undo arrow $\mathbf{\hookleftarrow}$).
+4. Confirm **Discard Changes**.
 
-## Sandbox with `uvx`
+Open `00084_frankenstein.txt` again. Mary Shelley's novel is completely restored!
 
-Sometimes you do not want to create or grow a full project environment. You might just want to try a tool quickly in an isolated sandbox.
-
-That is what `uvx` is for. It runs a command from a package in a temporary environment without adding that package to your project's dependencies.
-
-Let's introduce another tool by Astral called [Ruff](https://docs.astral.sh/ruff/). Ruff is a fast Python linter that can help you find and fix code issues. Linter are special tools that analyze your code for potential errors, style violations, and other issues.
-If you want to lint the current project with Ruff without installing Ruff into the project environment. You can run:
-
-``` bash
-uvx ruff check .
-```
-::: {.callout-tip collapse="true" title="Need extra isolation?"}
-If you want an extra-isolated throwaway environment that does not interact with already installed packages, you can also use:
-
-``` bash
-uvx --isolated ruff check .
+::: {.callout-tip title="Terminal equivalent" collapse="true"}
+```bash
+git checkout HEAD -- 00084_frankenstein.txt
+# Or in modern Git:
+git restore 00084_frankenstein.txt
 ```
 :::
 
-Less serious but more fun.
+### The Solution: Explicit Directory Boundaries
+
+To prevent accidents and clarify data provenance, scientific software adheres to strict folder conventions:
+
+```text
+gutenberg-analysis/
+├── data/
+│   ├── raw/           # READ-ONLY original source data (never edited or overwritten)
+│   └── intermediate/  # Generated data tables (can be deleted and reproduced anytime)
+└── scripts/           # Standalone executable scripts
+```
+
+### Step 1: Create the Feature Branch
 
 ```bash
-uvx pycowsay hello
+git checkout -b separate-data
 ```
 
-or try some classic games from `freegames` pacakage:
+### Step 2: Create Directories and Move Files
+
+In VS Code Explorer (or terminal):
+1. Create folders: `data/raw`, `data/intermediate`, and `scripts`.
+2. Move all `.txt` book files into `data/raw/`.
+3. Move `count_words.py` into `scripts/`.
+
+::: {.callout-tip title="Terminal equivalent" collapse="true"}
+```bash
+mkdir -p data/raw data/intermediate scripts
+mv *.txt data/raw/
+mv count_words.py scripts/
+```
+:::
+
+Check `git status`: Git automatically tracks file renames without losing history!
+
+### Step 3: Run the Script with Clear Separation
+
+Run the script reading from `data/raw/` and writing to `data/intermediate/`:
 
 ```bash
-uvx freegames play snake
+uv run python scripts/count_words.py data/raw/00084_frankenstein.txt data/intermediate/00084_frankenstein.csv
 ```
-This command will download the `freegames` package, run the `snake` game, and then remove the package again when you exit the game.
 
-For the list of available games, run:
+Process your second book as well (e.g. *Dracula*):
+
 ```bash
-uvx freegames list
-```
-or check the [freegames documentation](https://pypi.org/project/freegames/).
-
-This is handy when you just want to explore a tool, run a one-off check, or try something quickly without making your project environment bigger.
-
-Once you are done playing, to deactivate the lessson's environment, run:
-``` bash
-deactivate
+uv run python scripts/count_words.py data/raw/00345_dracula.txt data/intermediate/00345_dracula.csv
 ```
 
-## The book project
+Both intermediate count files are now neatly isolated in `data/intermediate/`.
 
-Throughout this lesson, we built a `uv` project from scratch. If you'd like to see a complete example project, you can access it on GitHub at <https://github.com/igorsdub/gecs-venv>.
+### Step 4: Ignore Generated Intermediate Data
 
-To use this example project on your machine:
+Intermediate files are derived artifacts that can be regenerated at any time by running our script. We do not want them cluttering Git diffs.
 
-``` bash
-cd ~
-git clone https://github.com/igorsdub/gecs-venv.git
-cd gecs-venv
+Add `data/intermediate/` to your `.gitignore`:
+
+```gitignore
+.venv/
+__pycache__/
+*.pyc
+
+# Generated data artifacts
+data/intermediate/
+data/processed/
 ```
 
-Then follow the instructions in the `README.md` file to set up the project.
+### Step 5: Inspect the Project Tree
 
-## Your turn
+In VS Code Explorer, expand the folders. Your project structure now looks like:
 
-Now it's your turn! Create a new project with `uv init`, add some dependencies, and run a small Python program. Make sure to commit your changes as you go.
+```text
+gutenberg-analysis/
+├── .gitignore
+├── .python-version
+├── pyproject.toml
+├── uv.lock
+├── README.md
+├── data/
+│   ├── raw/
+│   │   ├── 00084_frankenstein.txt
+│   │   └── 00345_dracula.txt
+│   └── intermediate/
+│       ├── 00084_frankenstein.csv
+│       └── 00345_dracula.csv
+└── scripts/
+    └── count_words.py
+```
 
-Then publish your project to GitHub and share the link with your classmates and see if they can recreate your environment with `uv sync`.
+::: {.callout-note title="Inspecting with tree in the terminal" collapse="true"}
+If you have the `tree` utility installed, you can run:
+```bash
+tree -I ".venv|__pycache__" -L 3
+```
+If not installed:
+- macOS (Homebrew): `brew install tree`
+- Ubuntu / Debian / WSL: `sudo apt install tree`
+:::
 
-Let them to modify your code and create pull requests. You can then review their changes and merge them into your project.
+### Step 6: Commit, Push, Review, and Merge Milestone 3
 
-Pull the changes from your classmates, run `uv sync` to update your environment with their changes, and see if everything still works as expected.
+1. Stage changes (`.gitignore`, the moved files, etc.).
+2. Commit: `refactor: organize project into data/raw, data/intermediate, and scripts`.
+3. Push to GitHub:
+   ```bash
+   git push -u origin separate-data
+   ```
+4. Open PR: **"Separate data into raw, intermediate, and scripts directories"**.
+5. Review, merge via **Create a merge commit**, and delete the branch.
+6. Switch back to `main` locally, pull, and delete `separate-data`.
 
-## Recap
+---
 
-In this lesson, you:
+## Milestone 4: Creating a Reusable Package (`create-package`)
 
--   installed `uv`
--   used `uv init` to start a project
--   edited `pyproject.toml`
--   created `.venv` and `uv.lock` with `uv sync`
--   learned that `uv.lock` is a snapshot of package versions
--   added `marimo`, `numpy`, and `matplotlib`
--   ran the marimo plotting tutorial
--   committed the project in small steps as it evolved
+Right now, our counting logic lives inside `scripts/count_words.py`. If we want to reuse `extract_words()` and `count_words()` inside automated unit tests (Session 3), a data pipeline (Session 4), or an interactive visualization notebook, importing from a script inside a `scripts/` directory is clumsy and error-prone.
 
-That is already enough to build a small, reproducible Python project that others can recreate on their own machines.
+In professional software development, reusable logic lives in a **package** under `src/`, while scripts, notebooks, and tests import from that package.
 
-## Further reading
+### Step 1: Create the Feature Branch
 
--   [uv documentation](https://docs.astral.sh/uv/)
--   [Installation guide](https://docs.astral.sh/uv/getting-started/installation/)
--   [Creating projects with uv](https://docs.astral.sh/uv/concepts/projects/init/)
--   [marimo gallery](https://marimo.io/gallery)
+```bash
+git checkout -b create-package
+```
+
+### Step 2: Build the `src/` Package Structure
+
+Create the package directory:
+
+```bash
+mkdir -p src/bookstats
+```
+
+Create two files inside `src/bookstats/`:
+1. `src/bookstats/__init__.py`
+2. `src/bookstats/counts.py`
+
+#### 1. `src/bookstats/counts.py`
+Move the core extraction and counting logic into this file, adding a CLI `main()` that can process single books or combine multiple CSVs:
+
+```python
+"""Word extraction and frequency counting functions."""
+
+from __future__ import annotations
+
+import argparse
+import re
+import sys
+from pathlib import Path
+
+import polars as pl
+
+
+def strip_gutenberg_headers(text: str) -> str:
+    """Strip Project Gutenberg header and footer licenses from text."""
+    start_match = re.search(
+        r"\*\*\* START OF THE PROJECT GUTENBERG EBOOK[^\n]*\*\*\*", text
+    )
+    if start_match:
+        text = text[start_match.end() :]
+    end_match = re.search(r"\*\*\* END OF THE PROJECT GUTENBERG EBOOK", text)
+    if end_match:
+        text = text[: end_match.start()]
+    return text
+
+
+def extract_words(text: str) -> list[str]:
+    """Extract and normalize lowercase words from text."""
+    cleaned = strip_gutenberg_headers(text)
+    return re.findall(r"\b[a-zA-Z]+\b", cleaned.lower())
+
+
+def count_words(words: list[str]) -> pl.DataFrame:
+    """Count occurrences of each word and sort by frequency descending."""
+    if not words:
+        return pl.DataFrame(
+            {"word": [], "count": []},
+            schema={"word": pl.String, "count": pl.UInt32},
+        )
+    df = pl.DataFrame({"word": words})
+    return (
+        df.group_by("word").agg(pl.len().alias("count")).sort("count", descending=True)
+    )
+
+
+def process_book_file(input_path: Path | str, output_path: Path | str) -> pl.DataFrame:
+    """Process a single book text file and save word counts to CSV."""
+    in_p = Path(input_path)
+    out_p = Path(output_path)
+    text = in_p.read_text(encoding="utf-8")
+    words = extract_words(text)
+    counts = count_words(words)
+    out_p.parent.mkdir(parents=True, exist_ok=True)
+    counts.write_csv(out_p)
+    return counts
+
+
+def combine_word_counts(
+    input_paths: list[Path | str], output_path: Path | str
+) -> pl.DataFrame:
+    """Combine multiple per-book count CSV files into a single dataset."""
+    frames = []
+    for p in input_paths:
+        path = Path(p)
+        book_id = path.stem
+        df = pl.read_csv(path)
+        df = df.with_columns(pl.lit(book_id).alias("book"))
+        df = df.select(["book", "word", "count"])
+        frames.append(df)
+
+    if frames:
+        combined = pl.concat(frames)
+    else:
+        combined = pl.DataFrame(
+            {"book": [], "word": [], "count": []},
+            schema={"book": pl.String, "word": pl.String, "count": pl.UInt32},
+        )
+
+    out_p = Path(output_path)
+    out_p.parent.mkdir(parents=True, exist_ok=True)
+    combined.write_csv(out_p)
+    return combined
+
+
+def main() -> None:
+    """Command-line interface for word counting."""
+    parser = argparse.ArgumentParser(
+        description="Count word frequencies in Project Gutenberg books."
+    )
+    parser.add_argument(
+        "--combine",
+        action="store_true",
+        help="Combine multiple intermediate count CSVs into one table.",
+    )
+    parser.add_argument(
+        "inputs",
+        nargs="+",
+        help="Input text file (single mode) or CSV files (combine mode).",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        required=False,
+        help="Output CSV file path.",
+    )
+
+    args = parser.parse_args()
+
+    if args.combine:
+        if not args.output:
+            print("Error: --output is required when using --combine.", file=sys.stderr)
+            sys.exit(1)
+        combine_word_counts(args.inputs, args.output)
+        print(f"Combined {len(args.inputs)} books into {args.output}")
+    else:
+        if len(args.inputs) == 2 and not args.output:
+            in_file, out_file = args.inputs[0], args.inputs[1]
+        elif len(args.inputs) == 1 and args.output:
+            in_file, out_file = args.inputs[0], args.output
+        else:
+            print("Usage: python -m bookstats.counts INPUT OUTPUT", file=sys.stderr)
+            sys.exit(1)
+        process_book_file(in_file, out_file)
+        print(f"Processed {in_file} -> {out_file}")
+
+
+if __name__ == "__main__":
+    main()
+```
+
+#### 2. `src/bookstats/__init__.py`
+Export the public API of your package:
+
+```python
+"""bookstats: A reproducible analysis package for Gutenberg word frequencies."""
+
+from bookstats.counts import (
+    combine_word_counts,
+    count_words,
+    extract_words,
+    process_book_file,
+    strip_gutenberg_headers,
+)
+
+__all__ = [
+    "strip_gutenberg_headers",
+    "extract_words",
+    "count_words",
+    "process_book_file",
+    "combine_word_counts",
+]
+```
+
+### Step 3: Configure `pyproject.toml` for the `src/` Layout
+
+To make `bookstats` installable in editable mode by `uv`, add the build system specification to `pyproject.toml`:
+
+```toml
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+```
+
+Then synchronize the environment so `uv` registers your package:
+
+```bash
+uv sync
+```
+
+```output
+Installed 1 package in 2ms
+ + bookstats==0.1.0 (from file://...)
+```
+
+Now test running the package directly via Python's module flag (`-m`):
+
+```bash
+uv run python -m bookstats.counts data/raw/00084_frankenstein.txt data/intermediate/00084_frankenstein.csv
+```
+
+```output
+Processed data/raw/00084_frankenstein.txt -> data/intermediate/00084_frankenstein.csv
+```
+
+Process your second book as well:
+
+```bash
+uv run python -m bookstats.counts data/raw/00345_dracula.txt data/intermediate/00345_dracula.csv
+```
+
+And test combining them:
+
+```bash
+uv run python -m bookstats.counts --combine data/intermediate/*.csv -o data/processed/book-counts.csv
+```
+
+```output
+Combined 2 books into data/processed/book-counts.csv
+```
+
+### Step 4: Interactive Visualization with Marimo
+
+Now that our package produces structured count data, let's explore it interactively!
+
+Instead of traditional Jupyter notebooks (which save binary outputs, execution counts, and JSON diffs that pollute Git), we use [Marimo](https://marimo.io/). Marimo notebooks are stored as **pure Python scripts**, making them 100% Git-friendly, reproducible, and reactive.
+
+Add `marimo` and `altair` to your project dependencies:
+
+```bash
+uv add marimo altair
+```
+
+Create a directory named `notebooks` and add `notebooks/visualize.py`:
+
+```bash
+mkdir -p notebooks
+```
+
+Download the course visualization notebook into `notebooks/visualize.py`:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/oist/bookstats/main/notebooks/visualize.py -o notebooks/visualize.py
+```
+
+Launch the interactive notebook server:
+
+```bash
+uv run marimo edit notebooks/visualize.py
+```
+
+Marimo will open an interactive interface in your browser:
+- You can select any analyzed book from the dropdown menu.
+- Summary metrics (Total Words, Unique Vocabulary) update instantly.
+- An interactive Altair scatter plot displays the word frequencies against rank.
+
+Press `Ctrl+C` in your terminal when you are ready to shut down the Marimo server.
+
+### Step 5: Update the Project `README.md`
+
+Update your repository's `README.md` to reflect the new structure and provide exact instructions so anyone can reproduce your environment and run your analysis:
+
+```markdown
+# gutenberg-analysis
+
+A cumulative research project analyzing word frequency distributions across classic literature from Project Gutenberg.
+
+## Setup Instructions
+
+This project requires Python 3.12 and [uv](https://docs.astral.sh/uv/).
+
+To reconstruct the virtual environment:
+
+```bash
+uv sync
+```
+
+To select the environment in VS Code:
+1. Open Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`).
+2. Choose **Python: Select Interpreter**.
+3. Select `.venv/bin/python`.
+
+## Running the Analysis
+
+Process a raw book using the `bookstats` package:
+
+```bash
+uv run python -m bookstats.counts data/raw/00084_frankenstein.txt data/intermediate/00084_frankenstein.csv
+```
+
+Combine all processed books:
+
+```bash
+uv run python -m bookstats.counts --combine data/intermediate/*.csv -o data/processed/book-counts.csv
+```
+
+Launch the interactive visualization:
+
+```bash
+uv run marimo edit notebooks/visualize.py
+```
+```
+
+### Step 6: Commit, Push, Review, and Merge Milestone 4
+
+1. Remove any legacy `scripts/count_words.py` file (its logic is now safely inside `src/bookstats/counts.py`):
+   ```bash
+   git rm scripts/count_words.py
+   rmdir scripts
+   ```
+2. Stage all additions: `src/bookstats/`, `notebooks/visualize.py`, `pyproject.toml`, `uv.lock`, and `README.md`.
+3. Commit: `feat: convert counting logic into bookstats package and add marimo visualization`.
+4. Push to GitHub:
+   ```bash
+   git push -u origin create-package
+   ```
+5. Open PR: **"Convert counting logic to bookstats package and add visualization"**.
+6. Review the pull request diff, approve, and merge with **Create a merge commit**.
+7. Delete the branch on GitHub, switch to `main` locally, pull, and delete `create-package` locally.
+
+---
+
+## Same Practice, Different Ecosystems
+
+While this course uses Python and `uv`, the principle of **declaring dependencies and locking environments per project** is standard across scientific computing:
+
+| Ecosystem | Manifest File (Declared) | Lock File (Exact Resolution) | Environment Directory | Package Manager Command |
+|---|---|---|---|---|
+| **Python** | `pyproject.toml` | `uv.lock` | `.venv/` | `uv add <pkg>` / `uv sync` |
+| **R** | `DESCRIPTION` / `renv.lock` | `renv.lock` | `renv/library/` | `renv::init()` / `renv::snapshot()` |
+| **Julia** | `Project.toml` | `Manifest.toml` | `~/.julia/environments/` | `Pkg.add("<pkg>")` / `Pkg.instantiate()` |
+
+Whatever programming language you use in your lab, the rule remains: **never rely on unrecorded global packages**. Always commit the manifest and lock files, and never commit the installed environment directory.
+
+::: {.callout-note title="Beyond Language Environments: Containers (Docker and Apptainer)" collapse="true"}
+Language-specific tools like `uv`, `renv`, and Julia's package manager manage packages inside their respective runtimes. However, scientific workflows often depend on system-level libraries, C/C++ compilers, CUDA drivers, or command-line binaries (e.g. `samtools`, `blast`, or `graphviz`).
+
+To capture the entire operating system environment:
+- **Docker**: Widely used for local development and cloud deployments. Defines a recipe (`Dockerfile`) that packages an operating system, system libraries, and software into a container image.
+- **Apptainer (formerly Singularity)**: Standard on High-Performance Computing (HPC) clusters (including the OIST Deigo computing cluster). Unlike Docker, Apptainer runs containers without root privileges and can seamlessly run Docker images on HPC clusters.
+
+In Session 4, we will automate our Python project with Make and GitHub Actions; containerization builds directly upon these exact same declarative principles.
+:::
+
+---
+
+## Ending-State Tree
+
+At the conclusion of Session 2, your repository has evolved from a flat folder into a professional, reproducible research project:
+
+```text
+gutenberg-analysis/
+├── .gitignore
+├── .python-version
+├── pyproject.toml
+├── uv.lock
+├── README.md
+├── data/
+│   ├── raw/
+│   │   ├── 00084_frankenstein.txt
+│   │   └── 00345_dracula.txt
+│   └── intermediate/
+│       ├── 00084_frankenstein.csv
+│       └── 00345_dracula.csv
+├── src/
+│   └── bookstats/
+│       ├── __init__.py
+│       └── counts.py
+└── notebooks/
+    └── visualize.py
+```
+
+---
+
+## Transfer Task (Before Session 3)
+
+Before our next meeting, take 20 minutes to inspect your **current OIST research project**:
+
+1. Identify **at least one undeclared dependency** (a library you import in a notebook or script that is not recorded in any setup file) or check if you have a way to reproduce your environment from scratch.
+2. If your project has code and data mixed in the same directory, identify where the boundary between **read-only raw data** and **generated outputs** should be.
+3. Bring your findings to the first 15 minutes of Session 3 for our **Project Clinic**.
+
+---
+
+## Completion Checklist
+
+Before moving on to Session 3, confirm that you can check off every item:
+
+- [ ] My project pins Python 3.12 in `.python-version`.
+- [ ] My project dependencies (`polars`, `marimo`, `altair`) are declared in `pyproject.toml`.
+- [ ] My `uv.lock` file is committed to Git.
+- [ ] My `.venv/` directory is ignored by Git and never committed.
+- [ ] My raw data is isolated in `data/raw/` and intermediate tables in `data/intermediate/`.
+- [ ] My reusable logic lives in `src/bookstats/counts.py` and can be executed via `uv run python -m bookstats.counts`.
+- [ ] I can launch the interactive visualization with `uv run marimo edit notebooks/visualize.py`.
+- [ ] A collaborator could clone my repository and reproduce the complete environment by running `uv sync`.
