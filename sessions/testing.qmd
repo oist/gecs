@@ -1,367 +1,713 @@
 ---
-title: "Testing"
+title: "Code Quality and Testing"
 format: html
 ---
 
 > Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.
 >
-> Brian W. Kernighan
+> — Brian W. Kernighan
 
-Testing gives us a way to check that code behaves as expected. In this lesson we will use `pytest` with the [`gecs-venv`](https://github.com/igorsdub/gecs-venv) book-analysis project.
+In research computing, code often grows organically: a script starts as a quick experiment, expands into several functions, and eventually produces figures for a manuscript. But how do we ensure that changes made months later don't subtly corrupt scientific calculations? How do we maintain readability when collaborating with laboratory colleagues?
 
-The basic development loop is:
+In this session, we establish habits for long-term code health in our `bookstats` project:
+1. **Automated formatting and linting** with [Ruff](https://astral.sh/ruff) to keep styling uniform and catch syntax bugs instantly.
+2. **Git pre-commit hooks** with [pre-commit](https://pre-commit.com/) to automatically intervene before non-compliant code enters version control.
+3. **Structured interface documentation** using NumPy-style docstrings.
+4. **Test-Driven Development (TDD)** using [pytest](https://docs.pytest.org/) to build confidence through the red-green-refactor cycle.
+5. **Descriptive Zipf analysis** implemented via TDD and integrated into our interactive Marimo visualization.
+
+---
+
+## The Pandas Repository Microscope
+
+Before writing tests for our own project, let's look at how mature, world-class scientific software is organized. 
+
+Open the open-source repository for [pandas-dev/pandas](https://github.com/pandas-dev/pandas) on GitHub in your browser:
 
 ```{mermaid}
-%%{init: {"flowchart": {"curve": "basis"}, "theme": "base", "themeVariables": {"primaryColor": "#dbeafe", "primaryBorderColor": "#2563eb", "lineColor": "#64748b", "fontFamily": "Arial"}}}%%
-flowchart LR
-    A(Write code):::step edge1@==> B(Run tests):::step
-    edge1@{ animate: slow }
-    B edge2@==> C(Read failures):::step
-    edge2@{ animate: slow }
-    C edge3@==> D(Fix code):::step
-    edge3@{ animate: slow }
-    D edge4@==> A
-    edge4@{ animate: slow }
-    classDef step fill:#cfe9e5,stroke:transparent,color:#000
+%%{init: {"theme": "base", "themeVariables": {"fontFamily": "Arial"}}}%%
+flowchart TD
+    Repo["pandas-dev / pandas"] --> Core["pandas/core/ (Core Logic & Algorithms)"]
+    Repo --> Tests["pandas/tests/ (Massive Automated Test Suite)"]
+    Repo --> CI[".github/workflows/ (Continuous Integration & Pre-commit)"]
+    classDef dir fill:#e0e7ff,stroke:#4338ca,stroke-width:2px,color:#000
+    class Repo,Core,Tests,CI dir
 ```
 
-It is a big expectation to adhere to this loop, but it is a good goal. Let's start by writing a few tests for the existing code.
+Inspect the `pandas/tests/` directory. Notice:
+- Nearly **every single module** in `pandas/core/` has a corresponding test module in `pandas/tests/`.
+- There are thousands of tests exercising edge cases, NaN values, empty series, and unexpected datatypes.
+- Automated tests are not an afterthought written when a paper is submitted; they are the architectural scaffolding that allows hundreds of contributors across the world to modify pandas without breaking existing user code.
 
-## Work on a branch
+Our `bookstats` package follows this exact software engineering principle.
 
-Before changing the project, create a new Git branch called `testing`. A branch gives you a separate line of work, so you can experiment without changing the existing code on `main`.
+---
 
-First, clone the example repository and open it in VS Code:
+## Create the Feature Branch
 
-``` bash
-git clone https://github.com/igorsdub/gecs-venv
-cd gecs-venv
-code .
+Following our collaborative Git workflow, we isolate our code quality additions on a dedicated feature branch.
+
+In VS Code or your terminal:
+
+```bash
+git switch main
+git pull
+git switch -c add-pre-commit
 ```
 
-In VS Code:
+Verify your branch with `git branch --show-current`. It should display `add-pre-commit`.
 
-1. Open the **Source Control** panel.
-2. Select the current branch name, usually `main`, in the Source Control view or status bar.
-3. Choose **Create new branch**.
-4. Enter `testing` and press **Enter**.
+---
 
-You can also open the Command Palette with **Cmd/Ctrl+Shift+P**, type `Git: Create Branch`, and select that command. Enter `testing` when VS Code asks for the branch name.
+## Code Quality with Ruff
 
-::: {.callout-note collapse="true" title="The terminal alternative"}
+Consistency in formatting and linting saves countless hours of code review debates. Instead of manual style checking, we use [Ruff](https://astral.sh/ruff), an extremely fast Python linter and formatter written in Rust.
 
-From the `gecs-venv` directory, run:
+Add Ruff as a development dependency using `uv`:
 
-``` bash
-git switch -c testing
-git branch --show-current
+```bash
+uv add --dev ruff
 ```
 
-The second command should print `testing`.
+### Configuring Ruff and NumPy Docstrings
 
+We configure Ruff in `pyproject.toml`. Open `pyproject.toml` and configure the linter to enforce standard formatting and **NumPy-style docstrings** (`pydocstyle` convention):
+
+```toml
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+extend-select = [
+    "E",    # pycodestyle errors
+    "F",    # pyflakes
+    "I",    # isort import sorting
+    "D",    # pydocstyle docstring conventions
+    "UP",   # pyupgrade modern Python syntax
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+```
+
+::: {.callout-note title="Why NumPy-style docstrings?"}
+In scientific computing, functions often accept matrices, dataframes, arrays, and numerical thresholds. NumPy-style docstrings provide dedicated, human-readable sections (`Parameters`, `Returns`, `Notes`, `Examples`) that make function interfaces immediately understandable.
 :::
 
-## Set up the project
+Check your codebase with Ruff:
 
-The project contains books, analysis scripts, and generated word-count files and plots:
+```bash
+# Check code for linting issues
+uv run ruff check .
 
-``` text
-books/                         input novels
-scripts/count_words.py         extracts and counts words
-scripts/get_summary.py         prints book metadata
-scripts/plot_counts.py         creates plots
-scripts/run_book_analysis.py   combines the workflow
+# Check formatting without modifying files
+uv run ruff format --check .
 ```
 
-The project uses a virtual environment to isolate its dependencies. We will use the `uv` command from the `gecs-venv` project to manage the environment. If you have not intialized the environment yet, run:
+To automatically format files, run:
 
-``` bash
-uv sync
+```bash
+uv run ruff format .
 ```
 
+---
 
-Right now, we only missing `pytest` for testing. Add `pytest` for development:
+## Automated Guardrails: Pre-commit Hooks
 
-``` bash
+Linters and formatters only protect a codebase if contributors remember to run them before committing. A **pre-commit hook** is a script that Git executes automatically whenever you run `git commit`. If the check fails or modifies code, Git aborts the commit, giving you an immediate chance to review and fix the issue.
+
+Add `pre-commit` to development dependencies:
+
+```bash
+uv add --dev pre-commit
+```
+
+Create a configuration file named `.pre-commit-config.yaml` in the root of your repository:
+
+```yaml
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.9
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+```
+
+Install the Git hook into your local `.git/hooks/` directory:
+
+```bash
+uv run pre-commit install
+```
+
+You should see: `pre-commit installed at .git/hooks/pre-commit`.
+
+### Experiencing a Pre-commit Intervention
+
+Let's test our automated guardrail. Intentionally introduce poorly formatted code with missing documentation. 
+
+In `src/bookstats/counts.py`, add this unformatted dummy function at the bottom:
+
+```python
+def messy_sample( x,y ):
+  z=x+y
+  return z
+```
+
+Now stage and attempt to commit the change:
+
+```bash
+git add src/bookstats/counts.py
+git commit -m "feat: add sample function"
+```
+
+Watch what happens in your terminal:
+
+```text
+ruff.....................................................................Failed
+- hook id: ruff
+- files were modified by this hook
+
+src/bookstats/counts.py:210:1: D103 Missing docstring in public function
+
+ruff-format..............................................................Failed
+- hook id: ruff-format
+- files were modified by this hook
+
+1 file reformatted
+```
+
+Git **blocked the commit!** 
+1. `ruff-format` automatically fixed the spacing: `def messy_sample(x, y):`.
+2. `ruff` flagged that our public function is missing a docstring (`D103`).
+
+Inspect the diff in VS Code Source Control. You will see the reformatted layout. Now write a proper NumPy-style docstring explaining what the function does:
+
+```python
+def messy_sample(x: int, y: int) -> int:
+    """Compute the sum of two integers for testing pre-commit.
+
+    Parameters
+    ----------
+    x : int
+        First integer addend.
+    y : int
+        Second integer addend.
+
+    Returns
+    -------
+    int
+        Sum of x and y.
+    """
+    z = x + y
+    return z
+```
+
+Remove or keep the sample function, stage the clean changes, and commit again:
+
+```bash
+git add src/bookstats/counts.py
+git commit -m "feat: configure ruff and pre-commit hooks"
+```
+
+This time, all hooks pass with green checkmarks, and Git completes the commit!
+
+Push your branch and merge via Pull Request into `main`:
+
+```bash
+git push -u origin add-pre-commit
+```
+
+Merge the PR on GitHub, switch back to `main`, and pull:
+
+```bash
+git switch main
+git pull
+```
+
+---
+
+## Test-Driven Development (TDD) and Unit Testing
+
+Now that our code style is automated, how do we verify that our logic behaves as intended?
+
+> "Smash first, analyze later."
+> 
+> — Advice from a CERN particle physicist
+
+In **Test-Driven Development (TDD)**, we invert the traditional habit of writing code first and testing later:
+
+```{mermaid}
+%%{init: {"flowchart": {"curve": "basis"}, "theme": "base", "themeVariables": {"fontFamily": "Arial"}}}%%
+flowchart LR
+    subgraph Red["1. RED"]
+        T1["Write failing test"]
+    end
+    subgraph Green["2. GREEN"]
+        T2["Write minimal code to pass"]
+    end
+    subgraph Refactor["3. REFACTOR"]
+        T3["Clean up & improve structure"]
+    end
+    T1 ==> T2 ==> T3 ==> T1
+    classDef redBox fill:#fee2e2,stroke:#ef4444,stroke-width:2px,color:#000
+    classDef greenBox fill:#dcfce7,stroke:#22c55e,stroke-width:2px,color:#000
+    classDef blueBox fill:#e0e7ff,stroke:#6366f1,stroke-width:2px,color:#000
+    class T1 redBox
+    class T2 greenBox
+    class T3 blueBox
+```
+
+1. **Red**: Write a small, clear test specifying the desired behavior. Run it and watch it fail.
+2. **Green**: Write the simplest possible code to make the test pass.
+3. **Refactor**: Clean up the implementation while using the passing test as a safety harness.
+
+### Setting Up Pytest
+
+Create a new feature branch:
+
+```bash
+git switch -c add-tests
+```
+
+Add `pytest` as a development dependency:
+
+```bash
 uv add --dev pytest
 ```
 
-`uv run` runs commands inside the project environment:
+Configure pytest in `pyproject.toml` so it recognizes `src/` and your tests directory:
 
-``` bash
-uv run pytest
+```toml
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
 ```
 
-## Unit tests
+### Writing Your First Unit Test (Red Phase)
 
-A unit test checks one small piece of behavior on its own. Each script in this project contains one or more units, such as a function that extracts words or writes a count file. We can write several tests for each unit.
+A **unit test** verifies one isolated function with known inputs and expected outputs.
 
-The first units we will test are:
+Create `tests/test_counts.py` with this initial test:
 
-- `extract_words()` in `count_words.py`;
-- `count_word_frequencies()` in `count_words.py`; and
-- `parse_counts_file()` in `plot_counts.py`.
+```python
+"""Unit tests for word extraction and counting functions."""
 
-The relationship looks like this:
+from bookstats.counts import extract_words
 
-```{mermaid}
-%%{init: {"flowchart": {"curve": "basis"}, "theme": "base", "themeVariables": {"primaryColor": "#ecfdf5", "primaryBorderColor": "#16a34a", "lineColor": "#64748b", "fontFamily": "Arial"}}}%%
-flowchart LR
-    C[count_words.py]:::unit --> T[tests/test_count_words.py]:::unit
-    P[plot_counts.py]:::unit --> U[tests/test_plot_counts.py]:::unit
-    T --> T1[lowercasing]:::unit
-    T --> T2[punctuation]:::unit
-    T --> T3[file output]:::unit
-    U --> U1[count-file parsing]:::unit
-    classDef unit fill:#e6dff1,stroke:transparent,color:#000
+
+def test_extract_words_normalizes_text():
+    assert extract_words("Hello, HELLO! World?") == [
+        "hello",
+        "hello",
+        "world",
+    ]
 ```
 
-## Test-driven development
+Run pytest:
 
-> Smash first, analyze later.
->
-> Dating advice from a CERN researcher
-
-This is also a useful way to think about **test-driven development**, or TDD. Before writing the implementation, write a test that describes the behavior you want. The test should fail at first because the code does not do that thing yet. Then write the smallest amount of code needed to make the test pass.
-
-``` text
-write a failing test → write code → run the test → improve the code
-```
-
-For example, the current regular expression does not support accented words. Write a test for the behavior we would like to add:
-
-``` python
-from scripts.count_words import extract_words
-
-
-def test_extract_words_handles_accented_words():
-    assert extract_words("café") == ["café"]
-```
-
-Add this test to `tests/test_count_words.py` and run it. It should fail because the current pattern only matches ASCII letters and numbers. That failure is useful: it tells us what behavior to implement. After the test passes, we can improve the implementation while keeping the test as a safety net.
-
-Now return to the simpler tests below. They describe behavior that the current implementation already supports.
-
-## Write a first test
-
-The `extract_words()` function turns text into lowercase words:
-
-``` python
-import re
-
-
-def extract_words(text):
-    return re.findall(r"\b[a-z0-9]+\b", text.lower())
-```
-
-Create a `tests` directory and a file named `tests/test_count_words.py`:
-
-``` python
-from scripts.count_words import extract_words
-
-
-def test_extract_words_lowercases_text():
-    result = extract_words("The QUICK brown fox")
-
-    assert result == ["the", "quick", "brown", "fox"]
-```
-
-The regular expression explains what the function accepts:
-
-- `text.lower()` makes matching case-insensitive;
-- `\b` identifies word boundaries; and
-- `[a-z0-9]+` matches one or more ASCII letters or numbers.
-
-Because the pattern uses ASCII letters, it does not currently handle accented words such as `café`. That is a limitation we can document or fix later.
-
-The `assert` statement compares the result with the behavior we expect. Pytest finds files named `test_*.py` and functions named `test_*` automatically.
-
-Run the test from the repository root:
-
-``` bash
-uv run pytest
-```
-
-Try changing one expected word and run the test again. The failure report shows where the test failed and compares the actual and expected values. Restore the correct expectation afterward.
-
-## Test file output safely
-
-`count_word_frequencies()` reads a book and writes a count file. A test should not overwrite a real file in `counts/`. The pytest `tmp_path` fixture gives each test a fresh temporary directory.
-
-Add this test to `tests/test_count_words.py`:
-
-``` python
-from scripts.count_words import count_word_frequencies
-
-
-def test_count_word_frequencies_writes_sorted_counts(tmp_path):
-    input_path = tmp_path / "example.txt"
-    output_path = tmp_path / "example.tsv"
-    input_path.write_text("Red blue red!", encoding="utf-8")
-
-    count_word_frequencies(input_path, output_path)
-
-    assert output_path.read_text(encoding="utf-8") == (
-        "      2 red\n"
-        "      1 blue\n"
-    )
-```
-
-The test creates its own input file, runs the function, and checks the generated output. The temporary directory is removed after the test.
-
-## Test several examples
-
-Sometimes one function should work for several different inputs. Instead of writing a separate test function for every example, give pytest a list of examples:
-
-``` python
-import pytest
-
-from scripts.count_words import extract_words
-
-
-@pytest.mark.parametrize(
-    ("text", "expected"),
-    [
-        ("HELLO", ["hello"]),
-        ("one, two", ["one", "two"]),
-        ("version 3", ["version", "3"]),
-    ],
-)
-def test_extract_words_examples(text, expected):
-    assert extract_words(text) == expected
-```
-
-Pytest runs this test once for each row. If one example fails, pytest identifies that example in the failure report.
-
-## Test another unit
-
-The plotting script has a `parse_counts_file()` function that reads a count file. It can be tested without opening a browser or creating a plot.
-
-Create `tests/test_plot_counts.py`:
-
-``` python
-from scripts.plot_counts import parse_counts_file
-
-
-def test_parse_counts_file_reads_counts(tmp_path):
-    counts_path = tmp_path / "counts.tsv"
-    counts_path.write_text(
-        "      4 the\n"
-        "      2 book\n",
-        encoding="utf-8",
-    )
-
-    words, counts = parse_counts_file(counts_path)
-
-    assert words == ["the", "book"]
-    assert counts == [4, 2]
-```
-
-Now we have several tests for individual units. They are fast and help us find which part of the project has a problem.
-
-## Integration testing
-
-Unit tests check individual pieces. For example, `count_word_frequencies()` is tested as part of `count_words.py`, and `parse_counts_file()` is tested as part of `plot_counts.py`.
-
-An integration test checks that the two scripts work together: the counting script creates a count file, and the plotting script uses that file to create a figure.
-
-```{mermaid}
-%%{init: {"flowchart": {"curve": "basis"}, "theme": "base", "themeVariables": {"primaryColor": "#fff7ed", "primaryBorderColor": "#ea580c", "lineColor": "#64748b", "fontFamily": "Arial"}}}%%
-flowchart LR
-    U1[Unit test 1]:::part --> S1
-    U2[Unit test 2]:::part --> S2
-    U1 ~~~ U2
-    subgraph integration[Integration test]
-        S1[Script 1]:::part -->|Script 1 output| S2[Script 2]:::part
-    end
-    classDef part fill:#f2d6c9,stroke:transparent,color:#000
-```
-
-::: {.callout-caution}
-The diagram is misaligning the unit tests but I could not fix it 😢.
-:::
-
-The unit tests sit outside the Integration test box and check one script each. The Integration test evaluates both scripts together, with the output of Script 1 becoming the input to Script 2.
-
-Create `tests/test_workflow.py`:
-
-``` python
-from scripts.count_words import count_word_frequencies
-from scripts.plot_counts import plot_word_counts
-
-
-def test_small_book_workflow(tmp_path):
-    book_path = tmp_path / "mini_book.txt"
-    counts_path = tmp_path / "counts" / "mini_book.tsv"
-    figure_path = tmp_path / "figures" / "mini_book.html"
-    book_path.write_text("The cat sat. The cat slept.", encoding="utf-8")
-    counts_path.parent.mkdir()
-    figure_path.parent.mkdir()
-
-    count_word_frequencies(book_path, counts_path)
-    plot_word_counts(counts_path, figure_path)
-
-    assert counts_path.exists()
-    assert figure_path.exists()
-    assert figure_path.with_suffix(".png").exists()
-```
-
-This test follows the same path as the real workflow: book → count file → plot. It calls `plot_word_counts()`, which uses Altair for the interactive HTML chart and `vl-convert-python` for PNG export, so it does not require a locally available browser.
-
-## Run the tests
-
-Use these commands from the repository root:
-
-``` bash
-# Run every test
-uv run pytest
-
-# Run one test file
-uv run pytest tests/test_count_words.py
-
-# Run tests with a matching name
-uv run pytest -k extract_words
-
-# Show each test name
+```bash
 uv run pytest -v
 ```
 
-The important habit is to run the tests whenever you change the code. Tests make the development loop visible and help protect the behavior of the analysis.
+If your extraction function does not yet strip punctuation or convert to lower case, pytest will print a clear failure:
 
-When all tests pass, the `testing` branch is ready to be committed and reviewed.
-
-## Wrapping up
-
-Save the work on the `testing` branch and ask for it to be reviewed before it becomes part of `main`.
-
-In VS Code:
-
-1. Open **Source Control** and review the changes.
-2. Enter a message such as `Add pytest examples` and select **Commit**.
-3. Select **Publish Branch** or **Sync Changes** to push `testing` to GitHub.
-4. Open the repository on GitHub and choose **Compare & pull request**.
-5. Set `main` as the base branch and `testing` as the compare branch.
-6. Describe the lesson changes, then create the pull request.
-
-The final shape of the work is:
-
-```{mermaid}
-%%{init: {"theme": "base", "themeVariables": {"git0": "#2563eb", "git1": "#db2777", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#111827", "commitLabelBackground": "#f8fafc"}}}%%
-gitGraph LR:
-    commit id: "start" tag: "main"
-    commit id: "setup"
-    branch testing
-    commit id: "tests"
-    commit id: "fixes" type: HIGHLIGHT
-    checkout main
-    commit id: "main-work"
-    merge testing
+```text
+FAILED tests/test_counts.py::test_extract_words_normalizes_text - AssertionError
 ```
 
-The pink `testing` branch contains the new work. The pull request reviews that work, and the merge commit brings it back into the blue `main` branch.
+Commit this failing test to record the test-driven requirement:
 
-## Summary
+```bash
+git add tests/test_counts.py
+git commit -m "test: add failing unit test for text normalization"
+```
 
-Pytest tests are ordinary Python functions with names beginning with `test_`. Assertions describe expected behavior, `tmp_path` provides safe temporary files, and one test can be run with several examples.
+### Making the Test Pass (Green Phase)
 
-For this project, begin by testing individual functions. Then add an integration test to check that `count_words.py` creates the count-file output consumed by `plot_counts.py`.
+Now modify `src/bookstats/counts.py` to ensure `extract_words` handles case and punctuation cleanly:
+
+```python
+import re
+
+def extract_words(text: str) -> list[str]:
+    """Extract lowercase words from text, stripping punctuation.
+
+    Parameters
+    ----------
+    text : str
+        Input document text.
+
+    Returns
+    -------
+    list of str
+        List of lowercase alphabetic tokens.
+    """
+    return re.findall(r"\b[a-zA-Z]+\b", text.lower())
+```
+
+Run pytest again:
+
+```bash
+uv run pytest -v
+```
+
+```text
+tests/test_counts.py::test_extract_words_normalizes_text PASSED          [100%]
+```
+
+It passes! Commit the passing implementation:
+
+```bash
+git add src/bookstats/counts.py
+git commit -m "feat: normalize words to lowercase and strip punctuation"
+```
+
+### Adapting Additional Unit Tests
+
+Now extend `tests/test_counts.py` with tests for empty strings and word counting:
+
+```python
+from bookstats.counts import count_words, extract_words
+
+
+def test_extract_words_empty_string():
+    assert extract_words("") == []
+
+
+def test_count_words():
+    words = ["apple", "banana", "apple", "cherry", "apple", "banana"]
+    df = count_words(words)
+    assert df["word"].to_list() == ["apple", "banana", "cherry"]
+    assert df["count"].to_list() == [3, 2, 1]
+
+
+def test_count_words_empty():
+    df = count_words([])
+    assert len(df) == 0
+    assert "word" in df.columns
+    assert "count" in df.columns
+```
+
+Run pytest to ensure all unit tests pass:
+
+```bash
+uv run pytest
+```
+
+---
+
+## Integration Testing: File Boundaries
+
+Unit tests verify functions in isolation using synthetic Python lists. But research workflows read and write files on disk! An **integration test** checks that multiple components work together across system boundaries (such as filesystems and I/O).
+
+Pytest provides a built-in fixture called `tmp_path` that gives each test a clean, isolated temporary directory that is automatically deleted after the test finishes.
+
+Create `tests/test_integration.py`:
+
+```python
+"""Integration test for end-to-end file processing boundary."""
+
+from pathlib import Path
+import polars as pl
+from bookstats.counts import process_book_file
+
+
+def test_process_book_file_creates_expected_csv(tmp_path: Path):
+    # 1. Arrange: Create a minimal mock Project Gutenberg book
+    sample_text = (
+        "*** START OF THE PROJECT GUTENBERG EBOOK TEST ***\n"
+        "The quick brown fox jumps over the lazy dog.\n"
+        "The fox was quick!\n"
+        "*** END OF THE PROJECT GUTENBERG EBOOK TEST ***\n"
+    )
+    input_file = tmp_path / "sample.txt"
+    input_file.write_text(sample_text, encoding="utf-8")
+
+    output_file = tmp_path / "counts.csv"
+
+    # 2. Act: Run the real file-processing boundary
+    process_book_file(input_file, output_file)
+
+    # 3. Assert: Verify the output CSV exists and contains expected counts
+    assert output_file.exists()
+
+    loaded_df = pl.read_csv(output_file)
+    assert "word" in loaded_df.columns
+    assert "count" in loaded_df.columns
+
+    counts_dict = dict(zip(loaded_df["word"], loaded_df["count"]))
+    assert counts_dict["the"] == 3
+    assert counts_dict["fox"] == 2
+    assert counts_dict["quick"] == 2
+```
+
+Run the suite:
+
+```bash
+uv run pytest -v tests/test_integration.py
+```
+
+Commit the test:
+
+```bash
+git add tests/test_integration.py
+git commit -m "test: add integration test for file processing boundary"
+```
+
+---
+
+## Scientific Analysis: Descriptive Zipf Fit
+
+Now we use TDD to extend our research project with scientific analysis: computing a **descriptive log-log linear fit** for Zipf's law.
+
+::: {.callout-important title="Scientific Framing: Descriptive Fit vs. Power-Law Inference"}
+Zipf's law states that the frequency of a word is inversely proportional to its rank:
+
+$$\text{frequency} \propto \frac{1}{\text{rank}^\alpha} \implies \log(\text{frequency}) \approx \beta_0 - \alpha \log(\text{rank})$$
+
+Performing ordinary least squares (OLS) regression on log-transformed data provides a useful **descriptive summary** of decay rate (slope $\approx -1.0$) and fit quality ($R^2$). 
+
+However, OLS on log-transformed binned power-law data can produce biased estimates and does not mathematically prove that empirical data follows a true power law distribution (which requires maximum likelihood estimation). In this course, we treat this regression strictly as a **descriptive fit**.
+:::
+
+### Adding the Zipf Tests First (TDD)
+
+Create `tests/test_zipf.py`:
+
+```python
+"""Unit tests for Zipf's law fitting functions."""
+
+from pathlib import Path
+import polars as pl
+import pytest
+from bookstats.zipf import compute_zipf_fit, fit_all_books
+
+
+def test_compute_zipf_fit_linear_decay():
+    # Construct synthetic data with an exact 1/rank Zipf decay
+    ranks = list(range(1, 11))
+    counts = [int(1000 / r) for r in ranks]
+    df = pl.DataFrame({"word": [f"w{i}" for i in ranks], "count": counts})
+
+    fit = compute_zipf_fit(df)
+
+    # Slope should be approximately -1.0 with high R^2
+    assert pytest.approx(fit.slope, rel=0.1) == -1.0
+    assert fit.r_squared > 0.95
+    assert "rank" in fit.data.columns
+    assert "log_rank" in fit.data.columns
+    assert "log_count" in fit.data.columns
+    assert "fitted_log_count" in fit.data.columns
+    assert "fitted_count" in fit.data.columns
+
+
+def test_compute_zipf_fit_empty():
+    df = pl.DataFrame(
+        {"word": [], "count": []}, schema={"word": pl.String, "count": pl.UInt32}
+    )
+    fit = compute_zipf_fit(df)
+    assert fit.slope == 0.0
+    assert fit.intercept == 0.0
+    assert fit.r_squared == 0.0
+    assert len(fit.data) == 0
+```
+
+Add `scipy` as a dependency for regression:
+
+```bash
+uv add scipy
+```
+
+### Implementing `src/bookstats/zipf.py`
+
+Create `src/bookstats/zipf.py` with dataclass outputs and regression computation:
+
+```python
+"""Descriptive Zipf's law analysis and log-log linear fitting."""
+
+from __future__ import annotations
+from dataclasses import dataclass
+from pathlib import Path
+import numpy as np
+import polars as pl
+from scipy.stats import linregress
+
+
+@dataclass(frozen=True)
+class ZipfFitResult:
+    """Results from a descriptive log-log linear fit.
+
+    Attributes
+    ----------
+    slope : float
+        Slope of the descriptive log-log linear fit.
+    intercept : float
+        Intercept of the descriptive log-log linear fit.
+    r_squared : float
+        Coefficient of determination (R^2).
+    data : polars.DataFrame
+        DataFrame with rank, count, log_rank, log_count, fitted values.
+    """
+
+    slope: float
+    intercept: float
+    r_squared: float
+    data: pl.DataFrame
+
+
+def compute_zipf_fit(counts_df: pl.DataFrame) -> ZipfFitResult:
+    """Compute ranks, log transforms, and descriptive log-log linear fit.
+
+    Parameters
+    ----------
+    counts_df : polars.DataFrame
+        DataFrame containing at least 'count' (and optionally 'word').
+
+    Returns
+    -------
+    ZipfFitResult
+        Fit metrics and transformed DataFrame.
+    """
+    if len(counts_df) == 0:
+        empty_df = pl.DataFrame(
+            schema={
+                "rank": pl.UInt32,
+                "count": pl.UInt32,
+                "log_rank": pl.Float64,
+                "log_count": pl.Float64,
+                "fitted_log_count": pl.Float64,
+                "fitted_count": pl.Float64,
+            }
+        )
+        return ZipfFitResult(slope=0.0, intercept=0.0, r_squared=0.0, data=empty_df)
+
+    sorted_df = counts_df.sort("count", descending=True)
+    ranks = np.arange(1, len(sorted_df) + 1, dtype=np.float64)
+    counts = sorted_df["count"].to_numpy().astype(np.float64)
+
+    log_ranks = np.log(ranks)
+    log_counts = np.log(counts)
+
+    if len(ranks) > 1:
+        res = linregress(log_ranks, log_counts)
+        slope = float(res.slope)
+        intercept = float(res.intercept)
+        r_squared = float(res.rvalue**2)
+    else:
+        slope = 0.0
+        intercept = float(log_counts[0]) if len(log_counts) > 0 else 0.0
+        r_squared = 1.0
+
+    fitted_log_counts = slope * log_ranks + intercept
+    fitted_counts = np.exp(fitted_log_counts)
+
+    result_df = sorted_df.with_columns(
+        [
+            pl.Series("rank", ranks.astype(np.uint32)),
+            pl.Series("log_rank", log_ranks),
+            pl.Series("log_count", log_counts),
+            pl.Series("fitted_log_count", fitted_log_counts),
+            pl.Series("fitted_count", fitted_counts),
+        ]
+    )
+
+    return ZipfFitResult(
+        slope=slope, intercept=intercept, r_squared=r_squared, data=result_df
+    )
+```
+
+Run pytest to verify that all tests pass:
+
+```bash
+uv run pytest -v
+```
+
+Commit the implementation:
+
+```bash
+git add src/bookstats/zipf.py tests/test_zipf.py pyproject.toml uv.lock
+git commit -m "feat: implement descriptive log-log linear Zipf fit with unit tests"
+```
+
+---
+
+## Interactive Visualization: Overlaying the Fit in Marimo
+
+Now open `notebooks/visualize.py` in Marimo:
+
+```bash
+uv run marimo edit notebooks/visualize.py
+```
+
+Import `compute_zipf_fit` from `bookstats.zipf`. When the reader selects a book (whether *Frankenstein*, *Dracula*, or another title from Project Gutenberg), Marimo will:
+1. Filter the dataset to the selected book.
+2. Run `compute_zipf_fit(book_df)`.
+3. Display fit statistics (Slope $\alpha$, Intercept, and $R^2$).
+4. Plot the empirical word counts as scatter points alongside the regression fit line.
+
+```{mermaid}
+%%{init: {"flowchart": {"curve": "basis"}, "theme": "base", "themeVariables": {"fontFamily": "Arial"}}}%%
+flowchart LR
+    Dropdown["Dropdown Selection ('frankenstein')"] --> Filter["Filter Data"]
+    Filter --> Fit["compute_zipf_fit()"]
+    Fit --> Stats["Display: Slope = -1.04, R² = 0.98"]
+    Fit --> Chart["Altair Layered Chart: Points + Fit Line"]
+    classDef ui fill:#fef3c7,stroke:#b45309,color:#000
+    classDef calc fill:#dbeafe,stroke:#2563eb,color:#000
+    class Dropdown,Stats,Chart ui
+    class Filter,Fit calc
+```
+
+In Marimo, layered charts in Altair are combined with the `+` operator:
+
+```python
+# Empirical observations (points)
+points = alt.Chart(chart_data).mark_circle(opacity=0.5, color="#2563eb").encode(
+    x=alt.X("rank:Q", scale=alt.Scale(type="log"), title="Rank (log scale)"),
+    y=alt.Y("count:Q", scale=alt.Scale(type="log"), title="Frequency (log scale)"),
+    tooltip=["word", "rank", "count"]
+)
+
+# Descriptive linear fit (line)
+line = alt.Chart(chart_data).mark_line(color="#dc2626", strokeWidth=2).encode(
+    x="rank:Q",
+    y="fitted_count:Q"
+)
+
+chart = points + line
+```
+
+Commit your updated notebook and merge the feature branch:
+
+```bash
+git add notebooks/visualize.py
+git commit -m "feat: overlay descriptive Zipf regression line in marimo notebook"
+git push -u origin add-tests
+```
+
+Open a Pull Request on GitHub, review the changes, and merge into `main`.
+
+---
+
+## OIST Transfer Task
+
+Take 10–15 minutes to reflect on your own research project at OIST:
+
+1. **Identify one critical failure mode**: What is one silent error that could corrupt your analysis (e.g., empty input files, unexpected negative values, NaNs in experimental measurements)?
+2. **Draft an automated check**: Write one unit test, input validation assertion, or scientific plausibility check for that failure.
+3. **Commit the check**: Commit the test or assertion to your OIST repository branch.
+
+---
+
+## Checklist for Completion
+
+Before proceeding to Session 4, confirm that your project meets these milestones:
+
+- [ ] Ruff is configured in `pyproject.toml` with `convention = "numpy"`.
+- [ ] Pre-commit hook is installed and has demonstrated an automatic formatting/lint intervention.
+- [ ] At least one failing test was committed before writing the passing code (red-green history).
+- [ ] Integration test exercises the file-processing boundary using pytest's `tmp_path`.
+- [ ] `compute_zipf_fit()` calculates slope, intercept, $R^2$, and fitted values under unit tests.
+- [ ] Marimo displays an interactive log-log chart overlaying empirical data with the descriptive regression line.
