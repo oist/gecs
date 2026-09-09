@@ -1,5 +1,5 @@
 ---
-title: "1. Git and GitHub collaboration"
+title: "Version Control"
 format: html
 ---
 
@@ -142,7 +142,17 @@ Project Gutenberg assigns every public domain work an integer eBook ID. To ensur
 <five-digit-gutenberg-id>_<hyphenated-short-title>.txt
 ```
 
-For our first book, we will use Mary Wollstonecraft Shelley's *Frankenstein; or, The Modern Prometheus* (eBook #84):
+::: {.callout-note title="Choose Any Book You Like!"}
+You are encouraged to choose **any books you want** from [Project Gutenberg](https://www.gutenberg.org/)! Whether you prefer philosophy (*The Republic*), biology (*On the Origin of Species*), poetry, mystery, or literature in other languages, you are free to analyze any text that interests you.
+
+Mary Shelley's *Frankenstein* (eBook #84) and Bram Stoker's *Dracula* (eBook #345) are used in this guide simply as concrete worked examples. When choosing your own book:
+1. Search [Project Gutenberg](https://www.gutenberg.org/) for your chosen title or author.
+2. Find the eBook ID from the book page URL (e.g. `https://www.gutenberg.org/ebooks/1342` is eBook #1342).
+3. Download the **Plain Text UTF-8** file.
+4. Name the file with the 5-digit padded convention: e.g. `01342_pride-and-prejudice.txt`.
+:::
+
+For our worked example in this walkthrough, we will use Mary Wollstonecraft Shelley's *Frankenstein; or, The Modern Prometheus* (eBook #84):
 
 ```text
 00084_frankenstein.txt
@@ -239,13 +249,17 @@ You will swap roles in Step 12 so both partners complete both roles.
 
 Professional software and scientific projects use **issues** to propose, discuss, and track changes before code is written.
 
+::: {.callout-tip title="Propose Any Book!"}
+You can propose **any book** that you find interesting from Project Gutenberg for your partner's repository! It does not need to be *Dracula*—pick any author or work, find its Gutenberg eBook ID and URL, and propose it in the issue.
+:::
+
 1. As **Partner B**, navigate in your web browser to **Partner A's** GitHub repository (`https://github.com/<partner-a>/gutenberg-analysis`).
 2. Click the **Issues** tab, then click **New Issue**.
-3. Title the issue:
+3. Title the issue (for our worked example, we propose *Dracula*):
    ```text
    Add Dracula to book inventory
    ```
-4. In the issue description, propose Bram Stoker's *Dracula* (eBook #345):
+4. In the issue description, propose the book (e.g. Bram Stoker's *Dracula*, eBook #345):
    ```markdown
    I propose adding Bram Stoker's *Dracula* to our word frequency analysis.
    

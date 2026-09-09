@@ -1,5 +1,5 @@
 ---
-title: "Getting ready"
+title: "Setting Up"
 ---
 
 This section will equip your computer with all necessary tools for this course. The motivation behind each tool will be explained in the later sessions. For now, just follow the instructions and prepare to awe (and, at times, get frustrated) with power of computing.

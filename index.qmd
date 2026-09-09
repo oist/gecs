@@ -70,7 +70,7 @@ This course is for researchers who want to learn how to automate repetitive task
 
 ## Getting Started
 
-Make sure to have your computer ready for the course. Please check out the [Setting Up](lessons/setting-up.qmd) section. Those who are not familiar with terminal should also check out the [Terminal](lessons/terminal.qmd) section.
+Make sure to have your computer ready for the course. Please check out the [Setting Up](sessions/setting-up.qmd) section. Those who are not familiar with terminal should also check out the [Terminal](sessions/terminal.qmd) section.
 
 If you need help with configuring your computer for the course, come to this one-time setup session before the course starts.
 
