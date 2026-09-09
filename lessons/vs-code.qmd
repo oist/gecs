@@ -50,29 +50,62 @@ VS Code now considers the folder you've opened a workspace. You can also use `co
 
 # Interface and Layout
 
--   Sidebar
--   Code editor
--   Terminal
+VS Code's layout consists of five primary zones:
+
+1. **Activity Bar** (far left): Switch between views — Explorer, Search, Source Control, Run & Debug, and Extensions.
+2. **Primary Sidebar**: Context-dependent panel showing folder structure, search results, or Git changes.
+3. **Editor Area**: Where you view and edit files, split panes, and preview Markdown or interactive notebooks.
+4. **Panel** (bottom): Hosts the integrated Terminal, Output logs, Problems, and Debug Console (toggle with `` Ctrl+` ``).
+5. **Status Bar** (bottom edge): Displays Git branch, language mode, line endings, indentation, and remote WSL status.
+
+# Source Control & Git Integration
+
+VS Code includes built-in Git support through the **Source Control** view (shortcut: `Ctrl+Shift+G` or `Cmd+Shift+G`):
+
+- **Staging Changes**: Click the `+` icon next to a modified file to stage it (`git add`), or click `-` to unstage.
+- **Diff Inspection**: Click on any changed file to view a side-by-side diff showing additions (green) and deletions (red).
+- **Committing**: Enter a concise commit message in the message box and click **Commit** (or press `Cmd+Enter` / `Ctrl+Enter`).
+- **Graph & History**: Click the branch icon or **View History** to inspect the branch-and-merge shape in the Git graph.
+- **Syncing**: The bottom-left status bar or the **Sync Changes** button pulls remote changes and pushes local commits.
+
+# Python Interpreter Selection
+
+When working with virtual environments created by `uv` (such as `.venv`), ensure VS Code executes code using the project's pinned interpreter:
+
+1. Open the **Command Palette**: `Cmd+Shift+P` (macOS) or `Ctrl+Shift+P` (Linux/WSL).
+2. Type **Python: Select Interpreter** and press Enter.
+3. Choose the `.venv` virtual environment (typically labeled `./.venv/bin/python` or similar).
+4. VS Code will now use your project's locked dependencies for syntax highlighting, linting, formatting, and terminal runs.
 
 # Settings
 
--   Autosave
--   Word wrap
--   Theme customization
--   GECS profile configuration
+- **Autosave**: Enable via **File** > **Auto Save** (`afterDelay`).
+- **Word wrap**: Toggle in any active editor using `Alt+Z` (or `Option+Z`).
+- **Formatting on Save**: In Settings (`Cmd+,` or `Ctrl+,`), search for `editor.formatOnSave` and check the box to automatically format code using Ruff.
+- **Tab indentation vs Spaces**: Check the status bar indicator (e.g. `Spaces: 4` or `Tab Size: 4`) — Makefiles strictly require leading tabs for recipe lines.
 
 # Searching and Replacing
 
--   Search in a file
--   Search across files
+- **File search**: Press `Cmd+P` (macOS) or `Ctrl+P` (Linux/WSL) to instantly open any file by name.
+- **In-file search**: Press `Cmd+F` or `Ctrl+F` to search, and `Cmd+Option+F` or `Ctrl+H` to replace.
+- **Project-wide search**: Press `Cmd+Shift+F` or `Ctrl+Shift+F` to search across all files in the repository.
 
-# Shortcuts
+# Essential Shortcuts
 
--   **Layout**: `Cmd+B` for the Sidebar, `` Ctrl+` `` for the Terminal
--   **Code editor**: `Cmd+D` for selecting the expression, `Opt+Up/Down` to move a line, `Opt+Shift+F` to format a document
--   **General**: `Cmd+Shift+P` for the Command Palette, `Cmd+P` for the File and Open Editors search bar
+| Action | macOS | Linux / WSL |
+|---|---|---|
+| Command Palette | `Cmd+Shift+P` | `Ctrl+Shift+P` |
+| Quick Open File | `Cmd+P` | `Ctrl+P` |
+| Toggle Terminal | `` Ctrl+` `` | `` Ctrl+` `` |
+| Toggle Primary Sidebar | `Cmd+B` | `Ctrl+B` |
+| Source Control Panel | `Ctrl+Shift+G` | `Ctrl+Shift+G` |
+| Move Line Up / Down | `Option+Up / Down` | `Alt+Up / Down` |
+| Format Document | `Shift+Option+F` | `Shift+Alt+F` |
+| Toggle Word Wrap | `Option+Z` | `Alt+Z` |
 
 # References
 
--   <https://code.visualstudio.com/docs/getstarted/getting-started>
--   <https://code.visualstudio.com/docs/remote/wsl-tutorial>
+- [Visual Studio Code Documentation](https://code.visualstudio.com/docs)
+- [Using Git source control in VS Code](https://code.visualstudio.com/docs/sourcecontrol/overview)
+- [Python in Visual Studio Code](https://code.visualstudio.com/docs/languages/python)
+- [WSL Tutorial for Visual Studio Code](https://code.visualstudio.com/docs/remote/wsl-tutorial)
