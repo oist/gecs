@@ -31,24 +31,6 @@ By the end of this two-hour session, you will be able to:
 
 ---
 
-## The Collaboration Workflow
-
-The diagram below shows how you and your partner collaborate during this session:
-
-```{mermaid}
-gitGraph
-   commit id: "docs: initialize README"
-   commit id: "data: add Frankenstein"
-   branch add-dracula
-   checkout add-dracula
-   commit id: "data: add Dracula"
-   commit id: "docs: record Dracula"
-   checkout main
-   merge add-dracula id: "Merge PR #1: add-dracula"
-```
-
----
-
 ## The Course Project: Gutenberg Book Analysis
 
 Throughout GECS, each participant builds their own independent repository (such as `gutenberg-analysis`). We analyze word distributions and test power-law relationships (Zipf's law) across classic literature from [Project Gutenberg](https://www.gutenberg.org/).
@@ -69,7 +51,7 @@ gutenberg-analysis/
 
 ---
 
-## Create an Empty Repository and Initialize Git
+## Initialize Git in an Empty Directory
 
 We use **VS Code** as our primary interface. Adjacent terminal commands are provided in collapsible callouts for learners who prefer the command line.
 
@@ -90,6 +72,14 @@ git init -b main
 :::
 
 VS Code initializes a hidden `.git/` directory. Your folder is now a Git repository tracking the default branch (`main`).
+
+At this point, Git is tracking an empty repository on branch `main`:
+
+```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "gitBranchLabel0": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
+gitGraph
+   commit id: "init repo"
+```
 
 ---
 
@@ -157,6 +147,15 @@ git commit -m "docs: initialize project with README"
 ```
 :::
 
+Your repository now has its first commit on `main`:
+
+```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "gitBranchLabel0": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
+gitGraph
+   commit id: "init repo"
+   commit id: "docs: init README"
+```
+
 ---
 
 ## Download and Name Your First Book
@@ -218,23 +217,33 @@ Do not bundle raw data additions and documentation updates into a single giant c
 1. In Source Control, stage `00084_frankenstein.txt` only by clicking its **`+`** icon.
 2. Commit with the message:
    ```text
-   data: add Frankenstein (Project Gutenberg #84)
+   data: add Frankenstein (#84)
    ```
 3. Next, stage `README.md`.
 4. Commit with the message:
    ```text
-   docs: record Frankenstein in README book table
+   docs: record Frankenstein in README
    ```
 
 ::: {.callout-tip title="Terminal equivalent" collapse="true"}
 ```bash
 git add 00084_frankenstein.txt
-git commit -m "data: add Frankenstein (Project Gutenberg #84)"
+git commit -m "data: add Frankenstein (#84)"
 
 git add README.md
-git commit -m "docs: record Frankenstein in README book table"
+git commit -m "docs: record Frankenstein in README"
 ```
 :::
+
+The `main` branch now contains three clear, atomic commits establishing the baseline project:
+
+```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "gitBranchLabel0": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
+gitGraph
+   commit id: "docs: init README"
+   commit id: "data: add Frankenstein"
+   commit id: "docs: record Frankenstein"
+```
 
 ---
 
@@ -341,18 +350,15 @@ cd gutenberg-analysis
 
 ---
 
-## Create a Short-Lived Feature Branch
+## Branching to Add a New Book
 
-Never work directly on `main` when contributing a change. A feature branch isolates your modifications from the stable `main` branch.
+Never make changes directly on `main` when contributing a feature or data. Instead, create a dedicated feature branch. This isolates your work and makes it easy to review.
 
-1. In VS Code, look at the bottom-left corner of the status bar. It shows the current branch name (`main`).
-2. Click on `main`.
-3. In the top palette, select **Create new branch...**.
-4. Name the branch:
-   ```text
-   add-dracula
-   ```
-5. Press Enter. The status bar now displays `add-dracula`.
+In VS Code:
+1. Click on the current branch name (`main`) in the bottom-left status bar.
+2. Select **Create new branch...**.
+3. Enter the branch name: `add-dracula`.
+4. Press Enter. The status bar now displays `add-dracula`.
 
 ::: {.callout-tip title="Terminal equivalent" collapse="true"}
 ```bash
@@ -360,18 +366,31 @@ git checkout -b add-dracula
 ```
 :::
 
+This creates a new branch diverging from `main`:
+
+```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "git1": "#dc2626", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
+gitGraph
+   commit id: "docs: init README"
+   commit id: "data: add Frankenstein"
+   commit id: "docs: record Frankenstein"
+   branch add-dracula
+   checkout add-dracula
+```
+
 ---
 
-## Add the Proposed Book and Update the Inventory
+## Add the Proposed Book on Your Branch
 
-On your `add-dracula` branch:
+Now on the `add-dracula` branch, acquire the book and update the documentation:
 
 1. Download *Dracula* from Project Gutenberg: [https://www.gutenberg.org/ebooks/345](https://www.gutenberg.org/ebooks/345).
-2. Save the file in the repository root as:
+2. Save the file in the repository root as `00345_dracula.txt`.
+3. Stage and commit the book:
    ```text
-   00345_dracula.txt
+   data: add Dracula (#345)
    ```
-3. Open `README.md` and append *Dracula* to the **Books Analyzed** table:
+4. Open `README.md` and append *Dracula* to the **Books Analyzed** table:
 
 ```markdown
 | 00345 | Dracula | Bram Stoker | https://www.gutenberg.org/ebooks/345 |
@@ -382,117 +401,105 @@ Also add it to **Repository Contents**:
 - `00345_dracula.txt`: Raw text of *Dracula*.
 ```
 
-::: {.callout-tip title="Terminal equivalent (download via curl)" collapse="true"}
-```bash
-curl -sL https://www.gutenberg.org/cache/epub/345/pg345.txt -o 00345_dracula.txt
-```
-:::
-
----
-
-## Commit, Push, and Open a Pull Request
-
-1. In VS Code Source Control, stage `00345_dracula.txt` and commit:
+5. Stage and commit `README.md` referencing the issue number:
    ```text
-   data: add Dracula (Project Gutenberg #345)
+   docs: record Dracula (Closes #1)
    ```
-2. Stage `README.md` and commit with a message referencing the issue:
-   ```text
-   docs: record Dracula in README book table (Closes #1)
-   ```
-   *(Replace `#1` with the actual issue number).*
-3. Click the **Publish Branch** button in Source Control. This pushes `add-dracula` to your fork on GitHub.
-4. Navigate to your fork on GitHub in your browser.
-5. GitHub will display a banner: *"add-dracula had recent pushes. Compare & pull request"*. Click **Compare & pull request**.
-6. Ensure the base repository is **Partner A's** `main`, and the head repository is **your fork's** `add-dracula`.
-7. Enter a descriptive title and comment. Make sure the description includes:
-   ```markdown
-   Closes #1
-   ```
-8. Click **Create pull request**.
-
-![Create a pull request from VS Code or GitHub.](/images/version-control_vscode_create-pull-request-view.png)
 
 ::: {.callout-tip title="Terminal equivalent" collapse="true"}
 ```bash
+curl -sL https://www.gutenberg.org/cache/epub/345/pg345.txt -o 00345_dracula.txt
 git add 00345_dracula.txt
-git commit -m "data: add Dracula (Project Gutenberg #345)"
+git commit -m "data: add Dracula (#345)"
 
 git add README.md
-git commit -m "docs: record Dracula in README book table (Closes #1)"
-
-git push -u origin add-dracula
+git commit -m "docs: record Dracula (Closes #1)"
 ```
 :::
+
+Here is your branch structure with the two new commits in red on `add-dracula`:
+
+```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "git1": "#dc2626", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
+gitGraph
+   commit id: "docs: init README"
+   commit id: "data: add Frankenstein"
+   commit id: "docs: record Frankenstein"
+   branch add-dracula
+   checkout add-dracula
+   commit id: "data: add Dracula"
+   commit id: "docs: record Dracula"
+```
+
+---
+
+## Push and Open a Pull Request
+
+Publish your feature branch to your fork on GitHub and propose the changes to Partner A:
+
+1. In VS Code Source Control, click **Publish Branch** to push `add-dracula` to your fork.
+2. Open your fork on GitHub in your browser.
+3. Click **Compare & pull request** on the banner.
+4. Verify:
+   - **Base repository**: `<partner-a>/gutenberg-analysis`, branch `main`.
+   - **Head repository**: `<partner-b>/gutenberg-analysis`, branch `add-dracula`.
+5. In the PR description, write a concise explanation and include:
+   ```markdown
+   Closes #1
+   ```
+6. Click **Create pull request**.
+
+![Create a pull request from VS Code or GitHub.](/images/version-control_vscode_create-pull-request-view.png)
 
 ---
 
 ## Review and Merge with a Merge Commit
 
-Now switch roles: **Partner A** reviews the pull request submitted by **Partner B**.
+Now switch to **Partner A**:
 
-1. In GitHub, go to your repository (`<partner-a>/gutenberg-analysis`) and click the **Pull requests** tab.
-2. Open the pull request submitted by your partner.
-3. Click the **Files changed** tab to inspect the diff:
-   - Green lines indicate additions (`00345_dracula.txt` and README rows).
-   - Verify that the filename matches the 5-digit padded convention.
-4. Click **Review changes** in the top right. Leave a constructive comment (e.g. *"Looks great, thank you!"*) and select **Approve**.
-5. Click **Submit review**.
-6. Return to the **Conversation** tab. Scroll down to the merge button.
-7. Click the dropdown arrow next to the green merge button and select:
-   **Create a merge commit**.
-   
-   ::: {.callout-important}
-   Do **not** choose *Squash and merge* or *Rebase and merge* for this course. A merge commit explicitly preserves the fork and branch history in the Git graph!
-   :::
+1. On your repository page on GitHub (`<partner-a>/gutenberg-analysis`), click the **Pull requests** tab.
+2. Open the pull request submitted by Partner B.
+3. Click the **Files changed** tab to inspect the diff.
+4. Click **Review changes** > select **Approve** > **Submit review**.
+5. Return to the **Conversation** tab.
+6. Click the arrow on the green merge button and select **Create a merge commit**.
 
-8. Click **Confirm merge**.
-9. Notice that GitHub automatically marks the linked issue as **Closed** because the PR contained `Closes #1`!
-
----
-
-## Clean Up the Completed Branch
-
-Once a branch has been merged into `main`, its job is done. Retaining merged feature branches clutters the repository.
-
-1. **Delete Remote Branch**: On the GitHub pull request page, click **Delete branch**.
-2. **Delete Local Branch**:
-   - In VS Code, switch back to `main` by clicking the branch name in the status bar and selecting `main`.
-   - Open the integrated terminal (`` Ctrl+` ``) and run:
-     ```bash
-     git branch -d add-dracula
-     ```
-   *(Git will safely delete the branch because all its commits are now part of `main`).*
-
-::: {.callout-note appearance="simple"}
-Notice that Git requires you to switch away from a branch before you can delete it. You cannot delete the branch you are currently standing on.
+::: {.callout-important}
+Do **not** choose *Squash and merge* or *Rebase and merge*. A merge commit explicitly preserves the fork and branch history in the Git graph!
 :::
 
+7. Click **Confirm merge**. GitHub automatically closes Issue `#1`!
+8. Click **Delete branch** on GitHub to clean up the remote feature branch.
+
 ---
 
-## Pull Merged Changes and Inspect History
+## Pull the Merged Changes and Inspect the History Graph
 
-Now **Partner A** syncs their local clone to pull the new commits from GitHub:
+**Partner A** now syncs their local clone to pull the merged commits from GitHub:
 
 1. In VS Code, open the Source Control view.
-2. Click the `...` (More Actions) menu at the top of the Source Control panel, and select **Pull** (or use the Sync status bar button).
+2. Click **Pull** (or use the Sync status bar button).
 
 ![Fetch, pull, and push controls in VS Code.](/images/version-control_vscode_sync-fetch-pull-push.png)
 
-3. In the Source Control Graph (or using Git Graph extension / terminal), inspect the history:
+3. Open the Source Control Graph in VS Code (or run `git log --graph --oneline` in the terminal).
 
 ![The Source Control Graph view in VS Code showing branch and merge commits.](/images/version-control_vscode_source-control-graph.png)
 
+The complete collaboration history graph displays the red feature branch merging cleanly back into the blue `main` branch:
+
 ```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "git1": "#dc2626", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
 gitGraph
-   commit id: "docs: initialize README"
+   commit id: "docs: init README"
    commit id: "data: add Frankenstein"
+   commit id: "docs: record Frankenstein"
    branch add-dracula
    checkout add-dracula
    commit id: "data: add Dracula"
    commit id: "docs: record Dracula"
    checkout main
-   merge add-dracula id: "Merge PR #1: add-dracula"
+   merge add-dracula id: "Merge PR #1 (add-dracula)"
 ```
 
 ::: {.callout-tip title="Terminal equivalent" collapse="true"}
@@ -502,17 +509,32 @@ git log --graph --oneline --decorate
 ```
 :::
 
-You can clearly see the separate line of development branching out from `main`, receiving two focused commits, and joining back into `main` via the merge commit.
+---
+
+## Clean Up Local Branches
+
+On Partner B's machine, delete the local feature branch now that it has been merged into `main`:
+
+```bash
+git checkout main
+git pull upstream main
+git branch -d add-dracula
+```
+
+::: {.callout-note}
+Git will safely delete the branch with `-d` because all its commits have been incorporated into `main`.
+:::
 
 ---
 
 ## Now Swap Roles!
 
 Repeat the workflow with the roles reversed:
-- **Partner A** opens an issue, forks **Partner B's** repository, creates a feature branch, and opens a PR.
-- **Partner B** reviews, approves, merges via a merge commit, and deletes the branch.
+- **Partner A** opens an issue on Partner B's repository proposing a new book.
+- **Partner A** forks Partner B's repository, creates a feature branch, commits the book, and opens a PR with `Closes #1`.
+- **Partner B** reviews, approves, merges via **Create a merge commit**, and deletes the branch.
 
-Both partners must experience both the contributor role and the repository owner role.
+Both partners experience both the contributor role and the repository owner role.
 
 ---
 
