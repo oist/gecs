@@ -293,7 +293,7 @@ You will see a path to the `uv` executable, often something like `/Users/usernam
 
 # Developer Platform
 
-Your code needs to live somewhere besides your computer. Otherwise, if you lose your computer, will you be able to access your projects? For this purpose, we will use GitHub which will take a central role alongside Git during [the session on version control](version-control.qmd).
+Your code needs to live somewhere besides your computer. Otherwise, if you lose your computer, will you be able to access your projects? For this purpose, we will use GitHub which will take a central role alongside Git during [Collaborating with Git and GitHub](collaborating.qmd).
 
 ## GitHub {#sec-github}
 

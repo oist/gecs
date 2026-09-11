@@ -17,8 +17,8 @@ website:
         href: sessions/setting-up.qmd
       - section: "Sessions"
         contents:
-          - text: "Collaboration with Git and GitHub"
-            href: sessions/version-control.qmd
+          - text: "Collaborating with Git and GitHub"
+            href: sessions/collaborating.qmd
           - text: "Reproducible Projects"
             href: sessions/virtual-environments.qmd
           - text: "Code Quality and Testing"
