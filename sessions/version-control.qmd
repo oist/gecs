@@ -371,11 +371,15 @@ this session teaches open-source contribution workflows, we use the fork model.
 3. GitHub opens the **Create a new fork** page. Because Collaborator B already has
    their own repository named `gutenberg-analysis`, GitHub flags a name conflict:
    *"The repository already exists in your account."*
-   In the **Repository name** field, add Collaborator A's GitHub handle:
-   ```text
-   gutenberg-analysis-<collaborator-a-handle>
-   ```
-   Then select **Create fork**.
+   - In the **Repository name** field, add Collaborator A's GitHub handle:
+     ```text
+     gutenberg-analysis-<collaborator-a-handle>
+     ```
+   - Keep **Copy the main branch only** checked (the default). For this course,
+     we only need `main`. Note that in other open-source projects, you might uncheck
+     this option if you need to work with or inspect other active development or
+     release branches from the original repository.
+   - Select **Create fork**.
 4. In VS Code, run **Git: Clone** from the Command Palette.
 5. Paste the URL of Collaborator B's fork:
    `https://github.com/<collaborator-b>/gutenberg-analysis-<collaborator-a>.git`.
