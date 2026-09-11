@@ -7,65 +7,68 @@ format: html
 >
 > Cher, *If I Could Turn Back Time* (1989)
 
-In this session, you will start a cumulative research project from an initially empty repository. You will document the project, acquire plain-text book data from Project Gutenberg, publish the repository to GitHub, and collaborate with a partner using an issue-driven fork, branch, pull request, and merge commit workflow.
+Collaboration is the focus of this session. Git records changes and GitHub gives
+us a place to propose, inspect, discuss, and combine them. You will first make
+your own work understandable through a branch and pull request, then repeat the
+workflow with another person.
 
 ![Two ways to manage project history: (*Left*) A precarious stack of ambiguously named files that easily breaks. (*Right*) Version control acts like a dial, letting you navigate project history reliably.](https://raw.githubusercontent.com/the-turing-way/the-turing-way/refs/heads/main/book/figures/project-history.svg)
 
-::: {.callout-note title="Recovery Checkpoint: git-collaboration" collapse="true"}
-If you join late or need to reset your project to the verified end state of this session, you can download the prepared snapshot from the canonical reference repository:
-
-- Tag: [`git-collaboration`](https://github.com/oist/bookstats/tree/git-collaboration)
-- Raw book assets: `assets/data/raw/` in the course materials.
+::: {.callout-important title="Before you begin"}
+Confirm that you have a GitHub account with multi-factor authentication, Git is
+configured with your name and email, and VS Code can access Git. If not, return
+to [Setting Up](setting-up.qmd) or ask an instructor.
 :::
 
-## Learning Outcomes
+## Learning outcomes
 
 By the end of this two-hour session, you will be able to:
 
-1. Initialize and configure a Git repository from an empty directory using VS Code.
-2. Structure an evolving `README.md` that tracks data sources, file conventions, and explicit reproduction placeholders.
-3. Apply structured data naming conventions to plain-text Project Gutenberg books.
-4. Distinguish between **forking** and **cloning** when contributing to a repository where you do not have direct write permissions.
-5. Execute an issue-driven collaboration workflow: opening an issue, creating a short-lived branch, making focused commits, and opening a pull request referencing the issue with `Closes #N`.
-6. Review a pull request diff, leave constructive review comments, and merge using **Create a merge commit**.
-7. Clean up completed local and remote feature branches safely.
-8. Inspect and navigate the branch-and-merge history graph in VS Code.
+1. make a change on a short-lived branch and propose it with a pull request;
+2. inspect a diff before accepting a change;
+3. use an issue, fork, and pull request to contribute to another repository;
+4. distinguish `origin` from `upstream` and check where a push or merge goes;
+5. review and merge a collaborator's contribution; and
+6. synchronize repositories and remove completed branches.
 
----
+## The course project
 
-## The Course Project: Gutenberg Book Analysis
+Each participant owns a separate public course repository named
+`gutenberg-analysis`. Throughout GECS, that repository grows from a README and
+plain-text books into a tested, automated, published analysis.
 
-Throughout GECS, each participant builds their own independent repository (such as `gutenberg-analysis`). We analyze word distributions and test power-law relationships (Zipf's law) across classic literature from [Project Gutenberg](https://www.gutenberg.org/).
+We use books from [Project Gutenberg](https://www.gutenberg.org/) because the
+files are small, open-access, and easy to inspect. Real research data may be too
+large, sensitive, or restricted to commit to Git.
 
-We commit raw book text files directly into the course repository because they are small, open-access, and redistributable.
-
-::: {.callout-important}
-In real laboratory research, raw experimental data may be hundreds of gigabytes, contain patient-sensitive information, or be governed by strict proprietary licenses. Real research projects often store raw data in managed object storage (such as S3 or GCS) or shared network filesystems, recording immutable identifiers (such as DOIs or checksums) in Git rather than the raw data itself.
-:::
-
-### Starting-State Tree
-
-Your project begins completely empty:
+Your project begins empty:
 
 ```text
 gutenberg-analysis/
 ```
 
----
+## Collaborate with your future self
 
-## Initialize Git in an Empty Directory
+The person most likely to revisit today's work is you—perhaps on another day or
+another computer. A README, a focused history, and an inspectable pull request
+make the project understandable before anyone else joins it.
 
-We use **VS Code** as our primary interface. Adjacent terminal commands are provided in collapsible callouts for learners who prefer the command line.
+### Start the repository
 
 1. Launch VS Code.
-2. Select **File** > **Open Folder...** (macOS: `Cmd+O`, Windows/WSL: `Ctrl+O`).
-3. Click **New Folder**, name it `gutenberg-analysis`, and click **Open**.
-4. In the Activity Bar on the left, click the **Source Control** icon (`Ctrl+Shift+G` or `Cmd+Shift+G`).
-5. Click **Initialize Repository**.
+2. Select **File > Open Folder...**.
+3. Create and open a folder named `gutenberg-analysis`.
+4. Open **Source Control** in the Activity Bar.
+5. Select **Initialize Repository**.
 
 ![Initialize a local repository in VS Code.](/images/version-control_vscode_initialize-repository_official.png)
 
-::: {.callout-tip title="Terminal equivalent" collapse="true"}
+::: {.callout-note title="Repository"}
+A Git repository is a project directory whose changes and history Git can
+track. VS Code creates a hidden `.git/` directory to store that history.
+:::
+
+::: {.callout-tip title="Bash/Zsh equivalent" collapse="true"}
 ```bash
 mkdir gutenberg-analysis
 cd gutenberg-analysis
@@ -73,520 +76,518 @@ git init -b main
 ```
 :::
 
-VS Code initializes a hidden `.git/` directory. Your folder is now a Git repository tracking the default branch (`main`).
+### Add the initial README
 
-At this point, Git is tracking an empty repository on branch `main`:
-
-```{mermaid}
-%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "gitBranchLabel0": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
-gitGraph
-   commit id: "init repo"
-```
-
----
-
-## Author a Minimal README
-
-A project should always introduce itself. Create a minimal `README.md` in the root of your workspace:
-
-1. In VS Code Explorer (`Cmd+Shift+E` / `Ctrl+Shift+E`), click the **New File** icon and name it `README.md`.
-2. Add the following content, adjusting the author name to your own:
+Create `README.md` in the repository root and adapt the author name:
 
 ```markdown
 # gutenberg-analysis
 
-A cumulative research project analyzing word frequency distributions in classic literature from Project Gutenberg.
+A cumulative project analyzing word frequencies in books from Project Gutenberg.
 
-## Purpose
+## Author
 
-This project investigates word frequency patterns and descriptive Zipf's law fits across classic literature.
+Your Name
 
-## Books Analyzed
+## Books
 
 | Gutenberg ID | Title | Author | Source URL |
 |---|---|---|---|
 
-### Filename Convention
+## Filename convention
 
-Raw book text files are stored using the convention:
-`<five-digit-gutenberg-id>_<hyphenated-short-title>.txt`
+Book files use `<five-digit-gutenberg-id>_<hyphenated-short-title>.txt`.
 
-The leading 5-digit number is the official Project Gutenberg ebook ID padded with zeros, followed by an underscore separator and a lowercase hyphenated short title.
+## Repository contents
 
-## Repository Contents
+- `README.md`: project description and book inventory
 
-- `README.md`: Project description and book inventory.
+## Setup
 
-## Setup Instructions
+*To be added in Session 2.*
 
-*(To be added in Session 2)*
+## Run the analysis
 
-## Running the Analysis
+*To be added in Session 2.*
 
-*(To be added in Session 2)*
+## Reproduce the results
 
-## Reproducing Results
-
-*(To be added in Session 4)*
+*To be added in Session 4.*
 ```
 
-3. Save the file (`Cmd+S` / `Ctrl+S`).
-4. Switch to the **Source Control** view.
-5. Click the **`+`** icon next to `README.md` to stage the file.
+Open **Source Control**, stage `README.md`, enter the commit message below, and
+select **Commit**:
+
+```text
+docs: start project README
+```
+
+::: {.callout-note title="Commit"}
+A commit records one meaningful project change. Its message should help you and
+other collaborators understand why that change exists.
+:::
+
+::: {.callout-important title="Before your first commit"}
+Check the branch name in the lower-left corner of VS Code. This initial README
+belongs on `main`.
+:::
 
 ![Stage changes in the VS Code Source Control view.](/images/version-control_vscode_stage-changes.png)
 
-6. Enter the commit message:
-   ```text
-   docs: initialize project with README
-   ```
-7. Click **Commit** (or press `Cmd+Enter` / `Ctrl+Enter`).
-
-::: {.callout-tip title="Terminal equivalent" collapse="true"}
+::: {.callout-tip title="Bash/Zsh equivalent" collapse="true"}
 ```bash
 git add README.md
-git commit -m "docs: initialize project with README"
+git commit -m "docs: start project README"
 ```
 :::
 
-Your repository now has its first commit on `main`:
+### Publish the repository
 
-```{mermaid}
-%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "gitBranchLabel0": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
-gitGraph
-   commit id: "init repo"
-   commit id: "docs: init README"
-```
+In **Source Control**, select **Publish Branch** or **Publish to GitHub**. Sign
+in if prompted, then choose **Publish to GitHub public repository**. Open the
+repository on GitHub and confirm that `README.md` appears on `main`.
 
----
-
-## Download and Name Your First Book
-
-Project Gutenberg assigns every public domain work an integer eBook ID. To ensure consistent sorting and unambiguous file paths, our project uses the following convention:
-
-```text
-<five-digit-gutenberg-id>_<hyphenated-short-title>.txt
-```
-
-::: {.callout-note title="Choose Any Book You Like!"}
-You are encouraged to choose **any books you want** from [Project Gutenberg](https://www.gutenberg.org/)! Whether you prefer philosophy (*The Republic*), biology (*On the Origin of Species*), poetry, mystery, or literature in other languages, you are free to analyze any text that interests you.
-
-Mary Shelley's *Frankenstein* (eBook #84) and Bram Stoker's *Dracula* (eBook #345) are used in this guide simply as concrete worked examples. When choosing your own book:
-1. Search [Project Gutenberg](https://www.gutenberg.org/) for your chosen title or author.
-2. Find the eBook ID from the book page URL (e.g. `https://www.gutenberg.org/ebooks/1342` is eBook #1342).
-3. Download the **Plain Text UTF-8** file.
-4. Name the file with the 5-digit padded convention: e.g. `01342_pride-and-prejudice.txt`.
+::: {.callout-important title="Before your first push"}
+The destination should be `<your-handle>/gutenberg-analysis` on GitHub. VS Code
+names this remote repository `origin`.
 :::
-
-For our worked example in this walkthrough, we will use Mary Wollstonecraft Shelley's *Frankenstein; or, The Modern Prometheus* (eBook #84):
-
-```text
-00084_frankenstein.txt
-```
-
-1. Download the plain text UTF-8 version of *Frankenstein* from Project Gutenberg: [https://www.gutenberg.org/ebooks/84](https://www.gutenberg.org/ebooks/84) (or use the mirror in the course assets).
-2. Save the file directly into your `gutenberg-analysis` folder as `00084_frankenstein.txt`.
-3. Open `README.md` and add *Frankenstein* to the **Books Analyzed** table:
-
-```markdown
-| Gutenberg ID | Title | Author | Source URL |
-|---|---|---|---|
-| 00084 | Frankenstein; or, the Modern Prometheus | Mary Wollstonecraft Shelley | https://www.gutenberg.org/ebooks/84 |
-```
-
-Also update the **Repository Contents** section:
-```markdown
-- `README.md`: Project description and book inventory.
-- `00084_frankenstein.txt`: Raw text of *Frankenstein*.
-```
-
-::: {.callout-tip title="Terminal equivalent (download via curl)" collapse="true"}
-```bash
-curl -sL https://www.gutenberg.org/cache/epub/84/pg84.txt -o 00084_frankenstein.txt
-```
-:::
-
----
-
-## Commit Added Files Individually
-
-A fundamental principle of version control is **atomic commits**: each commit should represent one focused, logical change.
-
-Do not bundle raw data additions and documentation updates into a single giant commit.
-
-![The Source Control view showing changed and unstaged files in VS Code.](/images/version-control_vscode_source-control_changes.png)
-
-1. In Source Control, stage `00084_frankenstein.txt` only by clicking its **`+`** icon.
-2. Commit with the message:
-   ```text
-   data: add Frankenstein (#84)
-   ```
-3. Next, stage `README.md`.
-4. Commit with the message:
-   ```text
-   docs: record Frankenstein in README
-   ```
-
-::: {.callout-tip title="Terminal equivalent" collapse="true"}
-```bash
-git add 00084_frankenstein.txt
-git commit -m "data: add Frankenstein (#84)"
-
-git add README.md
-git commit -m "docs: record Frankenstein in README"
-```
-:::
-
-The `main` branch now contains three clear, atomic commits establishing the baseline project:
-
-```{mermaid}
-%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "gitBranchLabel0": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
-gitGraph
-   commit id: "docs: init README"
-   commit id: "data: add Frankenstein"
-   commit id: "docs: record Frankenstein"
-```
-
----
-
-## Publish Your Repository to GitHub
-
-To collaborate, your repository must exist on a shared remote server.
-
-1. In the VS Code Source Control view, click **Publish Branch** (or **Publish to GitHub**).
-2. If prompted, authorize VS Code to access your GitHub account.
 
 ![The GitHub sign-in prompt in VS Code.](/images/version-control_vscode_github-signin.png)
 
-3. Choose **Publish to GitHub public repository** (`<your-username>/gutenberg-analysis`).
-4. Once published, click **Open on GitHub** in the popup notification to inspect your public repository in the browser.
+::: {.callout-tip title="Bash/Zsh equivalent" collapse="true"}
+Using GitHub CLI:
 
-::: {.callout-tip title="Terminal equivalent (using GitHub CLI)" collapse="true"}
 ```bash
 gh repo create gutenberg-analysis --public --source=. --remote=origin --push
 ```
-Or via standard git remote:
+:::
+
+### Create a branch for the first book
+
+A branch lets you develop a change without placing unfinished work directly on
+`main`.
+
+1. Select `main` in the lower-left corner of VS Code.
+2. Select **Create new branch...**.
+3. Name the branch `add-frankenstein`.
+4. Confirm that the lower-left corner now displays `add-frankenstein`.
+
+::: {.callout-tip title="Bash/Zsh equivalent" collapse="true"}
 ```bash
-git remote add origin https://github.com/<your-username>/gutenberg-analysis.git
-git push -u origin main
+git switch -c add-frankenstein
 ```
 :::
 
----
+### Add Frankenstein
 
-## Pair Up with a Partner
+The worked example uses Mary Wollstonecraft Shelley's *Frankenstein; or, The
+Modern Prometheus*, Project Gutenberg ebook 84.
 
-Form pairs with a neighbor. You do not need to be on the same operating system (a macOS user can partner with a Linux or Windows/WSL user).
+1. Download the **Plain Text UTF-8** edition from
+   [Project Gutenberg](https://www.gutenberg.org/ebooks/84), or use the course
+   fallback file.
+2. Save it in the repository root as `00084_frankenstein.txt`.
+3. Add this row to the README's **Books** table:
 
-Identify:
-- **Partner A**: The repository owner for the first round.
-- **Partner B**: The contributor for the first round.
+```markdown
+| 00084 | Frankenstein; or, the Modern Prometheus | Mary Wollstonecraft Shelley | https://www.gutenberg.org/ebooks/84 |
+```
 
-You will swap roles later so both partners complete both roles.
+4. Add the book to **Repository contents**:
 
----
+```markdown
+- `00084_frankenstein.txt`: plain text of *Frankenstein*
+```
 
-## Issue-Driven Collaboration
+You may choose another Gutenberg book instead. Use its five-digit padded ebook
+ID, a lowercase hyphenated title, and record the title, author, ID, and source
+URL in the README.
 
-Professional software and scientific projects use **issues** to propose, discuss, and track changes before code is written.
+### Commit one complete change
 
-::: {.callout-tip title="Propose Any Book!"}
-You can propose **any book** that you find interesting from Project Gutenberg for your partner's repository! It does not need to be *Dracula*—pick any author or work, find its Gutenberg eBook ID and URL, and propose it in the issue.
-:::
-
-1. As **Partner B**, navigate in your web browser to **Partner A's** GitHub repository (`https://github.com/<partner-a>/gutenberg-analysis`).
-2. Click the **Issues** tab, then click **New Issue**.
-3. Title the issue (for our worked example, we propose *Dracula*):
-   ```text
-   Add Dracula to book inventory
-   ```
-4. In the issue description, propose the book (e.g. Bram Stoker's *Dracula*, eBook #345):
-   ```markdown
-   I propose adding Bram Stoker's *Dracula* to our word frequency analysis.
-   
-   - **Gutenberg ID**: 00345
-   - **Title**: Dracula
-   - **Author**: Bram Stoker
-   - **Source URL**: https://www.gutenberg.org/ebooks/345
-   ```
-5. Click **Submit new issue**.
-6. Note the issue number (e.g. `#1`).
-
----
-
-## Fork versus Clone
-
-When you contribute to someone else's public GitHub repository, you typically do not have direct write/push permissions to their repository. Attempting to push directly to their `main` branch will result in `Permission denied (HTTP 403)`.
-
-To propose changes, we use the **Fork and Pull Request** workflow:
+In **Source Control**, inspect the diff, stage both
+`00084_frankenstein.txt` and `README.md`, and commit them together:
 
 ```text
-[Partner A Repository] (upstream remote)
-         │
-         │ (Fork on GitHub)
-         ▼
-[Partner B Fork on GitHub] (your origin remote)
-         │
-         │ (Clone to local machine)
-         ▼
-[Partner B Local Machine]
+data: add Frankenstein
 ```
 
-1. On **Partner A's** repository page on GitHub, click the **Fork** button in the top-right corner.
-2. Choose your own personal account as the destination and click **Create fork**.
-3. You are redirected to your fork: `https://github.com/<partner-b>/gutenberg-analysis`.
-4. Now clone **your fork** to your local machine:
-   - In VS Code, open the Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`).
-   - Run **Git: Clone**.
-   - Paste the URL of **your fork** (`https://github.com/<partner-b>/gutenberg-analysis.git`).
-   - Select a local directory (e.g. your projects folder) and click **Open**.
+The two files form one focused change: the data arrives with the provenance a
+collaborator needs to understand it. A focused commit does not mean one file per
+commit.
+
+::: {.callout-important title="Where will this commit go?"}
+Check that the open folder is your own `gutenberg-analysis` repository and the
+current branch is `add-frankenstein`.
+:::
+
+![The Source Control view showing changed files.](/images/version-control_vscode_source-control_changes.png)
+
+::: {.callout-tip title="Bash/Zsh equivalent" collapse="true"}
+```bash
+git add 00084_frankenstein.txt README.md
+git commit -m "data: add Frankenstein"
+```
+:::
+
+Your local history now has a change on a short-lived branch:
+
+```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "git1": "#dc2626", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
+gitGraph
+   commit id: "start README"
+   branch add-frankenstein
+   checkout add-frankenstein
+   commit id: "add Frankenstein"
+```
+
+### Open a pull request to yourself
+
+1. In VS Code, select **Publish Branch** to push `add-frankenstein` to `origin`.
+2. Open your repository on GitHub.
+3. Select **Compare & pull request**.
+4. Confirm that the base is your repository's `main` and the compare branch is
+   your repository's `add-frankenstein`.
+5. Title the pull request `Add Frankenstein`.
+6. Create the pull request. No issue is needed for this first change.
+
+::: {.callout-important title="Before your first pull request"}
+Both sides belong to your repository:
+
+```text
+base:    <your-handle>/gutenberg-analysis  main
+compare: <your-handle>/gutenberg-analysis  add-frankenstein
+```
+:::
+
+### Inspect and merge the change
+
+1. Open **Files changed** and inspect both files.
+2. Confirm that the filename and README provenance agree.
+3. Leave a general comment such as:
+
+   ```text
+   The filename and source metadata match the intended book.
+   ```
+
+4. Return to **Conversation**.
+5. Select **Create a merge commit**, then **Confirm merge**.
+
+::: {.callout-note title="Why you cannot approve this pull request"}
+GitHub does not allow authors to approve their own pull requests. Here you are
+learning to inspect a proposed change. Independent approval arrives when you
+work with a collaborator.
+:::
+
+::: {.callout-important title="Where will the merge go?"}
+The merge commit is added to your repository's `main`. The
+`add-frankenstein` branch remains separate until you delete it.
+:::
+
+### Synchronize and clean up
+
+1. On GitHub, select **Delete branch** after the pull request merges.
+2. In VS Code, switch to `main`.
+3. Select **Pull** so the local `main` receives the merge commit.
+4. Confirm that the book is present.
+5. Open the Command Palette and run **Git: Delete Branch...**.
+6. Delete the local `add-frankenstein` branch.
+
+::: {.callout-warning title="Switch before deleting"}
+Do not delete a branch while you are still working on it. Switch to `main`, pull
+the merged change, and only then remove the completed branch.
+:::
+
+::: {.callout-tip title="Bash/Zsh equivalent" collapse="true"}
+```bash
+git switch main
+git pull origin main
+git branch -d add-frankenstein
+```
+:::
+
+## Collaborate with another person
+
+Find a collaborator. Call yourselves **Collaborator A** and **Collaborator B**.
+These names stay fixed, while your active roles will change:
+
+- **repository owner**: owns the repository receiving the contribution;
+- **contributor**: proposes and implements the change;
+- **author**: opens the pull request; and
+- **reviewer**: inspects and decides whether to accept it.
+
+For the first pass, Collaborator A is the repository owner and reviewer.
+Collaborator B is the contributor and author.
+
+### Open an issue {#open-an-issue}
+
+Collaborator B opens an issue in Collaborator A's repository proposing a
+different Gutenberg book. The issue should identify the title, author,
+Gutenberg ID, and source URL.
+
+For example:
+
+```markdown
+# Add Dracula to the book analysis
+
+I propose adding Bram Stoker's *Dracula* to the analysis.
+
+- **Gutenberg ID:** 00345
+- **Author:** Bram Stoker
+- **Source:** https://www.gutenberg.org/ebooks/345
+```
+
+Note the issue number GitHub assigns, such as `#1`.
+
+::: {.callout-note title="Issue"}
+An issue records a proposed change before the implementation begins. Here it
+lets the contributor and repository owner agree on which book belongs in the
+repository.
+:::
+
+### Fork and clone the repository
+
+A **fork** is a repository on GitHub owned by the contributor. A **clone** is a
+local copy on the contributor's computer.
+
+1. Collaborator B opens Collaborator A's repository on GitHub and selects
+   **Fork**.
+2. Collaborator B creates the fork in their own GitHub account.
+3. In VS Code, run **Git: Clone** from the Command Palette.
+4. Paste the URL of Collaborator B's fork.
+5. To keep the two local repositories distinct, create or select a parent
+   directory named after Collaborator A's GitHub handle before cloning.
+6. Open the cloned repository in a new VS Code window.
 
 ![Cloning a repository in VS Code.](/images/version-control_vscode_clone-repository.png)
 
-::: {.callout-tip title="Terminal equivalent" collapse="true"}
-```bash
-git clone https://github.com/<partner-b>/gutenberg-analysis.git
-cd gutenberg-analysis
-```
-:::
-
----
-
-## Branching to Add a New Book
-
-Never make changes directly on `main` when contributing a feature or data. Instead, create a dedicated feature branch. This isolates your work and makes it easy to review.
-
-In VS Code:
-1. Click on the current branch name (`main`) in the bottom-left status bar.
-2. Select **Create new branch...**.
-3. Enter the branch name: `add-dracula`.
-4. Press Enter. The status bar now displays `add-dracula`.
-
-::: {.callout-tip title="Terminal equivalent" collapse="true"}
-```bash
-git checkout -b add-dracula
-```
-:::
-
-This creates a new branch diverging from `main`:
+The relationship is:
 
 ```{mermaid}
-%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "git1": "#dc2626", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
-gitGraph
-   commit id: "docs: init README"
-   commit id: "data: add Frankenstein"
-   commit id: "docs: record Frankenstein"
-   branch add-dracula
-   checkout add-dracula
+flowchart TD
+    U[Collaborator A repository<br/>upstream] -->|fork on GitHub| O[Collaborator B fork<br/>origin]
+    O -->|clone| L[Collaborator B computer<br/>local repository]
+    classDef upstream fill:#dbeafe,stroke:#2563eb,color:#172554
+    classDef origin fill:#fee2e2,stroke:#dc2626,color:#450a0a
+    classDef local fill:#f1f5f9,stroke:#475569,color:#0f172a
+    class U upstream
+    class O origin
+    class L local
 ```
 
----
+### Configure `origin` and `upstream`
 
-## Add the Proposed Book on Your Branch
+Cloning automatically names Collaborator B's fork `origin`. Add Collaborator
+A's original repository as `upstream`:
 
-Now on the `add-dracula` branch, acquire the book and update the documentation:
+1. In VS Code, open the Command Palette.
+2. Run **Git: Add Remote...**.
+3. Paste Collaborator A's repository URL.
+4. Enter the remote name `upstream`.
 
-1. Download *Dracula* from Project Gutenberg: [https://www.gutenberg.org/ebooks/345](https://www.gutenberg.org/ebooks/345).
-2. Save the file in the repository root as `00345_dracula.txt`.
-3. Stage and commit the book:
-   ```text
-   data: add Dracula (#345)
-   ```
-4. Open `README.md` and append *Dracula* to the **Books Analyzed** table:
+::: {.callout-important title="Check the two remotes"}
 
-```markdown
-| 00345 | Dracula | Bram Stoker | https://www.gutenberg.org/ebooks/345 |
-```
+- `origin` is Collaborator B's fork. Contributor branches are pushed here.
+- `upstream` is Collaborator A's repository. The pull request proposes a change
+  here, but Collaborator B does not push directly to it.
+:::
 
-Also add it to **Repository Contents**:
-```markdown
-- `00345_dracula.txt`: Raw text of *Dracula*.
-```
-
-5. Stage and commit `README.md` referencing the issue number:
-   ```text
-   docs: record Dracula (Closes #1)
-   ```
-
-::: {.callout-tip title="Terminal equivalent" collapse="true"}
+::: {.callout-tip title="Bash/Zsh equivalent" collapse="true"}
 ```bash
-curl -sL https://www.gutenberg.org/cache/epub/345/pg345.txt -o 00345_dracula.txt
-git add 00345_dracula.txt
-git commit -m "data: add Dracula (#345)"
-
-git add README.md
-git commit -m "docs: record Dracula (Closes #1)"
+git remote add upstream https://github.com/<collaborator-a>/gutenberg-analysis.git
+git remote -v
 ```
 :::
 
-Here is your branch structure with the two new commits in red on `add-dracula`:
+### Create the contribution branch
 
-```{mermaid}
-%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "git1": "#dc2626", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
-gitGraph
-   commit id: "docs: init README"
-   commit id: "data: add Frankenstein"
-   commit id: "docs: record Frankenstein"
-   branch add-dracula
-   checkout add-dracula
-   commit id: "data: add Dracula"
-   commit id: "docs: record Dracula"
+In VS Code, create and switch to a branch named for the proposed book, such as
+`add-dracula`. Confirm the folder and branch shown in the window before editing.
+
+::: {.callout-tip title="Bash/Zsh equivalent" collapse="true"}
+```bash
+git switch -c add-dracula
+```
+:::
+
+### Add the collaborator's book
+
+Add the proposed book and its README provenance entry. Stage both files and
+create one focused commit:
+
+```text
+data: add Dracula
 ```
 
----
+Do not write `#345` in the commit message: GitHub interprets `#N` as an issue or
+pull-request reference. The README is the place for the Gutenberg ID.
 
-## Push and Open a Pull Request
+### Push and open the pull request
 
-Publish your feature branch to your fork on GitHub and propose the changes to Partner A:
+1. In VS Code, select **Publish Branch**. This pushes `add-dracula` to
+   Collaborator B's `origin`.
+2. Open the fork on GitHub and select **Compare & pull request**.
+3. Confirm the destinations:
 
-1. In VS Code Source Control, click **Publish Branch** to push `add-dracula` to your fork.
-2. Open your fork on GitHub in your browser.
-3. Click **Compare & pull request** on the banner.
-4. Verify:
-   - **Base repository**: `<partner-a>/gutenberg-analysis`, branch `main`.
-   - **Head repository**: `<partner-b>/gutenberg-analysis`, branch `add-dracula`.
-5. In the PR description, write a concise explanation and include:
+   ```text
+   base:    <collaborator-a>/gutenberg-analysis  main
+   compare: <collaborator-b>/gutenberg-analysis  add-dracula
+   ```
+
+4. Title the pull request `Add Dracula to the book analysis`.
+5. Use the actual issue number in the description:
+
    ```markdown
    Closes #1
+
+   Adds *Dracula* by Bram Stoker and records its Project Gutenberg
+   provenance in the README.
    ```
-6. Click **Create pull request**.
 
-![Create a pull request from VS Code or GitHub.](/images/version-control_vscode_create-pull-request-view.png)
+6. Select **Create pull request**.
 
----
+`Closes #1` means that GitHub will close issue `#1` in the base repository when
+the pull request merges. If GitHub assigned another number, use that number.
 
-## Review and Merge with a Merge Commit
+```{mermaid}
+flowchart LR
+    L[Local add-dracula] -->|push| O[origin/add-dracula<br/>Collaborator B fork]
+    O -->|pull request| U[upstream/main<br/>Collaborator A repository]
+    classDef branch fill:#fee2e2,stroke:#dc2626,color:#450a0a
+    classDef main fill:#dbeafe,stroke:#2563eb,color:#172554
+    class L,O branch
+    class U main
+```
 
-Now switch to **Partner A**:
-
-1. On your repository page on GitHub (`<partner-a>/gutenberg-analysis`), click the **Pull requests** tab.
-2. Open the pull request submitted by Partner B.
-3. Click the **Files changed** tab to inspect the diff.
-4. Click **Review changes** > select **Approve** > **Submit review**.
-5. Return to the **Conversation** tab.
-6. Click the arrow on the green merge button and select **Create a merge commit**.
-
-::: {.callout-important}
-Do **not** choose *Squash and merge* or *Rebase and merge*. A merge commit explicitly preserves the fork and branch history in the Git graph!
+::: {.callout-tip title="Review pull requests in VS Code" collapse="true"}
+The GitHub Pull Requests extension can show pull requests inside VS Code. This
+course uses GitHub's website because it keeps the repositories, branches, diff,
+conversation, review, and merge destination visible together.
 :::
 
-7. Click **Confirm merge**. GitHub automatically closes Issue `#1`!
-8. Click **Delete branch** on GitHub to clean up the remote feature branch.
+### Review and merge
 
----
+Collaborator A now acts as reviewer and repository owner:
 
-## Pull the Merged Changes and Inspect the History Graph
+1. Open the pull request on GitHub.
+2. Open **Files changed**.
+3. Check that:
+   - the contribution matches the issue;
+   - the filename follows the course convention;
+   - the README records the correct provenance;
+   - the commit is understandable; and
+   - the diff contains only the intended change.
+4. Leave a meaningful review comment.
+5. Select **Approve**, then **Submit review**.
+6. Return to **Conversation**.
+7. Select **Create a merge commit**, then **Confirm merge**.
 
-**Partner A** now syncs their local clone to pull the merged commits from GitHub:
+::: {.callout-important title="Where will the merge go?"}
+Collaborator A is merging into the base repository. The merge commit is created
+on Collaborator A's `main`, not in Collaborator B's fork.
+:::
 
-1. In VS Code, open the Source Control view.
-2. Click **Pull** (or use the Sync status bar button).
+::: {.callout-note title="If the expected path is blocked" collapse="true"}
+The exercise is designed to merge cleanly. If GitHub reports a merge conflict
+or another unexpected problem, stop and ask an instructor for help rather than
+opening a new troubleshooting path during this session.
+:::
 
-![Fetch, pull, and push controls in VS Code.](/images/version-control_vscode_sync-fetch-pull-push.png)
+### Synchronize and clean up
 
-3. Open the Source Control Graph in VS Code (or run `git log --graph --oneline` in the terminal).
+Finish the collaboration before swapping roles.
 
-![The Source Control Graph view in VS Code showing branch and merge commits.](/images/version-control_vscode_source-control-graph.png)
+**Collaborator A — repository owner**
 
-The complete collaboration history graph displays the red feature branch merging cleanly back into the blue `main` branch:
+1. Open their own local `gutenberg-analysis` repository in VS Code.
+2. Switch to `main` if necessary.
+3. Select **Pull** from `origin/main`.
+4. Confirm that the collaborator's book is present.
+
+**Collaborator B — contributor**
+
+1. On the merged pull request, delete the remote contribution branch.
+2. Open their fork on GitHub.
+3. Select **Sync fork**, then **Update branch**.
+4. In the local collaborator checkout, switch to `main`.
+5. Pull from `origin/main` in VS Code.
+6. Confirm that the merge and new book are present.
+7. Delete the completed `add-dracula` branch locally.
+
+The synchronized history contains the self pull request and the collaborator
+pull request:
 
 ```{mermaid}
 %%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "git1": "#dc2626", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
 gitGraph
-   commit id: "docs: init README"
-   commit id: "data: add Frankenstein"
-   commit id: "docs: record Frankenstein"
-   branch add-dracula
-   checkout add-dracula
-   commit id: "data: add Dracula"
-   commit id: "docs: record Dracula"
+   commit id: "start README"
+   branch first-book
+   checkout first-book
+   commit id: "add first book"
    checkout main
-   merge add-dracula id: "Merge PR #1 (add-dracula)"
+   merge first-book id: "merge first book"
+   branch contribution
+   checkout contribution
+   commit id: "add collaborator book"
+   checkout main
+   merge contribution id: "merge contribution"
 ```
 
-::: {.callout-tip title="Terminal equivalent" collapse="true"}
+::: {.callout-tip title="Bash/Zsh synchronization" collapse="true"}
+Repository owner:
+
 ```bash
+git switch main
 git pull origin main
-git log --graph --oneline --decorate
 ```
-:::
 
----
-
-## Clean Up Local Branches
-
-On Partner B's machine, delete the local feature branch now that it has been merged into `main`:
+Contributor, without rebasing:
 
 ```bash
-git checkout main
-git pull upstream main
+git fetch upstream
+git switch main
+git merge upstream/main
+git push origin main
 git branch -d add-dracula
 ```
-
-::: {.callout-note}
-Git will safely delete the branch with `-d` because all its commits have been incorporated into `main`.
 :::
 
----
+### Swap roles
 
-## Now Swap Roles!
+Collaborator A becomes the contributor and Collaborator B becomes the repository
+owner. Return to [Open an issue](#open-an-issue) and repeat the workflow with a
+different book.
 
-Repeat the workflow with the roles reversed:
-- **Partner A** opens an issue on Partner B's repository proposing a new book.
-- **Partner A** forks Partner B's repository, creates a feature branch, commits the book, and opens a PR with `Closes #1`.
-- **Partner B** reviews, approves, merges via **Create a merge commit**, and deletes the branch.
+The instructions are the same. Before acting, briefly check the open folder,
+current branch, and intended destination.
 
-Both partners experience both the contributor role and the repository owner role.
+## Completion checklist
 
----
+Session 1 is complete when you can check every item:
 
-## Ending-State Tree
+- [ ] I published my own public course repository.
+- [ ] I added my first book through a branch and self pull request.
+- [ ] I merged that pull request and removed its completed branches.
+- [ ] I opened an issue in a collaborator's repository.
+- [ ] I contributed a different book through my fork and a short-lived branch.
+- [ ] My pull request closed the issue when it merged.
+- [ ] I reviewed and approved a collaborator's pull request.
+- [ ] I merged the contribution into my own repository.
+- [ ] I synchronized the relevant local repositories and fork.
+- [ ] I can identify `origin`, `upstream`, `main`, and the contribution branch.
 
-At the conclusion of Session 1, each learner's course repository has the following clean, flat structure:
+Your course repository now contains a README and at least two sourced books:
 
 ```text
 gutenberg-analysis/
 ├── README.md
 ├── 00084_frankenstein.txt
-└── 00345_dracula.txt
+└── <collaborator-book>.txt
 ```
 
-### README Checklist
+## Your turn
 
-Confirm that your `README.md` includes:
-- [x] Project title and author name.
-- [x] One-sentence description of the project's purpose.
-- [x] Table listing both books with Gutenberg ID, Title, Author, and Source URL.
-- [x] Explanation of the `<five-digit-id>_<hyphenated-title>.txt` filename convention.
-- [x] Inventory list of repository contents.
-- [x] Placeholder headings for *Setup*, *Running the Analysis*, and *Reproducing Results*.
-
----
-
-## Transfer Task (Before Session 2)
-
-Between now and Session 2, apply what you learned to your **current OIST research project**:
-
-1. Perform **one safe version control action** on your real project:
-   - If your project is not yet under version control: run `git init`, add a minimal `.gitignore`, create a `README.md`, and make your initial commit.
-   - If your project is already in Git: create a dedicated branch (e.g. `improve-readme` or `add-docs`), make a focused change, and merge it.
-2. Note any obstacles you encountered or questions that arose.
-3. In the first 15 minutes of Session 2, we will hold our first **Project Clinic** where you can share your attempt, obstacle, or success with the class.
-
-::: {.callout-note}
-Your real OIST research project is independent of this course and never needs to be made public.
-:::
-
----
-
-## Completion Checklist
-
-Before Session 2, verify that you can check off every item:
-
-- [ ] I have a public GitHub course repository (`gutenberg-analysis`).
-- [ ] My repository history begins with an initial empty commit and evolved via atomic commits.
-- [ ] My `README.md` documents purpose, books, naming conventions, and placeholders.
-- [ ] I have both authored and reviewed a pull request linked to an issue (`Closes #N`).
-- [ ] I merged the pull request using **Create a merge commit**.
-- [ ] I deleted the completed feature branch both on GitHub and locally.
-- [ ] I can see the branch and merge join in the Git history graph.
+Start using Git for one of your own projects. Create the repository, make an
+initial commit, and push it to GitHub. Make later changes on short-lived
+branches. Bring any questions, obstacles, or useful discoveries to the next
+**Project Clinic**.

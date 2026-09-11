@@ -25,15 +25,15 @@ practice after first learning it on the course project. It may be newly started
 or short-lived; it does not need to be mature software.
 _Avoid_: Homework project, personal project
 
-**Transfer task**:
-A deliberately small application of a newly learned practice from the course
-project to a participant project between sessions.
-_Avoid_: Homework
-
 **Course contribution**:
-A change proposed from a short-lived branch in a fork of a partner's course
+A change proposed from a short-lived branch in a fork of a collaborator's course
 repository. It adds at least one sourced book and documents it in the README.
 _Avoid_: Direct edit, shared file
+
+**Collaborator**:
+Another participant with whom a learner completes the reciprocal issue-to-merge
+workflow during Session 1.
+_Avoid_: Partner
 
 **Completed branch**:
 A short-lived contribution branch whose pull request has been reviewed and
@@ -42,7 +42,8 @@ _Avoid_: Main branch, permanent branch
 
 **Project clinic**:
 A discussion at the beginning of a session in which participants share a
-transfer task, an obstacle they encountered, or the outcome of their attempt.
+change they tried in their own project, an obstacle they encountered, or the
+outcome of their attempt.
 _Avoid_: Homework review, project presentation
 
 **Supported path**:
