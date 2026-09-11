@@ -14,24 +14,23 @@ website:
       - text: "Home"
         href: index.qmd
       - text: "Setting Up"
-        href: lessons/setting-up.qmd
-      - text: "Terminal"
-        href: lessons/terminal.qmd
-      - text: "Version Control"
-        href: lessons/version-control.qmd
-      - text: "Project Structure"
-        href: lessons/project-structure.qmd
-      - text: "Virtual Environments"
-        href: lessons/virtual-environments.qmd
-      - text: "Testing"
-        href: lessons/testing.qmd
-      - text: "Automation"
-        href: lessons/automation.qmd
-      - text: "VS Code"
-        href: lessons/vs-code.qmd
-      # - text: "About"
-      #   href: about.qmd
-      # -  auto: 0?_*
+        href: sessions/setting-up.qmd
+      - section: "Sessions"
+        contents:
+          - text: "Collaboration with Git and GitHub"
+            href: sessions/version-control.qmd
+          - text: "Reproducible Projects"
+            href: sessions/virtual-environments.qmd
+          - text: "Code Quality and Testing"
+            href: sessions/testing.qmd
+          - text: "Automation and Publication"
+            href: sessions/automation.qmd
+      - section: "Reference"
+        contents:
+          - text: "VS Code"
+            href: sessions/vs-code.qmd
+          - text: "Terminal"
+            href: sessions/terminal.qmd
 
 format:
   html:

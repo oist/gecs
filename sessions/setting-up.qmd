@@ -321,6 +321,36 @@ Since 2023, GitHub requires all accounts to have [multi-factor authentication (2
 
 For detailed setup instructions, see [GitHub's 2FA configuration guide](https://docs.github.com/en/authentication/securing-your-account-with-two-factor-authentication-2fa/configuring-two-factor-authentication).
 
+### Git Identity Configuration
+
+Before creating commits, Git needs to know who you are. Open your terminal in VS Code and set your name and email address:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@oist.jp"
+git config --global init.defaultBranch main
+```
+
+::: {.callout-note appearance="simple"}
+Make sure to use the email address associated with your GitHub account so that your commits are correctly linked to your GitHub profile.
+:::
+
+## Pre-flight Verification Check
+
+Before attending Session 1, verify that your local Git and GitHub authentication work together with a disposable repository check:
+
+1. In your browser on GitHub, create a new temporary public repository named `gecs-check`.
+2. In VS Code, open the Command Palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Linux/WSL) and run **Git: Clone**.
+3. Paste the URL of your new repository and select a local folder to save it.
+4. When prompted by VS Code, sign in with your GitHub account to authorize Git.
+5. In VS Code Explorer, open the cloned folder, create a new file named `test.txt`, stage it, and commit with message `test: check git setup`.
+6. Click **Sync Changes** (or **Push**) to push the commit to GitHub.
+7. Confirm that the commit appears on GitHub. Once confirmed, you can safely delete the `gecs-check` repository on GitHub and your local folder.
+
+::: {.callout-tip appearance="simple"}
+If your push succeeds, your environment is 100% ready for Session 1! If you encounter authentication or permission issues, bring them to the pre-course setup clinic.
+:::
+
 # Shell Prompt (Optional)
 
 ## Starship

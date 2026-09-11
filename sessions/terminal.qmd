@@ -617,7 +617,7 @@ Hidden files are commonly used for storing configuration settings. For example:
 - `.bashrc` - Configuration file for the Bash shell. Contains settings, aliases, and functions that customize your Bash environment.
 - `.zshrc` - Configuration file for the Zsh shell. Similar to `.bashrc`, but for Zsh.
 
-These files are executed every time you start a terminal. During the [setup process](/lessons/setting-up.qmd), you modified these files when installing tools like Pixi and Starship. For example, you added lines like:
+These files are executed every time you start a terminal. During the [setup process](setting-up.qmd), you modified these files when installing tools like Pixi and Starship. For example, you added lines like:
 
 ```bash
 echo 'eval "$(starship init bash)"' >> ~/.bashrc
