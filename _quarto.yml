@@ -17,8 +17,6 @@ website:
     contents: 
       - text: "Home"
         href: index.qmd
-      - text: "Slides"
-        href: slides/index.qmd
       - text: "Setting Up"
         href: sessions/setting-up.qmd
       - section: "Sessions"
@@ -31,6 +29,8 @@ website:
             href: sessions/testing.qmd
           - text: "Automation and Publication"
             href: sessions/automation.qmd
+      - text: "Slides"
+        href: slides/index.qmd
       - section: "Reference"
         contents:
           - text: "VS Code"
