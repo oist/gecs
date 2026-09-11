@@ -1,0 +1,178 @@
+---
+title: "Presentation Slides"
+subtitle: "Interactive slide decks for Good Enough Coding in Science"
+page-layout: article
+toc: false
+---
+
+```{=html}
+<style>
+  .slides-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 340px));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .slide-window-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    aspect-ratio: 1 / 1;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: #f0f6fc;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .slide-window-card:hover {
+    transform: translateY(-5px);
+    border-color: #58a6ff;
+    box-shadow: 0 16px 40px rgba(88, 166, 255, 0.22);
+    text-decoration: none;
+    color: #f0f6fc;
+  }
+
+  /* Window Chrome Header */
+  .window-chrome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(48, 54, 61, 0.8);
+    padding-bottom: 0.75rem;
+  }
+
+  .window-dots {
+    display: flex;
+    gap: 6px;
+  }
+
+  .window-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+
+  .dot-red { background: #ff5f56; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #27c93f; }
+
+  .window-session-tag {
+    font-family: ui-monospace, SFMono-Regular, monospace;
+    font-size: 0.75rem;
+    color: #58a6ff;
+    background: rgba(88, 166, 255, 0.12);
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid rgba(88, 166, 255, 0.3);
+  }
+
+  /* Miniature Slide Preview Area */
+  .window-preview {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.25rem 0.25rem;
+  }
+
+  .window-preview-term {
+    font-family: ui-monospace, monospace;
+    font-size: 0.75rem;
+    color: #58a6ff;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  .window-preview-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.6rem;
+    background: linear-gradient(135deg, #ffffff 40%, #8b949e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .window-preview-desc {
+    font-size: 0.88rem;
+    color: #8b949e;
+    line-height: 1.35;
+  }
+
+  /* Window Footer Bar */
+  .window-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(48, 54, 61, 0.8);
+    padding-top: 0.75rem;
+    font-size: 0.8rem;
+    color: #8b949e;
+  }
+
+  .slide-count-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: ui-monospace, monospace;
+    color: #8b949e;
+  }
+
+  .slide-count-badge::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #3fb950;
+  }
+
+  .launch-prompt {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-weight: 600;
+    color: #58a6ff;
+    font-size: 0.82rem;
+    transition: transform 0.2s ease;
+  }
+
+  .slide-window-card:hover .launch-prompt {
+    transform: translateX(3px);
+  }
+</style>
+
+<div class="slides-gallery-grid">
+  <!-- Git and GitHub Collaboration Card Window -->
+  <a href="collaborating.html" target="_blank" rel="noopener noreferrer" class="slide-window-card" title="Open Git and GitHub Collaboration Slides">
+    <div class="window-chrome">
+      <div class="window-dots">
+        <span class="window-dot dot-red"></span>
+        <span class="window-dot dot-yellow"></span>
+        <span class="window-dot dot-green"></span>
+      </div>
+      <span class="window-session-tag">Session 1</span>
+    </div>
+    
+    <div class="window-preview">
+      <div class="window-preview-term">AY 2026 T1</div>
+      <div class="window-preview-title">Git &amp; GitHub Collaboration</div>
+      <div class="window-preview-desc">Workflows for scientific collaboration, branches, commits, remotes, and pull requests.</div>
+    </div>
+    
+    <div class="window-footer">
+      <span class="slide-count-badge">23 slides</span>
+      <span class="launch-prompt">Launch deck &rarr;</span>
+    </div>
+  </a>
+</div>
+```

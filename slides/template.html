@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentation Slide Template — GECS</title>
+<!-- Shared Slide Engine & Design Tokens -->
+<link rel="stylesheet" href="css/slides.css">
+<!--
+  TEMPLATE USAGE GUIDE:
+  =====================
+  1. Responsive Canvas:
+     - The .slide-stage container maintains a strict 16:9 aspect ratio and adapts to any screen.
+     - Typography uses container query units (cqw) clamped between min and max pixel sizes
+       (e.g., clamp(20px, 2.4cqw, 36px)), ensuring slides never overflow or become unreadable.
+  2. Color Tokens:
+     - Backgrounds: var(--bg) [#0d1117], var(--card-bg) [#161b22]
+     - Borders: var(--border) [#30363d]
+     - Accents: var(--accent) [#58a6ff], var(--git-orange) [#f05032], var(--green) [#3fb950],
+                var(--purple) [#bc8cff], var(--yellow) [#d29922]
+     - Text: var(--text-main) [#f0f6fc], var(--text-muted) [#8b949e]
+  3. Adding / Removing Slides:
+     - Each slide is a div with class "slide".
+     - Set class="slide active" on the first slide.
+     - Update the slide numbers in the footer (e.g., "1 / N").
+  4. Navigation:
+     - Click anywhere or press Right Arrow / Space / PageDown to advance.
+     - Press Left Arrow / PageUp to go back.
+     - Press Home / End to jump to start / finish.
+-->
+</head>
+<body>
+
+<div class="slide-stage" id="stage" onclick="handleStageClick(event)">
+
+  <!-- PATTERN 1: Title Slide -->
+  <div class="slide active" id="slide-1">
+    <div class="title-content">
+      <div class="title-meta">MODULE METADATA &bull; AY 2026</div>
+      <h1 class="title-main">Presentation Title Here</h1>
+      <p class="title-sub">Subtitle or core learning objective of the session</p>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>1 / 6</span>
+    </div>
+  </div>
+
+  <!-- PATTERN 2: Before & After / Comparison Card Pane -->
+  <div class="slide" id="slide-2">
+    <div class="slide-header">
+      <h2>Comparison: The Problem vs The Solution</h2>
+      <span class="tag">Problem &rarr; Solution</span>
+    </div>
+    <div class="slide-body">
+      <div class="horror-grid">
+        <!-- Left: Current / Negative state -->
+        <div class="card-pane">
+          <div class="pane-header" style="color: #ff7b72;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            Current Pitfall
+          </div>
+          <div class="file-list">
+            <div class="file-item danger">Unchecked issue or anti-pattern #1</div>
+            <div class="file-item danger">Unreproducible manual step #2</div>
+            <div class="file-item danger">Silent failure or state conflict #3</div>
+          </div>
+        </div>
+        <div style="font-size: clamp(20px, 2.5cqw, 36px); color: var(--text-muted); text-align: center;">&rarr;</div>
+        <!-- Right: Desired / Positive state -->
+        <div class="card-pane">
+          <div class="pane-header" style="color: var(--green);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            Clean Workflow
+          </div>
+          <div class="file-list">
+            <div class="file-item good">
+              <span>Standardized pattern #1</span>
+              <span style="font-size: 0.85em; opacity: 0.7;">Verified</span>
+            </div>
+            <div class="file-item good">
+              <span>Automated checkpoint #2</span>
+              <span style="font-size: 0.85em; opacity: 0.7;">Isolated</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>2 / 6</span>
+    </div>
+  </div>
+
+  <!-- PATTERN 3: Two-Column Concept Distinction -->
+  <div class="slide" id="slide-3">
+    <div class="slide-header">
+      <h2>Concept A vs Concept B</h2>
+      <span class="tag">Distinction</span>
+    </div>
+    <div class="slide-body">
+      <div class="compare-grid">
+        <!-- Column 1 -->
+        <div class="compare-col">
+          <div class="brand-title" style="color: var(--accent);">Concept A</div>
+          <div class="concept-pill">
+            <strong>Key Property</strong>
+            First core attribute and behavior
+          </div>
+          <div class="concept-pill">
+            <strong>Operating Domain</strong>
+            Local or single-user context
+          </div>
+        </div>
+        <!-- Column 2 -->
+        <div class="compare-col">
+          <div class="brand-title" style="color: var(--purple);">Concept B</div>
+          <div class="concept-pill">
+            <strong>Key Property</strong>
+            Second core attribute and behavior
+          </div>
+          <div class="concept-pill">
+            <strong>Operating Domain</strong>
+            Remote or distributed team context
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>3 / 6</span>
+    </div>
+  </div>
+
+  <!-- PATTERN 4: Multi-Stage Workflow Diagram -->
+  <div class="slide" id="slide-4">
+    <div class="slide-header">
+      <h2>Three-Stage Workflow</h2>
+      <span class="tag">Pipeline</span>
+    </div>
+    <div class="slide-body">
+      <div class="stages-diagram">
+        <!-- Stage 1 -->
+        <div class="stage-box">
+          <div class="stage-title">1. Input / Work</div>
+          <div class="stage-cue">Initial edits and active development environment</div>
+          <div style="font-family: monospace; color: var(--text-muted); font-size: clamp(11px, 1.2cqw, 16px);">[ Step 1: Prepare ]</div>
+        </div>
+        <!-- Arrow 1 -->
+        <div class="trans-arrow visible">
+          <div class="stage-cmd-box">command_one</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <!-- Stage 2 -->
+        <div class="stage-box">
+          <div class="stage-title">2. Staging / Review</div>
+          <div class="stage-cue">Selected changes gathered and checked before locking</div>
+          <div style="font-family: monospace; color: var(--accent); font-size: clamp(11px, 1.2cqw, 16px);">Inspected & ready</div>
+        </div>
+        <!-- Arrow 2 -->
+        <div class="trans-arrow visible">
+          <div class="stage-cmd-box">command_two</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <!-- Stage 3 -->
+        <div class="stage-box">
+          <div class="stage-title">3. Sealed Snapshot</div>
+          <div class="stage-cue">Immutable milestone added into history</div>
+          <div style="font-family: monospace; color: var(--green); font-size: clamp(11px, 1.2cqw, 16px);">Permanent record</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>4 / 6</span>
+    </div>
+  </div>
+
+  <!-- PATTERN 5: Rules / Core Practices Grid -->
+  <div class="slide" id="slide-5">
+    <div class="slide-header">
+      <h2>Core Practices in Scientific Projects</h2>
+      <span class="tag">Practices</span>
+    </div>
+    <div class="slide-body">
+      <div class="rules-grid">
+        <div class="rule-card" style="border-top: 5px solid var(--accent);">
+          <div class="rule-number">Rule 01</div>
+          <div class="rule-heading">Sync Before Modifying</div>
+        </div>
+        <div class="rule-card" style="border-top: 5px solid var(--green);">
+          <div class="rule-number">Rule 02</div>
+          <div class="rule-heading">Small Atomic Commits</div>
+        </div>
+        <div class="rule-card" style="border-top: 5px solid var(--purple);">
+          <div class="rule-number">Rule 03</div>
+          <div class="rule-heading">Descriptive Messages</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>5 / 6</span>
+    </div>
+  </div>
+
+  <!-- PATTERN 6: Hands-On Practice / Portal Box -->
+  <div class="slide" id="slide-6">
+    <div class="slide-header">
+      <h2>Interactive Exercise</h2>
+      <span class="tag">Hands-on</span>
+    </div>
+    <div class="slide-body">
+      <div class="practice-box">
+        <div class="practice-steps">
+          <div class="p-step">
+            <span>01 &bull; SETUP</span>
+            Initialize environment and configure paths
+          </div>
+          <div class="p-step">
+            <span>02 &bull; EXECUTE</span>
+            Run workflow scripts and check intermediate output
+          </div>
+          <div class="p-step">
+            <span>03 &bull; VERIFY</span>
+            Confirm reproducibility with automated test
+          </div>
+          <div class="p-step">
+            <span>04 &bull; REFLECT</span>
+            Document findings in project notes
+          </div>
+        </div>
+        <div class="portal-link">
+          <div>
+            <div style="font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); margin-bottom: 0.3cqw;">Course Portal & Instructions:</div>
+            <div class="portal-url">oist.github.io/gecs</div>
+          </div>
+          <span style="font-size: clamp(12px, 1.3cqw, 18px); font-family: ui-monospace, monospace; color: var(--accent); font-weight: bold;">Module Link &rarr;</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>6 / 6</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/slides.js"></script>
+</body>
+</html>
