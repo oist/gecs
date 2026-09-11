@@ -443,8 +443,12 @@ create one focused commit:
 data: add Dracula
 ```
 
-Do not write `#345` in the commit message: GitHub interprets `#N` as an issue or
-pull-request reference. The README is the place for the Gutenberg ID.
+::: {.callout-warning title="Avoid '#' in commit messages"}
+Do not write `#345` (or any `#<number>`) in your commit message. On GitHub,
+`#N` automatically creates a link to issue or pull request number `N`, which can
+create confusing accidental references. Record the Project Gutenberg eBook ID in the
+README table instead.
+:::
 
 ### Push and open the pull request
 
