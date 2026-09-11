@@ -40,7 +40,7 @@ However, to finish the implementation and deliver a production-ready, publishabl
    - `sessions/project-structure.qmd` will be moved to `docs/archive/` or converted into an optional reference appendix, removing it completely from the active Quarto website navigation.
 2. **Update Course Landing Page (`index.qmd`)**:
    - Update the course schedule table on `index.qmd` to list the four sessions:
-     1. Git and GitHub Collaboration
+     1. Collaboration with Git and GitHub
      2. Reproducible Projects
      3. Code Quality and Testing
      4. Automation and Publication

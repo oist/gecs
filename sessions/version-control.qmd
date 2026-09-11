@@ -1,5 +1,5 @@
 ---
-title: "Git and GitHub Collaboration"
+title: "Collaboration with Git and GitHub"
 format: html
 ---
 
@@ -306,6 +306,19 @@ git branch -d add-frankenstein
 ```
 :::
 
+Your local history now reflects the complete loop, with the merged change integrated into `main`:
+
+```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "git1": "#dc2626", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
+gitGraph
+   commit id: "start README"
+   branch add-frankenstein
+   checkout add-frankenstein
+   commit id: "add Frankenstein"
+   checkout main
+   merge add-frankenstein id: "merge Frankenstein"
+```
+
 ## Collaborate with another person
 
 Find a collaborator. Call yourselves **Collaborator A** and **Collaborator B**.
@@ -521,16 +534,16 @@ pull request:
 %%{init: { "theme": "base", "themeVariables": { "git0": "#2563eb", "git1": "#dc2626", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
 gitGraph
    commit id: "start README"
-   branch first-book
-   checkout first-book
-   commit id: "add first book"
+   branch add-frankenstein
+   checkout add-frankenstein
+   commit id: "add Frankenstein"
    checkout main
-   merge first-book id: "merge first book"
-   branch contribution
-   checkout contribution
-   commit id: "add collaborator book"
+   merge add-frankenstein id: "merge Frankenstein"
+   branch add-dracula
+   checkout add-dracula
+   commit id: "add Dracula"
    checkout main
-   merge contribution id: "merge contribution"
+   merge add-dracula id: "merge Dracula"
 ```
 
 ::: {.callout-tip title="Bash/Zsh synchronization" collapse="true"}
