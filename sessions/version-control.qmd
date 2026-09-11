@@ -369,11 +369,28 @@ repository.
 A **fork** is a repository on GitHub owned by the contributor. A **clone** is a
 local copy on the contributor's computer.
 
+::: {.callout-note title="Forks versus direct repository collaborators"}
+In open-source software, contributors typically do not have direct write permissions
+to the repository. Instead, they create a personal **fork**, push changes to their
+fork, and submit a pull request. In contrast, within a trusted internal research lab
+or team, repository owners often add colleagues directly as **collaborators** (under
+**Settings > Collaborators**) and configure branch protection on `main`. Because
+this session teaches open-source contribution workflows, we use the fork model.
+:::
+
 1. Collaborator B opens Collaborator A's repository on GitHub and selects
    **Fork**.
-2. Collaborator B creates the fork in their own GitHub account.
+2. GitHub opens the **Create a new fork** page. Because Collaborator B already has
+   their own repository named `gutenberg-analysis`, GitHub flags a name conflict:
+   *"The repository already exists in your account."*
+   In the **Repository name** field, add Collaborator A's GitHub handle:
+   ```text
+   gutenberg-analysis-<collaborator-a-handle>
+   ```
+   Then select **Create fork**.
 3. In VS Code, run **Git: Clone** from the Command Palette.
-4. Paste the URL of Collaborator B's fork.
+4. Paste the URL of Collaborator B's fork:
+   `https://github.com/<collaborator-b>/gutenberg-analysis-<collaborator-a>.git`.
 5. To keep the two local repositories distinct, create or select a parent
    directory named after Collaborator A's GitHub handle before cloning.
 6. Open the cloned repository in a new VS Code window.
@@ -449,8 +466,8 @@ pull-request reference. The README is the place for the Gutenberg ID.
 3. Confirm the destinations:
 
    ```text
-   base:    <collaborator-a>/gutenberg-analysis  main
-   compare: <collaborator-b>/gutenberg-analysis  add-dracula
+   base:    <collaborator-a>/gutenberg-analysis                   main
+   compare: <collaborator-b>/gutenberg-analysis-<collaborator-a>  add-dracula
    ```
 
 4. Title the pull request `Add Dracula to the book analysis`.
