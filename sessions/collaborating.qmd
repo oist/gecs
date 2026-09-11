@@ -282,9 +282,12 @@ compare: <your-handle>/gutenberg-analysis  add-frankenstein
 5. Select **Create a merge commit**, then **Confirm merge**.
 
 ::: {.callout-note title="Why you cannot approve this pull request"}
-GitHub does not allow authors to approve their own pull requests. Here you are
-learning to inspect a proposed change. Independent approval arrives when you
-work with a collaborator.
+The pull request is fully functional: it provides an inspectable diff and an audit
+trail for your project. However, GitHub does not allow authors to submit a formal
+**Approve** review on their own pull requests—in professional teams, approvals act
+as an independent quality gate. When working alone, simply inspecting the diff,
+leaving comments, and selecting **Merge pull request** is the standard workflow.
+Independent approval arrives when you work with a collaborator.
 :::
 
 ::: {.callout-important title="Where will the merge go?"}
@@ -355,12 +358,19 @@ A **fork** is a repository on GitHub owned by the contributor. A **clone** is a
 local copy on the contributor's computer.
 
 ::: {.callout-note title="Forks versus direct repository collaborators"}
-In open-source software, contributors typically do not have direct write permissions
-to the repository. Instead, they create a personal **fork**, push changes to their
-fork, and submit a pull request. In contrast, within a trusted internal research lab
-or team, repository owners often add colleagues directly as **collaborators** (under
-**Settings > Collaborators**) and configure branch protection on `main`. Because
-this session teaches open-source contribution workflows, we use the fork model.
+Think of a **fork** as a personal server-side copy of someone else's project where
+you have full permission to create branches.
+
+In open-source software, external contributors do not have direct write permissions
+to the main repository, so they cannot push branches directly to it. Instead, they
+create a personal fork, push branches there, and propose changes upstream via a
+pull request. This also explains why GitHub does not let you fork your own
+repository: you already have write access and can create branches directly.
+
+In contrast, within a trusted internal research lab or team, repository owners often
+add colleagues directly as **collaborators** (under **Settings > Collaborators**)
+and configure branch protection on `main`. Because this session teaches open-source
+contribution workflows, we use the fork model.
 :::
 
 1. Collaborator B opens Collaborator A's repository on GitHub.
