@@ -26,7 +26,7 @@ By the end of this two-hour session, you will be able to:
 
 1. make a change on a short-lived branch and propose it with a pull request;
 2. inspect a diff before accepting a change;
-3. use an issue, fork, and pull request to contribute to another repository;
+3. use a fork and pull request to contribute to another repository;
 4. distinguish `origin` from `upstream` and check where a push or merge goes;
 5. review and merge a collaborator's contribution; and
 6. synchronize repositories and remove completed branches.
@@ -147,10 +147,12 @@ In **Source Control**, select **Publish Branch** or **Publish to GitHub**. Sign
 in if prompted, then choose **Publish to GitHub public repository**. Open the
 repository on GitHub and confirm that `README.md` appears on `main`.
 
+![A published repository on GitHub showing the initial README file on the `main` branch.](/images/version-control_github_repository-landing.png)
+
 ::: {.callout-important title="Repository visibility: choose Public"}
 You **must** select **Publish to GitHub public repository**. If the repository
 is set to private, other participants will not be able to view it, fork it, or
-open issues to collaborate with you.
+collaborate with you.
 :::
 
 ::: {.callout-important title="Before your first push"}
@@ -255,7 +257,7 @@ gitGraph
 4. Confirm that the base is your repository's `main` and the compare branch is
    your repository's `add-frankenstein`.
 5. Title the pull request `Add Frankenstein`.
-6. Create the pull request. No issue is needed for this first change.
+6. Create the pull request.
 
 ::: {.callout-important title="Before your first pull request"}
 Both sides belong to your repository:
@@ -338,33 +340,16 @@ These names stay fixed, while your active roles will change:
 For the first pass, Collaborator A is the repository owner and reviewer.
 Collaborator B is the contributor and author.
 
-### Open an issue {#open-an-issue}
-
-Collaborator B opens an issue in Collaborator A's repository proposing a
-different Gutenberg book. The issue should identify the title, author,
-Gutenberg ID, and source URL.
-
-For example:
-
-```markdown
-# Add Dracula to the book analysis
-
-I propose adding Bram Stoker's *Dracula* to the analysis.
-
-- **Gutenberg ID:** 00345
-- **Author:** Bram Stoker
-- **Source:** https://www.gutenberg.org/ebooks/345
-```
-
-Note the issue number GitHub assigns, such as `#1`.
-
-::: {.callout-note title="Issue"}
-An issue records a proposed change before the implementation begins. Here it
-lets the contributor and repository owner agree on which book belongs in the
-repository.
+::: {.callout-tip title="Tracking proposals with GitHub Issues" collapse="true"}
+In professional software development and open-source projects, contributors often open an
+**issue** to discuss a proposed feature, report a bug, or agree on an approach before
+writing any code. You can learn more in the official
+[GitHub Quickstart for issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/quickstart).
+For this exercise, talk with your collaborator and agree directly on which Project
+Gutenberg book Collaborator B will contribute.
 :::
 
-### Fork and clone the repository
+### Fork and clone the repository {#fork-and-clone}
 
 A **fork** is a repository on GitHub owned by the contributor. A **clone** is a
 local copy on the contributor's computer.
@@ -378,9 +363,12 @@ or team, repository owners often add colleagues directly as **collaborators** (u
 this session teaches open-source contribution workflows, we use the fork model.
 :::
 
-1. Collaborator B opens Collaborator A's repository on GitHub and selects
-   **Fork**.
-2. GitHub opens the **Create a new fork** page. Because Collaborator B already has
+1. Collaborator B opens Collaborator A's repository on GitHub.
+2. In the upper-right corner of the page, select **Fork**.
+
+![The Fork button located in the upper-right toolbar on GitHub.](/images/version-control_github_fork-button.png)
+
+3. GitHub opens the **Create a new fork** page. Because Collaborator B already has
    their own repository named `gutenberg-analysis`, GitHub flags a name conflict:
    *"The repository already exists in your account."*
    In the **Repository name** field, add Collaborator A's GitHub handle:
@@ -388,12 +376,12 @@ this session teaches open-source contribution workflows, we use the fork model.
    gutenberg-analysis-<collaborator-a-handle>
    ```
    Then select **Create fork**.
-3. In VS Code, run **Git: Clone** from the Command Palette.
-4. Paste the URL of Collaborator B's fork:
+4. In VS Code, run **Git: Clone** from the Command Palette.
+5. Paste the URL of Collaborator B's fork:
    `https://github.com/<collaborator-b>/gutenberg-analysis-<collaborator-a>.git`.
-5. To keep the two local repositories distinct, create or select a parent
+6. To keep the two local repositories distinct, create or select a parent
    directory named after Collaborator A's GitHub handle before cloning.
-6. Open the cloned repository in a new VS Code window.
+7. Open the cloned repository in a new VS Code window.
 
 ![Cloning a repository in VS Code.](/images/version-control_vscode_clone-repository.png)
 
@@ -471,19 +459,20 @@ pull-request reference. The README is the place for the Gutenberg ID.
    ```
 
 4. Title the pull request `Add Dracula to the book analysis`.
-5. Use the actual issue number in the description:
+5. Add a clear description:
 
    ```markdown
-   Closes #1
-
    Adds *Dracula* by Bram Stoker and records its Project Gutenberg
    provenance in the README.
    ```
 
 6. Select **Create pull request**.
 
-`Closes #1` means that GitHub will close issue `#1` in the base repository when
-the pull request merges. If GitHub assigned another number, use that number.
+::: {.callout-tip title="Linking pull requests to issues" collapse="true"}
+When an issue exists, including keywords like `Closes #1` or `Fixes #12` in your
+pull request description tells GitHub to automatically close the referenced issue
+as soon as the pull request is merged into `main`.
+:::
 
 ```{mermaid}
 flowchart LR
@@ -508,7 +497,7 @@ Collaborator A now acts as reviewer and repository owner:
 1. Open the pull request on GitHub.
 2. Open **Files changed**.
 3. Check that:
-   - the contribution matches the issue;
+   - the contribution matches the agreed book and source URL;
    - the filename follows the course convention;
    - the README records the correct provenance;
    - the commit is understandable; and
@@ -591,8 +580,8 @@ git branch -d add-dracula
 ### Swap roles
 
 Collaborator A becomes the contributor and Collaborator B becomes the repository
-owner. Return to [Open an issue](#open-an-issue) and repeat the workflow with a
-different book.
+owner. Return to [Fork and clone the repository](#fork-and-clone) and repeat the
+workflow with a different book.
 
 The instructions are the same. Before acting, briefly check the open folder,
 current branch, and intended destination.
@@ -604,11 +593,10 @@ Session 1 is complete when you can check every item:
 - [ ] I published my own public course repository.
 - [ ] I added my first book through a branch and self pull request.
 - [ ] I merged that pull request and removed its completed branches.
-- [ ] I opened an issue in a collaborator's repository.
+- [ ] I forked a collaborator's repository with a distinct name.
 - [ ] I contributed a different book through my fork and a short-lived branch.
-- [ ] My pull request closed the issue when it merged.
 - [ ] I reviewed and approved a collaborator's pull request.
-- [ ] I merged the contribution into my own repository.
+- [ ] I merged the contribution into my own repository with a merge commit.
 - [ ] I synchronized the relevant local repositories and fork.
 - [ ] I can identify `origin`, `upstream`, `main`, and the contribution branch.
 
