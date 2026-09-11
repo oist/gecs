@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git and GitHub Collaboration</title>
+<link rel="stylesheet" href="css/slides.css">
+</head>
+<body>
+
+<div class="slide-stage" id="stage" onclick="handleStageClick(event)">
+
+  <!-- SLIDE 1: Title -->
+  <div class="slide active" id="slide-1">
+    <div class="title-content">
+      <div class="title-meta">AY 2026 T1</div>
+      <h1 class="title-main">Git and GitHub Collaboration</h1>
+      <p class="title-sub">Workflows for scientific collaboration</p>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>1 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: File Sprawl Step 1 -->
+  <div class="slide" id="slide-2">
+    <div class="slide-header">
+      <h2>The Problem: File Sprawl</h2>
+      <span class="tag">Ad-hoc Versioning</span>
+    </div>
+    <div class="slide-body">
+      <div class="horror-grid">
+        <div class="card-pane">
+          <div class="pane-header" style="color: #ff7b72;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            Ad-hoc File Naming
+          </div>
+          <div class="file-list">
+            <div class="file-item danger">analysis.py</div>
+            <div class="file-item danger">analysis_v2.py</div>
+            <div class="file-item danger">analysis_final.py</div>
+            <div class="file-item danger">analysis_final_really_FINAL.py</div>
+            <div class="file-item danger">analysis_final_reviewer_OCT14.py</div>
+          </div>
+        </div>
+        <div style="font-size: clamp(20px, 2.5cqw, 36px); color: #30363d; text-align: center;">&rarr;</div>
+        <div class="card-pane empty-slot">
+          <span>[ Next: Version Control ]</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>2 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: File Sprawl Step 2 -->
+  <div class="slide" id="slide-3">
+    <div class="slide-header">
+      <h2>The Solution: Single File & Full History</h2>
+      <span class="tag">Clean Project</span>
+    </div>
+    <div class="slide-body">
+      <div class="horror-grid">
+        <div class="card-pane">
+          <div class="pane-header" style="color: #ff7b72;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            Ad-hoc File Naming
+          </div>
+          <div class="file-list">
+            <div class="file-item danger">analysis.py</div>
+            <div class="file-item danger">analysis_v2.py</div>
+            <div class="file-item danger">analysis_final.py</div>
+            <div class="file-item danger">analysis_final_really_FINAL.py</div>
+            <div class="file-item danger">analysis_final_reviewer_OCT14.py</div>
+          </div>
+        </div>
+        <div style="font-size: clamp(20px, 2.5cqw, 36px); color: var(--text-muted); text-align: center;">&rarr;</div>
+        <div class="card-pane">
+          <div class="pane-header" style="color: var(--green);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+            Single File &bull; Full History
+          </div>
+          <div class="file-list">
+            <div class="file-item good">
+              <span>analysis.py</span>
+              <span style="font-size: 0.85em; opacity: 0.7;">main</span>
+            </div>
+          </div>
+          <div style="margin-top: 1.2cqw; border-left: 2px dashed var(--border); padding-left: 1cqw; display: flex; flex-direction: column; gap: 0.6cqw; font-family: ui-monospace, monospace; font-size: clamp(11px, 1.1cqw, 15px); color: var(--text-muted);">
+            <div>&#9679; 31c0a &bull; Add reviewer edits</div>
+            <div>&#9679; 9b2d8 &bull; Refactor plotting module</div>
+            <div>&#9679; e4a10 &bull; Baseline analysis script</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>3 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 4: Git vs GitHub Step 1 (Logos) -->
+  <div class="slide" id="slide-4">
+    <div class="slide-header">
+      <h2>Git vs GitHub</h2>
+      <span class="tag">Distinction</span>
+    </div>
+    <div class="slide-body">
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24">
+              <path fill="var(--git-orange)" d="M2.6 10.59L10.6 2.6a3.39 3.39 0 0 1 4.8 0l5.99 6a3.39 3.39 0 0 1 0 4.8l-6 6a3.39 3.39 0 0 1-4.8 0L2.6 15.4a3.4 3.4 0 0 1 0-4.81z"/>
+              <circle cx="9.5" cy="9.5" r="1.5" fill="#fff"/>
+              <circle cx="14.5" cy="14.5" r="1.5" fill="#fff"/>
+              <path stroke="#fff" stroke-width="1.5" d="M9.5 9.5v5m0 0a1.5 1.5 0 1 0 1.5 1.5M9.5 11l5 3.5"/>
+            </svg>
+          </div>
+          <div class="brand-title" style="color: var(--git-orange);">Git</div>
+          <div class="concept-pill ghost"></div>
+          <div class="concept-pill ghost"></div>
+        </div>
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24" fill="#ffffff">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </div>
+          <div class="brand-title" style="color: #ffffff;">GitHub</div>
+          <div class="concept-pill ghost"></div>
+          <div class="concept-pill ghost"></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>4 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 5: Git vs GitHub Step 2 -->
+  <div class="slide" id="slide-5">
+    <div class="slide-header">
+      <h2>Git vs GitHub</h2>
+      <span class="tag">Distinction</span>
+    </div>
+    <div class="slide-body">
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24">
+              <path fill="var(--git-orange)" d="M2.6 10.59L10.6 2.6a3.39 3.39 0 0 1 4.8 0l5.99 6a3.39 3.39 0 0 1 0 4.8l-6 6a3.39 3.39 0 0 1-4.8 0L2.6 15.4a3.4 3.4 0 0 1 0-4.81z"/>
+              <circle cx="9.5" cy="9.5" r="1.5" fill="#fff"/>
+              <circle cx="14.5" cy="14.5" r="1.5" fill="#fff"/>
+              <path stroke="#fff" stroke-width="1.5" d="M9.5 9.5v5m0 0a1.5 1.5 0 1 0 1.5 1.5M9.5 11l5 3.5"/>
+            </svg>
+          </div>
+          <div class="brand-title" style="color: var(--git-orange);">Git</div>
+          <div class="concept-pill">
+            <strong>Local Engine</strong>
+            Runs on your computer
+          </div>
+          <div class="concept-pill ghost"></div>
+        </div>
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24" fill="#ffffff">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </div>
+          <div class="brand-title" style="color: #ffffff;">GitHub</div>
+          <div class="concept-pill">
+            <strong>Collaborative Platform</strong>
+            Sharing, code review & sync
+          </div>
+          <div class="concept-pill ghost"></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>5 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 6: Git vs GitHub Step 3 -->
+  <div class="slide" id="slide-6">
+    <div class="slide-header">
+      <h2>Git vs GitHub</h2>
+      <span class="tag">Distinction</span>
+    </div>
+    <div class="slide-body">
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24">
+              <path fill="var(--git-orange)" d="M2.6 10.59L10.6 2.6a3.39 3.39 0 0 1 4.8 0l5.99 6a3.39 3.39 0 0 1 0 4.8l-6 6a3.39 3.39 0 0 1-4.8 0L2.6 15.4a3.4 3.4 0 0 1 0-4.81z"/>
+              <circle cx="9.5" cy="9.5" r="1.5" fill="#fff"/>
+              <circle cx="14.5" cy="14.5" r="1.5" fill="#fff"/>
+              <path stroke="#fff" stroke-width="1.5" d="M9.5 9.5v5m0 0a1.5 1.5 0 1 0 1.5 1.5M9.5 11l5 3.5"/>
+            </svg>
+          </div>
+          <div class="brand-title" style="color: var(--git-orange);">Git</div>
+          <div class="concept-pill">
+            <strong>Local Engine</strong>
+            Runs on your computer
+          </div>
+          <div class="concept-pill">
+            <strong>Offline Tracking</strong>
+            Project history without internet
+          </div>
+        </div>
+        <div class="compare-col">
+          <div class="brand-logo">
+            <svg viewBox="0 0 24 24" fill="#ffffff">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+          </div>
+          <div class="brand-title" style="color: #ffffff;">GitHub</div>
+          <div class="concept-pill">
+            <strong>Collaborative Platform</strong>
+            Sharing, code review & sync
+          </div>
+          <div class="concept-pill">
+            <strong>Cloud Hub</strong>
+            Central remote repository
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>6 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 7: Commits - Step 1 -->
+  <div class="slide" id="slide-7">
+    <div class="slide-header">
+      <h2>Commits</h2>
+      <span class="tag">Linear History</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 920 280">
+          <line x1="100" y1="180" x2="820" y2="180" stroke="#30363d" stroke-width="5" />
+          <line x1="100" y1="180" x2="200" y2="180" stroke="#58a6ff" stroke-width="5" />
+          <g transform="translate(180, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c1: init repo</text>
+          </g>
+          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>7 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 8: Commits - Step 2 -->
+  <div class="slide" id="slide-8">
+    <div class="slide-header">
+      <h2>Commits</h2>
+      <span class="tag">Linear History</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 920 280">
+          <line x1="100" y1="180" x2="820" y2="180" stroke="#30363d" stroke-width="5" />
+          <line x1="100" y1="180" x2="340" y2="180" stroke="#58a6ff" stroke-width="5" />
+          <g transform="translate(180, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c1: init repo</text>
+          </g>
+          <g transform="translate(320, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c2: clean data</text>
+          </g>
+          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>8 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 9: Commits - Step 3 -->
+  <div class="slide" id="slide-9">
+    <div class="slide-header">
+      <h2>Commits</h2>
+      <span class="tag">Linear History</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 920 280">
+          <line x1="100" y1="180" x2="820" y2="180" stroke="#58a6ff" stroke-width="5" />
+          <g transform="translate(180, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c1: init repo</text>
+          </g>
+          <g transform="translate(320, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c2: clean data</text>
+          </g>
+          <g transform="translate(560, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="16" font-weight="bold">c3: plot pipeline</text>
+          </g>
+          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>9 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 10: Commits & Branches - Step 4 -->
+  <div class="slide" id="slide-10">
+    <div class="slide-header">
+      <h2>Commits and Collaborative Branches</h2>
+      <span class="tag">Feature Branch</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 920 280">
+          <line x1="100" y1="180" x2="820" y2="180" stroke="#58a6ff" stroke-width="5" />
+          <path d="M 320 180 C 380 180, 400 80, 480 80" fill="none" stroke="#bc8cff" stroke-width="4" stroke-dasharray="6,6" />
+          <g transform="translate(180, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">c1: init</text>
+          </g>
+          <g transform="translate(320, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">c2: clean</text>
+          </g>
+          <g transform="translate(560, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">c3: pipeline</text>
+          </g>
+          <g transform="translate(480, 80)">
+            <circle r="18" fill="#161b22" stroke="#bc8cff" stroke-width="4" />
+            <text y="-26" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">Person B starts</text>
+            <text y="42" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="15" font-weight="bold">b1: new metric</text>
+          </g>
+          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
+          <rect x="360" y="65" width="80" height="30" rx="6" fill="#2d1f3d" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="400" y="85" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">feature</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>10 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 11: Commits & Branches - Step 5 -->
+  <div class="slide" id="slide-11">
+    <div class="slide-header">
+      <h2>Commits and Collaborative Branches</h2>
+      <span class="tag">Feature Branch</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 920 280">
+          <line x1="100" y1="180" x2="820" y2="180" stroke="#58a6ff" stroke-width="5" />
+          <path d="M 320 180 C 380 180, 400 80, 480 80 L 640 80" fill="none" stroke="#bc8cff" stroke-width="4" stroke-dasharray="6,6" />
+          <g transform="translate(180, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">c1: init</text>
+          </g>
+          <g transform="translate(320, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">c2: clean</text>
+          </g>
+          <g transform="translate(560, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">c3: pipeline</text>
+          </g>
+          <g transform="translate(480, 80)">
+            <circle r="18" fill="#161b22" stroke="#bc8cff" stroke-width="4" />
+            <text y="-26" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">Person B starts</text>
+            <text y="42" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">b1: new metric</text>
+          </g>
+          <g transform="translate(640, 80)">
+            <circle r="18" fill="#161b22" stroke="#bc8cff" stroke-width="4" />
+            <text y="-26" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">Person B continues</text>
+            <text y="42" text-anchor="middle" fill="#f0f6fc" font-family="monospace" font-size="15" font-weight="bold">b2: validation</text>
+          </g>
+          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
+          <rect x="360" y="65" width="80" height="30" rx="6" fill="#2d1f3d" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="400" y="85" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">feature</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>11 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 12: Commits & Branches - Step 6 -->
+  <div class="slide" id="slide-12">
+    <div class="slide-header">
+      <h2>Commits and Collaborative Branches</h2>
+      <span class="tag">Branch & Merge</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 920 280">
+          <line x1="100" y1="180" x2="820" y2="180" stroke="#58a6ff" stroke-width="5" />
+          <path d="M 320 180 C 380 180, 400 80, 480 80 L 640 80 C 720 80, 740 180, 800 180" fill="none" stroke="#bc8cff" stroke-width="4" stroke-dasharray="6,6" />
+          <g transform="translate(180, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">c1: init</text>
+          </g>
+          <g transform="translate(320, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">c2: clean</text>
+          </g>
+          <g transform="translate(560, 180)">
+            <circle r="18" fill="#161b22" stroke="#58a6ff" stroke-width="4" />
+            <text y="44" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">c3: pipeline</text>
+          </g>
+          <g transform="translate(800, 180)">
+            <circle r="20" fill="#58a6ff" stroke="#ffffff" stroke-width="4" />
+            <text y="46" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="15" font-weight="bold">merge commit</text>
+          </g>
+          <g transform="translate(480, 80)">
+            <circle r="18" fill="#161b22" stroke="#bc8cff" stroke-width="4" />
+            <text y="-26" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">Person B starts</text>
+            <text y="42" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">b1: new metric</text>
+          </g>
+          <g transform="translate(640, 80)">
+            <circle r="18" fill="#161b22" stroke="#bc8cff" stroke-width="4" />
+            <text y="-26" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">Person B continues</text>
+            <text y="42" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">b2: validation</text>
+          </g>
+          <rect x="40" y="165" width="70" height="30" rx="6" fill="#1f293d" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="75" y="185" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="14" font-weight="bold">main</text>
+          <rect x="360" y="65" width="80" height="30" rx="6" fill="#2d1f3d" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="400" y="85" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="14" font-weight="bold">feature</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>12 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 13: Three Stages - Step 1 -->
+  <div class="slide" id="slide-13">
+    <div class="slide-header">
+      <h2>Three Stages of Git</h2>
+      <span class="tag">Local Workflow</span>
+    </div>
+    <div class="slide-body">
+      <div class="stages-diagram">
+        <div class="stage-box">
+          <div class="stage-title">Working Directory</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="13" x2="15" y2="13" stroke="#ff7b72" stroke-width="2.5"/>
+              <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Files on your computer with active, unrecorded edits</div>
+          <div style="font-family: monospace; color: var(--text-muted); font-size: clamp(11px, 1.2cqw, 16px);">[ Edit files in editor ]</div>
+        </div>
+        <div class="trans-arrow">
+          <div class="stage-cmd-box">git add</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box ghost"></div>
+        <div class="trans-arrow">
+          <div class="stage-cmd-box">git commit</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box ghost"></div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>13 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 14: Three Stages - Step 2 -->
+  <div class="slide" id="slide-14">
+    <div class="slide-header">
+      <h2>Three Stages of Git</h2>
+      <span class="tag">Local Workflow</span>
+    </div>
+    <div class="slide-body">
+      <div class="stages-diagram">
+        <div class="stage-box">
+          <div class="stage-title">Working Directory</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="13" x2="15" y2="13" stroke="#ff7b72" stroke-width="2.5"/>
+              <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Files on your computer with active, unrecorded edits</div>
+          <div style="font-family: monospace; color: var(--text-muted); font-size: clamp(11px, 1.2cqw, 16px);">[ Edit files in editor ]</div>
+        </div>
+        <div class="trans-arrow visible">
+          <div class="stage-cmd-box">git add</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box">
+          <div class="stage-title">Staging Area</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M9 12l2 2 4-4" stroke="var(--green)" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Selected changes gathered and prepared for the snapshot</div>
+          <div style="font-family: monospace; color: var(--accent); font-size: clamp(11px, 1.2cqw, 16px);">Index ready to pack</div>
+        </div>
+        <div class="trans-arrow">
+          <div class="stage-cmd-box">git commit</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box ghost"></div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>14 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 15: Three Stages - Step 3 -->
+  <div class="slide" id="slide-15">
+    <div class="slide-header">
+      <h2>Three Stages of Git</h2>
+      <span class="tag">Local Workflow</span>
+    </div>
+    <div class="slide-body">
+      <div class="stages-diagram">
+        <div class="stage-box">
+          <div class="stage-title">Working Directory</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="9" y1="13" x2="15" y2="13" stroke="#ff7b72" stroke-width="2.5"/>
+              <line x1="9" y1="17" x2="13" y2="17" stroke="#ff7b72" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Files on your computer with active, unrecorded edits</div>
+          <div style="font-family: monospace; color: var(--text-muted); font-size: clamp(11px, 1.2cqw, 16px);">[ Edit files in editor ]</div>
+        </div>
+        <div class="trans-arrow visible">
+          <div class="stage-cmd-box">git add</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box">
+          <div class="stage-title">Staging Area</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M9 12l2 2 4-4" stroke="var(--green)" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Selected changes gathered and prepared for the snapshot</div>
+          <div style="font-family: monospace; color: var(--accent); font-size: clamp(11px, 1.2cqw, 16px);">Index ready to pack</div>
+        </div>
+        <div class="trans-arrow visible">
+          <div class="stage-cmd-box">git commit</div>
+          <svg width="28" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+        <div class="stage-box">
+          <div class="stage-title">Local Repository</div>
+          <div class="stage-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="1.5">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="12" cy="12" r="4" fill="var(--green)"/>
+            </svg>
+          </div>
+          <div class="stage-cue">Permanent snapshot sealed into project history (.git)</div>
+          <div style="font-family: monospace; color: var(--green); font-size: clamp(11px, 1.2cqw, 16px);">Stored in time machine</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>15 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 16: Remotes - Step 1 -->
+  <div class="slide" id="slide-16">
+    <div class="slide-header">
+      <h2>Collaborating with Remotes</h2>
+      <span class="tag">Local Setup</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 860 300">
+          <g transform="translate(180, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Computer A</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>16 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 17: Remotes - Step 2 (Blue Push) -->
+  <div class="slide" id="slide-17">
+    <div class="slide-header">
+      <h2>Collaborating with Remotes</h2>
+      <span class="tag">Push</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 860 300">
+          <defs>
+            <marker id="arr-blue-17" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/>
+            </marker>
+          </defs>
+          <g transform="translate(430, 85)">
+            <path d="M -85 10 C -105 -18, -65 -55, -25 -45 C -5 -75, 55 -75, 70 -45 C 110 -55, 125 -10, 95 18 C 115 42, 85 62, 55 58 L -65 58 C -95 58, -115 35, -85 10 Z" fill="#161b22" stroke="#ffffff" stroke-width="2.5"/>
+            <text y="-2" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="bold">GitHub</text>
+            <text y="22" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">remote: origin</text>
+          </g>
+          <g transform="translate(180, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Computer A</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-17)" fill="none" />
+          <rect x="235" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="280" y="131" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>17 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 18: Remotes - Step 3 (Magenta Pull) -->
+  <div class="slide" id="slide-18">
+    <div class="slide-header">
+      <h2>Collaborating with Remotes</h2>
+      <span class="tag">Pull</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 860 300">
+          <defs>
+            <marker id="arr-blue-18" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/></marker>
+            <marker id="arr-purple-18" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#bc8cff"/></marker>
+          </defs>
+          <g transform="translate(430, 85)">
+            <path d="M -85 10 C -105 -18, -65 -55, -25 -45 C -5 -75, 55 -75, 70 -45 C 110 -55, 125 -10, 95 18 C 115 42, 85 62, 55 58 L -65 58 C -95 58, -115 35, -85 10 Z" fill="#161b22" stroke="#ffffff" stroke-width="2.5"/>
+            <text y="-2" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="bold">GitHub</text>
+            <text y="22" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">remote: origin</text>
+          </g>
+          <g transform="translate(180, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Computer A</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+          <g transform="translate(680, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#bc8cff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#bc8cff" font-size="16" font-weight="bold">Computer B</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-18)" fill="none" />
+          <rect x="235" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="280" y="131" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
+          <path d="M 530 115 L 635 175" stroke="#bc8cff" stroke-width="3.5" marker-end="url(#arr-purple-18)" fill="none" />
+          <rect x="535" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="580" y="131" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>18 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 19: Remotes - Step 4 (Bidirectional) -->
+  <div class="slide" id="slide-19">
+    <div class="slide-header">
+      <h2>Collaborating with Remotes</h2>
+      <span class="tag">Bidirectional Sync</span>
+    </div>
+    <div class="slide-body">
+      <div class="svg-board">
+        <svg viewBox="0 0 860 300">
+          <defs>
+            <marker id="arr-blue-19" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#58a6ff"/></marker>
+            <marker id="arr-purple-19" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 1 L 10 5 L 0 9 z" fill="#bc8cff"/></marker>
+          </defs>
+          <g transform="translate(430, 85)">
+            <path d="M -85 10 C -105 -18, -65 -55, -25 -45 C -5 -75, 55 -75, 70 -45 C 110 -55, 125 -10, 95 18 C 115 42, 85 62, 55 58 L -65 58 C -95 58, -115 35, -85 10 Z" fill="#161b22" stroke="#ffffff" stroke-width="2.5"/>
+            <text y="-2" text-anchor="middle" fill="#ffffff" font-size="20" font-weight="bold">GitHub</text>
+            <text y="22" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="14">remote: origin</text>
+          </g>
+          <g transform="translate(180, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#58a6ff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#58a6ff" font-size="16" font-weight="bold">Computer A</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+          <g transform="translate(680, 225)">
+            <rect x="-65" y="-40" width="130" height="70" rx="6" fill="#161b22" stroke="#bc8cff" stroke-width="2.5"/>
+            <rect x="-14" y="30" width="28" height="12" fill="#30363d"/>
+            <line x1="-35" y1="42" x2="35" y2="42" stroke="#30363d" stroke-width="3"/>
+            <text y="-6" text-anchor="middle" fill="#bc8cff" font-size="16" font-weight="bold">Computer B</text>
+            <text y="14" text-anchor="middle" fill="#8b949e" font-family="monospace" font-size="12">local repo</text>
+          </g>
+          <path d="M 225 175 L 330 115" stroke="#58a6ff" stroke-width="3.5" marker-end="url(#arr-blue-19)" fill="none" />
+          <rect x="235" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="280" y="131" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
+          <path d="M 355 135 L 250 195" stroke="#58a6ff" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-blue-19)" fill="none" />
+          <rect x="270" y="176" width="90" height="28" rx="6" fill="#000000" stroke="#58a6ff" stroke-width="1.5"/>
+          <text x="315" y="195" text-anchor="middle" fill="#58a6ff" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
+          <path d="M 530 115 L 635 175" stroke="#bc8cff" stroke-width="3.5" marker-end="url(#arr-purple-19)" fill="none" />
+          <rect x="535" y="112" width="90" height="28" rx="6" fill="#000000" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="580" y="131" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="13" font-weight="bold">git pull</text>
+          <path d="M 610 195 L 505 135" stroke="#bc8cff" stroke-width="3.5" stroke-dasharray="5,5" marker-end="url(#arr-purple-19)" fill="none" />
+          <rect x="500" y="176" width="90" height="28" rx="6" fill="#000000" stroke="#bc8cff" stroke-width="1.5"/>
+          <text x="545" y="195" text-anchor="middle" fill="#bc8cff" font-family="monospace" font-size="13" font-weight="bold">git push</text>
+        </svg>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>19 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 20: Rules - Step 1 -->
+  <div class="slide" id="slide-20">
+    <div class="slide-header">
+      <h2>Rules in Teams</h2>
+      <span class="tag">Practices</span>
+    </div>
+    <div class="slide-body">
+      <div class="rules-grid">
+        <div class="rule-card" style="border-top: 5px solid #58a6ff;">
+          <div class="rule-number">Rule 01</div>
+          <div class="rule-heading">Pull Before Starting</div>
+        </div>
+        <div class="rule-card ghost"></div>
+        <div class="rule-card ghost"></div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>20 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 21: Rules - Step 2 -->
+  <div class="slide" id="slide-21">
+    <div class="slide-header">
+      <h2>Rules in Teams</h2>
+      <span class="tag">Practices</span>
+    </div>
+    <div class="slide-body">
+      <div class="rules-grid">
+        <div class="rule-card" style="border-top: 5px solid #58a6ff;">
+          <div class="rule-number">Rule 01</div>
+          <div class="rule-heading">Pull Before Starting</div>
+        </div>
+        <div class="rule-card" style="border-top: 5px solid #3fb950;">
+          <div class="rule-number">Rule 02</div>
+          <div class="rule-heading">Atomic Changes</div>
+        </div>
+        <div class="rule-card ghost"></div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>21 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 22: Rules - Step 3 -->
+  <div class="slide" id="slide-22">
+    <div class="slide-header">
+      <h2>Rules in Teams</h2>
+      <span class="tag">Practices</span>
+    </div>
+    <div class="slide-body">
+      <div class="rules-grid">
+        <div class="rule-card" style="border-top: 5px solid #58a6ff;">
+          <div class="rule-number">Rule 01</div>
+          <div class="rule-heading">Pull Before Starting</div>
+        </div>
+        <div class="rule-card" style="border-top: 5px solid #3fb950;">
+          <div class="rule-number">Rule 02</div>
+          <div class="rule-heading">Atomic Changes</div>
+        </div>
+        <div class="rule-card" style="border-top: 5px solid #bc8cff;">
+          <div class="rule-number">Rule 03</div>
+          <div class="rule-heading">Clear Commit Messages</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>22 / 23</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 23: Interactive Practice -->
+  <div class="slide" id="slide-23">
+    <div class="slide-header">
+      <h2>Interactive Practice</h2>
+      <span class="tag">Hands-on</span>
+    </div>
+    <div class="slide-body">
+      <div class="practice-box">
+        <div class="practice-steps">
+          <div class="p-step">
+            <span>01 &bull; SETUP</span>
+            Configure git identity & initialize repo
+          </div>
+          <div class="p-step">
+            <span>02 &bull; LOCAL</span>
+            Track files: add, commit & check log
+          </div>
+          <div class="p-step">
+            <span>03 &bull; REMOTE</span>
+            Link & push to remote on GitHub
+          </div>
+          <div class="p-step">
+            <span>04 &bull; COLLABORATE</span>
+            Pair up & resolve a simulated merge conflict
+          </div>
+        </div>
+        <div class="portal-link">
+          <div>
+            <div style="font-size: clamp(11px, 1.2cqw, 16px); color: var(--text-muted); margin-bottom: 0.3cqw;">Hands-on Instructions & Repo:</div>
+            <div class="portal-url">oist.github.io/gecs</div>
+          </div>
+          <span style="font-size: clamp(12px, 1.3cqw, 18px); font-family: ui-monospace, monospace; color: var(--accent); font-weight: bold;">Module: Collaborating &rarr;</span>
+        </div>
+      </div>
+    </div>
+    <div class="slide-footer">
+      <span>Good Enough Coding in Science</span>
+      <span>23 / 23</span>
+    </div>
+  </div>
+
+</div>
+
+<script src="js/slides.js"></script>
+</body>
+</html>
