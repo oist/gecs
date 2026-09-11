@@ -12,7 +12,7 @@ us a place to propose, inspect, discuss, and combine them. You will first make
 your own work understandable through a branch and pull request, then repeat the
 workflow with another person.
 
-![Two ways to manage project history: (*Left*) A precarious stack of ambiguously named files that easily breaks. (*Right*) Version control acts like a dial, letting you navigate project history reliably.](https://raw.githubusercontent.com/the-turing-way/the-turing-way/refs/heads/main/book/figures/project-history.svg)
+![“FINAL.doc” by Jorge Cham, PhD Comics (2012). Even when working alone, version control prevents the spiral of ambiguous filenames.](/images/03_version-control__phd101212s.png)
 
 ::: {.callout-important title="Before you begin"}
 Confirm that you have a GitHub account with multi-factor authentication, Git is
