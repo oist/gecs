@@ -25,13 +25,16 @@ completed branch. The self pull request has no issue and cannot be self-approved
 
 Participants then work in pairs identified as Collaborator A and Collaborator
 B. The active roles are repository owner, contributor, author, and reviewer.
-The contributor opens an issue, forks the owner's repository, clones the fork,
-and configures `origin` as the fork and `upstream` as the original repository.
-One different book and its README provenance entry form one focused commit. The
-pull-request description uses `Closes #N`; the owner inspects the diff, leaves a
-meaningful comment, approves, and creates a merge commit in the base repository's
-`main`. Both people synchronize and clean up before swapping roles and returning
-to the start of the collaborator workflow.
+The collaborators agree directly on the proposed book (GitHub Issues are covered
+conceptually in an optional tip rather than as a required classroom blocker).
+Collaborator B forks the owner's repository under a distinct name
+(`gutenberg-analysis-<collaborator-a>`) to avoid personal namespace collisions,
+clones the fork, and configures `origin` as the fork and `upstream` as the original
+repository. One different book and its README provenance entry form one focused
+commit. The pull request proposes the change to Collaborator A's `main`; the owner
+inspects the diff, leaves a meaningful comment, approves, and creates a merge
+commit in the base repository's `main`. Both people synchronize and clean up before
+swapping roles and returning to the start of the collaborator workflow.
 
 VS Code is the supported local path. Pull requests and reviews use GitHub's
 website; Bash and Zsh equivalents and the VS Code pull-request extension remain
@@ -144,9 +147,10 @@ the instructions as a separately authored second round.
 For the first pass, Collaborator A is repository owner and reviewer;
 Collaborator B is contributor and author:
 
-1. Collaborator B opens an issue in Collaborator A's repository proposing one
-   different Gutenberg book and records its title, author, ID, and source URL.
-2. Collaborator B forks Collaborator A's repository to their own GitHub account.
+1. Collaborators agree directly on the proposed Project Gutenberg book and
+   provenance (issues are covered in an optional tip box).
+2. Collaborator B forks Collaborator A's repository, naming the fork
+   `gutenberg-analysis-<collaborator-a>` to avoid account namespace collisions.
 3. Collaborator B clones their fork into a clearly distinguishable local parent
    directory named for Collaborator A's GitHub handle, then opens it in a new VS
    Code window.
@@ -159,10 +163,9 @@ Collaborator B is contributor and author:
 8. Push the contribution branch to `origin`, never directly to `upstream`.
 9. Open the pull request with Collaborator A's `main` as the base and
    Collaborator B's contribution branch as the compare branch.
-10. Put `Closes #N` in the pull-request description, using the actual upstream
-    issue number. Follow it with a plain-language description of the book and
-    README change.
-11. Collaborator A inspects the diff against the issue, filename convention,
+10. Describe the book addition and README provenance in the pull-request description
+    (with issue-closing keywords like `Closes #N` explained in an optional tip).
+11. Collaborator A inspects the diff against the agreed book, filename convention,
     provenance, commit meaning, and intended scope; leaves a meaningful comment;
     and approves.
 12. Collaborator A selects **Create a merge commit**. Explain that the merge
@@ -173,7 +176,7 @@ Collaborator B is contributor and author:
     collaborator checkout to `main`, pulls `origin/main`, verifies the merge,
     and deletes the completed local branch.
 15. Only after both copies are synchronized and clean do the collaborators swap
-    roles and return to the issue step.
+    roles and return to the fork step.
 
 Do not put `Closes #N` in a fork commit message. Do not put a Gutenberg ID in a
 commit message with a leading `#`, because GitHub interprets that syntax as an
