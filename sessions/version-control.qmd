@@ -147,6 +147,12 @@ In **Source Control**, select **Publish Branch** or **Publish to GitHub**. Sign
 in if prompted, then choose **Publish to GitHub public repository**. Open the
 repository on GitHub and confirm that `README.md` appears on `main`.
 
+::: {.callout-important title="Repository visibility: choose Public"}
+You **must** select **Publish to GitHub public repository**. If the repository
+is set to private, other participants will not be able to view it, fork it, or
+open issues to collaborate with you.
+:::
+
 ::: {.callout-important title="Before your first push"}
 The destination should be `<your-handle>/gutenberg-analysis` on GitHub. VS Code
 names this remote repository `origin`.
