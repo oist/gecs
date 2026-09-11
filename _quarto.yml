@@ -1,5 +1,9 @@
 project:
   type: website
+  resources:
+    - "slides/**/*.html"
+    - "slides/**/*.css"
+    - "slides/**/*.js"
 
 website:
   title: "Good Enough Coding in Science"
@@ -13,6 +17,8 @@ website:
     contents: 
       - text: "Home"
         href: index.qmd
+      - text: "Slides"
+        href: slides/index.qmd
       - text: "Setting Up"
         href: sessions/setting-up.qmd
       - section: "Sessions"

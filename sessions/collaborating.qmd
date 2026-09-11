@@ -20,6 +20,10 @@ configured with your name and email, and VS Code can access Git. If not, return
 to [Setting Up](setting-up.qmd) or ask an instructor.
 :::
 
+::: {.callout-tip title="Presentation Slides"}
+Explore the interactive visual presentation for this session: [Git and GitHub Collaboration Slides](../slides/collaborating.html){target="_blank"}
+:::
+
 ## Learning outcomes
 
 By the end of this two-hour session, you will be able to:
