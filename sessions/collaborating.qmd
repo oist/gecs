@@ -148,15 +148,36 @@ git commit -m "docs: start project README"
 ### Publish the repository
 
 In **Source Control**, select **Publish Branch** or **Publish to GitHub**. Sign
-in if prompted, then choose **Publish to GitHub public repository**. Open the
-repository on GitHub and confirm that `README.md` appears on `main`.
+in if prompted. VS Code will display a prompt at the top of the window asking
+whether to publish to a private or public repository:
+
+- **Publish to GitHub public repository**
+- **Publish to GitHub private repository**
+
+Choose **Publish to GitHub public repository**. Open the repository on GitHub
+and confirm that `README.md` appears on `main`.
 
 ![A published repository on GitHub showing the initial README file on the `main` branch.](/images/version-control_github_repository-landing.png)
 
 ::: {.callout-important title="Repository visibility: choose Public"}
-You **must** select **Publish to GitHub public repository**. If the repository
-is set to private, other participants will not be able to view it, fork it, or
-collaborate with you.
+You **must** select **Publish to GitHub public repository**.
+
+- **Public**: Anyone on the internet can see this repository. Your course
+  partner and collaborators can view, fork, and submit pull requests to it.
+- **Private**: Only you and specifically invited collaborators can see it.
+
+If your repository is private, other participants cannot view it or fork it,
+which will block the collaborative exercises in this session.
+:::
+
+::: {.callout-tip title="Accidentally chose Private?" collapse="true"}
+If you published your repository as private, you can change it on GitHub:
+
+1. Navigate to your repository page on GitHub.
+2. Select **Settings** (tab at the top).
+3. Scroll down to the **Danger Zone** section at the bottom.
+4. Beside **Change repository visibility**, select **Change visibility** > **Make public**.
+5. Follow the confirmation prompt to make it public.
 :::
 
 ::: {.callout-important title="Before your first push"}
