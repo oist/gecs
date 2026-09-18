@@ -24,17 +24,13 @@ If you need to catch up or compare your project against the canonical reference 
 
 ## Learning Outcomes
 
-By the end of this two-hour session, you will be able to:
+By the end of this one-hour session, you will be able to:
 
-1. Pin Python 3.12 and initialize a reproducible environment inside an existing, non-empty repository using `uv`.
+1. Pin Python 3.12 and initialize a reproducible environment inside an existing repository using `uv`.
 2. Inspect and explain the role of `.python-version`, `pyproject.toml`, `uv.lock`, and `.gitignore`.
-3. Distinguish between Python runtime imports (expressed in source code) and declared project dependencies (recorded in `pyproject.toml`).
-4. Experience an intentional `ModuleNotFoundError` for an undeclared dependency and resolve it cleanly with `uv add`.
-5. Execute commands in the project environment both via manual activation (`source .venv/bin/activate`) and direct execution (`uv run`).
-6. Perform a controlled data overwrite exercise to motivate the physical separation of immutable raw data (`data/raw/`), generated artifacts (`data/intermediate/`), and code (`scripts/`, `src/`).
-7. Refactor exploratory scripts into a clean, reusable `src/` package layout (`src/bookstats/`) with a public module interface.
-8. Connect an interactive Marimo visualization notebook (`notebooks/visualize.py`) to processed project data.
-9. Document reproducible environment setup (`uv sync`) and execution instructions in `README.md`.
+3. Experience a missing dependency error and resolve it cleanly with `uv add`.
+4. Refactor exploratory scripts into a reusable `src/` package layout (`src/bookstats/`).
+5. Try Marimo via `uvx` and run an interactive visualization notebook connected to intermediate book counts.
 
 ---
 
@@ -66,13 +62,14 @@ A **virtual environment** is an isolated folder (conventionally named `.venv/`) 
 ### Create the Feature Branch
 
 ```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#dc2626", "git1": "#2563eb", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
 gitGraph
    commit id: "data-added"
    branch set-up-venv
    checkout set-up-venv
-   commit id: "chore: pin python 3.12 and init uv"
+   commit id: "init uv"
    checkout main
-   merge set-up-venv id: "Merge PR: set-up-venv"
+   merge set-up-venv id: "merge PR"
 ```
 
 In VS Code:
@@ -108,8 +105,8 @@ uv init --bare
 Initialized project `bookstats`
 ```
 
-::: {.callout-note title="Why --bare?"}
-Running `uv init` without flags in an existing directory can create boilerplate `hello.py` or sample files. The `--bare` flag creates only the fundamental packaging manifest (`pyproject.toml`) and respects your existing files.
+::: {.callout-note title="Why --bare?" collapse="true"}
+The `--bare` flag creates only the packaging manifest (`pyproject.toml`) and avoids generating sample boilerplate files (like `hello.py`) inside an existing repository.
 :::
 
 Inspect the newly created files in the VS Code Explorer:
@@ -207,7 +204,7 @@ To ensure VS Code provides autocomplete, linting, and type checking using your p
 
 VS Code will remember this setting in your workspace.
 
-### Commit, Push, Review, and Merge Milestone 1
+### Commit, Push, Review, and Merge
 
 Check your changes in the VS Code Source Control panel:
 - Staged/Untracked: `.python-version`, `pyproject.toml`, `uv.lock`, `.gitignore`.
@@ -226,27 +223,19 @@ Check your changes in the VS Code Source Control panel:
 
 ---
 
-## Undeclared Dependencies (`add-word-counting`)
-
-### The Concept: Imports vs. Dependencies
-
-A common misconception among beginner programmers is that Python automatically knows what packages to install by reading `import` statements in scripts.
-
-- **`import polars as pl`** in Python code is a **runtime request**: it tells Python's interpreter, *"Look in the active `sys.path` for a module named `polars`; if not found, crash."*
-- **`dependencies = ["polars"]`** in `pyproject.toml` is a **project declaration**: it tells package managers, *"This project requires the distribution package `polars` from the Python Package Index (PyPI)."*
-
-Let's experience this failure firsthand.
+## Adding Word Counting Script (`add-word-counting`)
 
 ### Create the Feature Branch
 
 ```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#dc2626", "git1": "#2563eb", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
 gitGraph
    commit id: "venv-declared"
    branch add-word-counting
    checkout add-word-counting
-   commit id: "feat: add count_words script"
+   commit id: "add count_words"
    checkout main
-   merge add-word-counting id: "Merge PR: add-word-counting"
+   merge add-word-counting id: "merge PR"
 ```
 
 In VS Code:
@@ -334,21 +323,15 @@ if __name__ == "__main__":
 
 Paste the code into `count_words.py` and save the file. Notice line 13: `import polars as pl`.
 
-### Experience the Intentional Failure
+### Run the Script
 
-Attempt to run the script inside your project using plain Python:
-
-```bash
-python count_words.py 00084_frankenstein.txt 00084_frankenstein.csv
-```
-
-Or run it via `uv run`:
+Run the script inside your project using `uv run`:
 
 ```bash
 uv run python count_words.py 00084_frankenstein.txt 00084_frankenstein.csv
 ```
 
-Both commands fail with the exact same error:
+The command fails with a `ModuleNotFoundError`:
 
 ```output
 Traceback (most recent call last):
@@ -357,7 +340,7 @@ Traceback (most recent call last):
 ModuleNotFoundError: No module named 'polars'
 ```
 
-The script asks for `polars`, but `polars` is not in our environment because it was never declared in `pyproject.toml`.
+The script requires `polars`, but it is not yet declared in `pyproject.toml`.
 
 ### Declare and Resolve the Dependency
 
@@ -418,9 +401,9 @@ was,1018
 ...
 ```
 
-### Commit, Push, Review, and Merge Milestone 2
+### Commit, Push, Review, and Merge
 
-Remove the generated CSV file before committing (we will organize outputs properly in the next milestone):
+Remove the generated CSV file before committing (we will organize outputs properly in the next step):
 
 ```bash
 rm *.csv
@@ -491,13 +474,14 @@ bookstats/
 ### Create the Feature Branch
 
 ```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#dc2626", "git1": "#2563eb", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
 gitGraph
    commit id: "word-counting"
    branch separate-data
    checkout separate-data
-   commit id: "refactor: separate data into raw and intermediate"
+   commit id: "separate data"
    checkout main
-   merge separate-data id: "Merge PR: separate-data"
+   merge separate-data id: "merge PR"
 ```
 
 In VS Code:
@@ -569,9 +553,9 @@ bookstats/
 ├── uv.lock
 ├── README.md
 ├── data/
-│   ├── raw/
-│   │   ├── 00084_frankenstein.txt
-│   │   └── 00345_dracula.txt
+├── data/raw/
+│   ├── 00084_frankenstein.txt
+│   └── 00345_dracula.txt
 │   └── intermediate/
 │       ├── 00084_frankenstein.csv
 │       └── 00345_dracula.csv
@@ -589,7 +573,7 @@ If not installed:
 - Ubuntu / Debian / WSL: `sudo apt install tree`
 :::
 
-### Commit, Push, Review, and Merge Milestone 3
+### Commit, Push, Review, and Merge
 
 1. Stage changes (`.gitignore`, the moved files, etc.).
 2. Commit: `refactor: organize project into data/raw, data/intermediate, and scripts`.
@@ -612,14 +596,15 @@ In professional software development, reusable logic lives in a **package** unde
 ### Create the Feature Branch
 
 ```{mermaid}
+%%{init: { "theme": "base", "themeVariables": { "git0": "#dc2626", "git1": "#2563eb", "gitBranchLabel0": "#ffffff", "gitBranchLabel1": "#ffffff", "commitLabelColor": "#1e293b", "commitLabelBackground": "#f1f5f9" } } }%%
 gitGraph
    commit id: "data-separated"
    branch create-package
    checkout create-package
-   commit id: "feat: package counting logic in src/bookstats"
-   commit id: "feat: add marimo visualization notebook"
+   commit id: "package bookstats"
+   commit id: "add marimo"
    checkout main
-   merge create-package id: "Merge PR: create-package"
+   merge create-package id: "merge PR"
 ```
 
 In VS Code:
@@ -630,15 +615,17 @@ In VS Code:
 git checkout -b create-package
 ```
 
-### Moving from Scripts to a Package
+### What is a Flat Layout vs. src/ Layout?
 
-Before creating files, let's understand why we are refactoring `scripts/count_words.py` into a package module `src/bookstats/counts.py`:
+In a **flat layout**, Python packages sit directly in the repository root (`bookstats/`). While simple, it can lead to accidental imports of local working files instead of the installed package.
 
-| Feature | Standalone Script (`scripts/count_words.py`) | Package Module (`src/bookstats/counts.py`) | Architectural Benefit |
-|---|---|---|---|
-| **Interface** | Tightly coupled to command-line arguments (`sys.argv`) | Pure, decoupled functions (`extract_words`, `count_words`, `process_book_file`) | Reusable in notebooks, automated test suites (Session 3), and automation pipelines (Session 4). |
-| **Documentation** | Minimal one-line docstrings | Structured NumPy-style docstrings (`Parameters`, `Returns`) | Enables autocomplete, type inference, and automated linting compliance. |
-| **Data Flow** | Single-file processing only | Added `--combine` mode for aggregation | Merges multiple book count CSVs into a unified table (`data/processed/book-counts.csv`). |
+In a **`src/` layout**, your package logic lives under `src/bookstats/`. This enforces an explicit boundary: code can only be imported if it is properly installed in the environment:
+
+| Layout | Structure | Behavior |
+|---|---|---|
+| **Flat Layout** | `bookstats/counts.py` | Imports directly from repository root, but risks namespace collisions. |
+| **`src/` Layout** | `src/bookstats/counts.py` | Enforces packaging hygiene and ensures tests run against installed code. |
+
 
 ### Build the `src/` Package Structure
 
@@ -761,92 +748,23 @@ def process_book_file(input_path: Path | str, output_path: Path | str) -> pl.Dat
     return counts
 
 
-def combine_word_counts(
-    input_paths: list[Path | str], output_path: Path | str
-) -> pl.DataFrame:
-    """Combine multiple per-book count CSV files into a single dataset.
-
-    Parameters
-    ----------
-    input_paths : list of (Path or str)
-        Paths to the per-book intermediate count CSV files.
-    output_path : Path or str
-        Destination path for the processed combined CSV.
-
-    Returns
-    -------
-    polars.DataFrame
-        Combined DataFrame containing 'book', 'word', and 'count' columns.
-    """
-    frames = []
-    for p in input_paths:
-        path = Path(p)
-        book_id = path.stem
-        df = pl.read_csv(path)
-        df = df.with_columns(pl.lit(book_id).alias("book"))
-        df = df.select(["book", "word", "count"])
-        frames.append(df)
-
-    if frames:
-        combined = pl.concat(frames)
-    else:
-        combined = pl.DataFrame(
-            {"book": [], "word": [], "count": []},
-            schema={"book": pl.String, "word": pl.String, "count": pl.UInt32},
-        )
-
-    out_p = Path(output_path)
-    out_p.parent.mkdir(parents=True, exist_ok=True)
-    combined.write_csv(out_p)
-    return combined
-
-
 def main() -> None:
     """Command-line interface for word counting."""
     parser = argparse.ArgumentParser(
         description="Count word frequencies in Project Gutenberg books."
     )
     parser.add_argument(
-        "--combine",
-        action="store_true",
-        help="Combine multiple intermediate count CSVs into one table.",
+        "input",
+        help="Input text file path.",
     )
     parser.add_argument(
-        "inputs",
-        nargs="+",
-        help="Input text file (single mode) or CSV files (combine mode).",
-    )
-    parser.add_argument(
-        "-o",
-        "--output",
-        required=False,
+        "output",
         help="Output CSV file path.",
     )
 
     args = parser.parse_args()
-
-    if args.combine:
-        if not args.output:
-            print(
-                "Error: --output is required when using --combine.",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        combine_word_counts(args.inputs, args.output)
-        print(f"Combined {len(args.inputs)} books into {args.output}")
-    else:
-        if len(args.inputs) == 2 and not args.output:
-            in_file, out_file = args.inputs[0], args.inputs[1]
-        elif len(args.inputs) == 1 and args.output:
-            in_file, out_file = args.inputs[0], args.output
-        else:
-            print(
-                "Usage: python -m bookstats.counts INPUT OUTPUT",
-                file=sys.stderr,
-            )
-            sys.exit(1)
-        process_book_file(in_file, out_file)
-        print(f"Processed {in_file} -> {out_file}")
+    process_book_file(args.input, args.output)
+    print(f"Processed {args.input} -> {args.output}")
 
 
 if __name__ == "__main__":
@@ -864,7 +782,6 @@ In VS Code, create a new file named `src/bookstats/__init__.py`. This file expor
 """bookstats: A reproducible analysis package for Gutenberg word frequencies."""
 
 from bookstats.counts import (
-    combine_word_counts,
     count_words,
     extract_words,
     process_book_file,
@@ -876,23 +793,13 @@ __all__ = [
     "extract_words",
     "count_words",
     "process_book_file",
-    "combine_word_counts",
 ]
 ```
 
-::: {.callout-note title="What is a Package API and Why Does __init__.py Define It?"}
+::: {.callout-note title="What is an API?"}
 In software development, an **Application Programming Interface (API)** is the formal contract defining how external programs communicate with your package.
 
 In Python, a package folder can contain dozens of internal helper files, variables, and private functions. Without an explicit boundary, users of your library would have to import directly from deep implementation files (`from bookstats.counts import count_words`), tightly coupling their code to your internal folder structure.
-
-By defining `__all__` inside `src/bookstats/__init__.py`:
-1. **Public vs. Internal Seam**: You explicitly declare which functions constitute your supported public API (`extract_words`, `count_words`, `combine_word_counts`).
-2. **Simplified Imports**: Collaborators can simply write `from bookstats import count_words` without needing to know or care which internal module contains the logic.
-3. **Stability Guarantee**: If you later reorganize internal files (e.g. splitting counting algorithms into separate submodules), external scripts, tests (Session 3), and Make workflows (Session 4) will continue to work without changing their import statements.
-
-::: {.callout-tip title="Advanced: Lazy Imports" collapse="true"}
-In very large scientific libraries (like SciPy or Polars), importing everything immediately in `__init__.py` can slow down startup times. Advanced packages sometimes use Python 3.7+ module-level `__getattr__` to dynamically load submodules only when accessed. For our package, explicit imports provide the clearest, most readable foundation.
-:::
 :::
 
 ### Configure `pyproject.toml` for the `src/` Layout
@@ -932,48 +839,38 @@ Process your second book as well:
 uv run python -m bookstats.counts data/raw/00345_dracula.txt data/intermediate/00345_dracula.csv
 ```
 
-And test combining them:
-
-```bash
-uv run python -m bookstats.counts --combine data/intermediate/*.csv -o data/processed/book-counts.csv
-```
-
-```output
-Combined 2 books into data/processed/book-counts.csv
-```
-
-### The Headless Automation Contract
-
-Notice how our data flow is strictly decoupled:
-1. `uv run python -m bookstats.counts <raw-book> <intermediate-csv>` runs headlessly from the command line to generate per-book counts.
-2. `uv run python -m bookstats.counts --combine ... -o data/processed/book-counts.csv` aggregates them into an analysis-ready dataset.
-3. The visualization notebook does **not** process raw text or duplicate counting logic—it reads the pre-computed `data/processed/book-counts.csv` table.
-
-::: {.callout-note title="This analysis an automate would make"}
-In research software engineering, interactive notebooks that embed heavy preprocessing often fail to reproduce because they require humans to click cells in arbitrary order.
-
-By keeping `bookstats.counts` as an unassisted command-line engine, the analysis pipeline can be executed start-to-finish without human interaction. This is the exact analysis that an automation tool (such as **GNU Make** in Session 4) will orchestrate incrementally, and that **GitHub Actions** will execute on remote virtual machines to build and publish an interactive GitHub website!
+::: {.callout-tip title="Automating Batch Processing"}
+Running each book manually works for two books, but what if you have dozens? In Session 4, we will use **GNU Make** to automate batch counting across all books with dependency tracking.
 :::
 
 ### Interactive Visualization with Marimo
 
-Now that our package produces structured, aggregated count data, let's explore it interactively!
+Now that our package produces structured count data in `data/intermediate/`, let's explore it interactively!
 
 ![marimo vs Jupyter](/images/virtual-environments_marimoVsJupyter.png)
 
 Instead of traditional Jupyter notebooks (which save binary outputs, execution counts, and JSON diffs that pollute Git), we use [Marimo](https://marimo.io/). Marimo notebooks are stored as **pure Python scripts**, making them 100% Git-friendly, reproducible, and reactive.
 
-We set up and launch our interactive visualization in three simple steps:
+#### Step 1: Try Marimo in a Quick Sandbox (`uvx`)
 
-#### Step 1: Install Marimo and Altair
+Before adding new dependencies to your project, you can try Marimo immediately in an isolated sandbox using `uvx`:
 
-Add `marimo` and `altair` to your project dependencies using `uv`:
+```bash
+uvx marimo tutorial plots
+```
+
+This runs Marimo's built-in plotting tutorial in your browser without altering your project environment. Feel free to interact with the sliders and charts! When you are ready, return to your terminal and press `Ctrl+C` to stop the tutorial server.
+
+#### Step 2: Install Marimo and Altair
+
+Add `marimo` and `altair` to your project dependencies:
 
 ```bash
 uv add marimo altair
 ```
 
-#### Step 2: Create `notebooks/visualize.py`
+#### Step 3: Create `notebooks/visualize.py`
+
 
 Create a directory named `notebooks`:
 
@@ -1127,18 +1024,24 @@ Notice how Marimo structures the interactive script:
    ```
    When the dropdown changes, only this visualization cell re-renders, updating the Top 30 word frequencies without recalculating data from disk.
 
-#### Step 3: Launch the Interactive Server
+#### Step 4: Launch the Interactive Visualization
 
-Start the Marimo notebook server from your terminal:
+Run the notebook as an interactive web application:
 
+```bash
+uv run marimo run notebooks/visualize.py
+```
+
+Marimo will open an interactive dashboard in your default browser:
+- Select any analyzed book from the dropdown menu to inspect its word frequencies.
+- Hover over the interactive Altair bar chart to see exact counts.
+
+::: {.callout-tip title="Inspecting and Editing Code Cells"}
+To view and edit the underlying reactive code cells instead of running as a clean web app:
 ```bash
 uv run marimo edit notebooks/visualize.py
 ```
-
-Marimo will open an interactive interface in your default browser:
-- Select any analyzed book from the dropdown menu to inspect its word frequencies.
-- Hover over the interactive Altair bar chart to see exact counts.
-- In Session 3, we will extend this notebook using Test-Driven Development (TDD) to compute descriptive Zipf power-law fits and overlay regression lines.
+:::
 
 Press `Ctrl+C` in your terminal when you are ready to shut down the Marimo server.
 
@@ -1174,20 +1077,14 @@ Process a raw book using the `bookstats` package:
 uv run python -m bookstats.counts data/raw/00084_frankenstein.txt data/intermediate/00084_frankenstein.csv
 ```
 
-Combine all processed books:
-
-```bash
-uv run python -m bookstats.counts --combine data/intermediate/*.csv -o data/processed/book-counts.csv
-```
-
 Launch the interactive visualization:
 
 ```bash
-uv run marimo edit notebooks/visualize.py
+uv run marimo run notebooks/visualize.py
 ```
 ```
 
-### Commit, Push, Review, and Merge Milestone 4
+### Commit, Push, Review, and Merge
 
 1. Remove any legacy `scripts/count_words.py` file (its logic is now safely inside `src/bookstats/counts.py`):
    ```bash
@@ -1278,5 +1175,5 @@ Before moving on to Session 3, confirm that you can check off every item:
 - [ ] My `.venv/` directory is ignored by Git and never committed.
 - [ ] My raw data is isolated in `data/raw/` and intermediate tables in `data/intermediate/`.
 - [ ] My reusable logic lives in `src/bookstats/counts.py` and can be executed via `uv run python -m bookstats.counts`.
-- [ ] I can launch the interactive visualization with `uv run marimo edit notebooks/visualize.py`.
+- [ ] I can launch the interactive visualization with `uv run marimo run notebooks/visualize.py`.
 - [ ] A collaborator could clone my repository and reproduce the complete environment by running `uv sync`.
