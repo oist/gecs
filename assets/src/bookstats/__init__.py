@@ -1,7 +1,6 @@
 """bookstats: A reproducible analysis package for Gutenberg word frequencies."""
 
 from bookstats.counts import (
-    combine_word_counts,
     count_words,
     extract_words,
     process_book_file,
@@ -13,5 +12,5 @@ __all__ = [
     "extract_words",
     "count_words",
     "process_book_file",
-    "combine_word_counts",
 ]
+
