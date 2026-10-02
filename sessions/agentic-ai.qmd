@@ -2,9 +2,7 @@
 title: "Agentic AI"
 ---
 
-# Session 5: Agentic AI
-
-Turn one idea into a tested change: align with an agent, delegate implementation,
+Align with an agent, delegate implementation,
 then review the result before merging.
 
 ## Play the example
