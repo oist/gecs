@@ -56,12 +56,13 @@ This course is for researchers who want to learn how to automate repetitive task
 
 # Sessions
 
-The course is organized into four cumulative sessions:
+The course is organized into five cumulative sessions:
 
 1. [**Collaboration**](sessions/collaborating.qmd): Propose, inspect, review, and merge changes using Git, GitHub, short-lived branches, and pull requests.
 2. [**Reproducible Environments**](sessions/virtual-environments.qmd): Declare, pin, and lock project environments using `uv`, keeping code, raw data, and generated artifacts cleanly separated.
 3. [**Code Quality**](sessions/testing.qmd): Catch bugs early with automated formatting and linting (Ruff), pre-commit hooks, docstrings, and Test-Driven Development (pytest).
 4. [**Automation and Publication**](sessions/automation.qmd): Encode file dependencies into a Make Directed Acyclic Graph (DAG) and publish interactive results with GitHub Actions and GitHub Pages.
+5. [**Agentic AI**](sessions/agentic-ai.qmd): Plan a small software change with an AI agent, delegate implementation, verify and review it, then merge the issue-linked pull request.
 
 
 ## Getting Started

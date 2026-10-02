@@ -1,0 +1,131 @@
+---
+title: "Agentic AI"
+---
+
+# Session 5: Agentic AI
+
+Turn one idea into a tested change: align with an agent, delegate implementation,
+then review the result before merging.
+
+## Play the example
+
+This finished game is a demo; your exercise starts from an empty project.
+
+<div style="max-width: 720px; margin: 1rem auto;">
+  <iframe
+    src="../assets/agentic-ai/tic-tac-toe.html"
+    title="Playable two-player tic-tac-toe demonstration"
+    style="width: 100%; height: min(68vh, 560px); min-height: 420px; border: 1px solid #cbd5e1; border-radius: 12px;"
+    loading="lazy">
+  </iframe>
+  <p><a href="../assets/agentic-ai/tic-tac-toe.html" target="_blank" rel="noopener">Open the game in a separate tab</a></p>
+</div>
+
+## Set up once
+
+You need Git, Node.js LTS, a GitHub account, and a plan that gives you access
+to one coding agent. Choose your agent in the tabs; Codex is the walkthrough.
+Start with an empty folder named `tic-tac-toe` and open it in that agent.
+
+::: {.callout-note title="Install the skills and authenticate GitHub"}
+Run the installer, select `setup-matt-pocock-skills`, `grill-with-docs`, and
+`implement`, and choose your coding agent. Then authenticate GitHub:
+
+```bash
+npx skills@latest add mattpocock/skills
+gh auth login
+```
+
+Open the project folder in your agent and run `/setup-matt-pocock-skills` once.
+Choose GitHub when asked where issues live. See [Matt Pocock's install guide](https://github.com/mattpocock/skills#installation-30-second-setup).
+
+After the starter is committed in step 1, create a private repository (or change
+`--private` to `--public` if you prefer):
+
+```bash
+gh repo create tic-tac-toe --private --source=. --remote=origin --push
+```
+:::
+
+::: {.panel-tabset}
+
+## Codex (recommended)
+
+Install and sign in to the [Codex app](https://developers.openai.com/codex/quickstart),
+then open the empty project folder. For terminal, follow the [CLI quickstart](https://developers.openai.com/codex/quickstart);
+for VS Code, install the [IDE extension](https://developers.openai.com/codex/ide).
+Codex supports delegated subagents; request a faster, lower-cost model for the
+bounded implementation when available.
+
+## Claude Code
+
+Install [Claude Code](https://docs.anthropic.com/en/docs/claude-code/getting-started)
+or its [VS Code extension](https://docs.anthropic.com/en/docs/claude-code/ide-integrations).
+Open the empty project, authenticate GitHub above, and confirm the extension
+supports skills and delegated agents for this exercise. A lighter subagent
+model may need a custom agent definition.
+
+## Google Antigravity
+
+Install the [Antigravity VS Code extension](https://antigravity.google/docs/ide/extensions/vscode/)
+and open the empty project. Confirm that the skills installer offers Antigravity and
+that subagents are available. The `flash` subagent model is documented for
+Antigravity 2.0 and CLI; support in the VS Code extension is unconfirmed.
+
+:::
+
+## The five steps
+
+### 1. Scaffold, but don't build the game yet
+
+Create and open an empty `tic-tac-toe` folder. Ask your agent for a plain
+HTML/CSS/JavaScript project with a README, Node's built-in test runner, a local
+server command, and testable stubs. Review and commit this baseline, create the
+GitHub repository with the command in the setup card, then make a contribution
+branch. The starter must not contain the finished game.
+
+### 2. Agree on the issue and tests
+
+Run `/grill-with-docs` to settle the game rules, boundaries, and checks. Have the
+agent write tests first, confirm they fail because behavior is missing, then
+publish the agreed specification as a GitHub issue. Include turn order, invalid
+and occupied moves, all winning lines, draw, final-move win, terminal state, and
+restart. Create an ADR only if a consequential design choice needs recording.
+
+### 3. Delegate implementation
+
+Run `/implement` on the agreed issue. Ask it to use one bounded, lower-cost
+subagent if available, preserve the tests, and stop if the implementation scope
+needs to change.
+
+::: {.callout-note title="Worker brief"}
+Implement the agreed issue on this branch. Keep game rules in one module shared
+by the UI and tests. Change only the game and required documentation; do not
+weaken tests. Run the checks and report changed files. Stop if the issue and
+tests conflict.
+:::
+
+### 4. Check the result
+
+Run `npm test`, start the local server using the README command, and play the
+game. Confirm X starts; turns alternate; invalid moves do nothing; wins, draw,
+and restart work; and keyboard focus and status messages are accessible.
+
+### 5. Review and merge
+
+Ask the agent for a pull request that includes `Closes #<issue-number>` and the
+test results. Inspect the diff and try the game yourself. Authorize the merge
+only after review, then confirm the issue is closed.
+
+::: {.callout-warning title="You approve the change"}
+Read the diff and test results before approving a merge. The agent can propose
+and prepare the change; you decide whether it is ready.
+:::
+
+## Done when
+
+- [ ] The issue describes the agreed behavior and checks.
+- [ ] Tests failed against the stubs, then pass after implementation.
+- [ ] The game works in the browser, including win, draw, and restart.
+- [ ] You reviewed the pull request and authorized merge.
+- [ ] The linked issue is closed.
