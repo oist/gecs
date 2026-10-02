@@ -418,7 +418,7 @@ Reflect on your scientific computing workflows at OIST:
 
 ## Congratulations!
 
-Across four sessions, you have progressed from an empty folder to a published, reproducible scientific research project:
+By the end of Session 4, you have progressed from an empty folder to a published, reproducible scientific research project. In Session 5, you will apply these practices while working with an AI coding agent:
 - **Session 1**: Managed version control, branches, issues, and peer code reviews on GitHub.
 - **Session 2**: Built an isolated, reproducible environment with `uv`, modularized scripts into an installable Python package, and created an interactive Marimo exploratory app.
 - **Session 3**: Enforced formatting with Ruff, guarded commits with pre-commit hooks, applied Test-Driven Development with pytest, and derived descriptive Zipf fits.

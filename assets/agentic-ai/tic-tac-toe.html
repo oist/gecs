@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Tic-tac-toe</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --accent: #176b57;
+      --line: #87948f;
+      --surface: Canvas;
+      --text: CanvasText;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 16rem;
+      padding: clamp(1rem, 5vw, 2rem);
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    main {
+      width: min(100%, 30rem);
+      margin-inline: auto;
+    }
+
+    h1 {
+      margin: 0 0 .35rem;
+      font-size: clamp(1.5rem, 7vw, 2rem);
+    }
+
+    .hint { margin: 0 0 1rem; opacity: .78; }
+
+    .status {
+      min-height: 1.75em;
+      margin: 0 0 .8rem;
+      font-weight: 700;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(.35rem, 2vw, .6rem);
+      width: min(100%, 26rem);
+      margin-inline: auto;
+    }
+
+    .cell {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1;
+      border: 2px solid var(--line);
+      border-radius: .65rem;
+      background: transparent;
+      color: var(--text);
+      font: inherit;
+      font-size: clamp(2.75rem, 18vw, 6rem);
+      font-weight: 750;
+      line-height: 1;
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .cell:hover:enabled { border-color: var(--accent); }
+    .cell:disabled { cursor: default; }
+    .cell[data-mark="X"] { color: #0877b8; }
+    .cell[data-mark="O"] { color: #bd5d08; }
+
+    button:focus-visible {
+      outline: 4px solid #d29200;
+      outline-offset: 3px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    #restart {
+      min-height: 2.75rem;
+      padding: .55rem 1rem;
+      border: 2px solid var(--accent);
+      border-radius: .5rem;
+      background: var(--accent);
+      color: white;
+      font: inherit;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .cell { transition: border-color 120ms ease, background-color 120ms ease; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Tic-tac-toe</h1>
+    <p class="hint">Two players · X goes first</p>
+    <p class="status" id="status" role="status" aria-live="polite" aria-atomic="true">X’s turn.</p>
+    <div class="board" role="group" aria-label="Tic-tac-toe board">
+      <button class="cell" type="button" data-index="0" aria-label="Row 1, column 1: empty"></button>
+      <button class="cell" type="button" data-index="1" aria-label="Row 1, column 2: empty"></button>
+      <button class="cell" type="button" data-index="2" aria-label="Row 1, column 3: empty"></button>
+      <button class="cell" type="button" data-index="3" aria-label="Row 2, column 1: empty"></button>
+      <button class="cell" type="button" data-index="4" aria-label="Row 2, column 2: empty"></button>
+      <button class="cell" type="button" data-index="5" aria-label="Row 2, column 3: empty"></button>
+      <button class="cell" type="button" data-index="6" aria-label="Row 3, column 1: empty"></button>
+      <button class="cell" type="button" data-index="7" aria-label="Row 3, column 2: empty"></button>
+      <button class="cell" type="button" data-index="8" aria-label="Row 3, column 3: empty"></button>
+    </div>
+    <div class="controls"><button id="restart" type="button">Restart game</button></div>
+  </main>
+
+  <script>
+    (() => {
+      const cells = Array.from(document.querySelectorAll(".cell"));
+      const status = document.querySelector("#status");
+      const restart = document.querySelector("#restart");
+      const winningLines = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+      ];
+      let board = Array(9).fill("");
+      let currentPlayer = "X";
+      let finished = false;
+
+      function hasWon(mark) {
+        return winningLines.some((line) => line.every((index) => board[index] === mark));
+      }
+
+      function play(cell) {
+        const index = Number(cell.dataset.index);
+        if (finished || board[index] || !Number.isInteger(index) || index < 0 || index > 8) return;
+
+        board[index] = currentPlayer;
+        cell.textContent = currentPlayer;
+        cell.dataset.mark = currentPlayer;
+        cell.setAttribute("aria-label", `Row ${Math.floor(index / 3) + 1}, column ${index % 3 + 1}: ${currentPlayer}`);
+
+        if (hasWon(currentPlayer)) {
+          finished = true;
+          status.textContent = `${currentPlayer} wins! Restart to play again.`;
+          cells.forEach((button) => { button.disabled = true; });
+          return;
+        }
+
+        if (board.every(Boolean)) {
+          finished = true;
+          status.textContent = "It’s a draw! Restart to play again.";
+          cells.forEach((button) => { button.disabled = true; });
+          return;
+        }
+
+        currentPlayer = currentPlayer === "X" ? "O" : "X";
+        status.textContent = `${currentPlayer}’s turn.`;
+      }
+
+      cells.forEach((cell) => cell.addEventListener("click", () => play(cell)));
+      restart.addEventListener("click", () => {
+        board = Array(9).fill("");
+        currentPlayer = "X";
+        finished = false;
+        cells.forEach((cell, index) => {
+          cell.textContent = "";
+          delete cell.dataset.mark;
+          cell.disabled = false;
+          cell.setAttribute("aria-label", `Row ${Math.floor(index / 3) + 1}, column ${index % 3 + 1}: empty`);
+        });
+        status.textContent = "X’s turn.";
+        cells[0].focus();
+      });
+    })();
+  </script>
+</body>
+</html>

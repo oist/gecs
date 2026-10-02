@@ -4,6 +4,7 @@ project:
     - "slides/**/*.html"
     - "slides/**/*.css"
     - "slides/**/*.js"
+    - "assets/agentic-ai/tic-tac-toe.html"
 
 website:
   title: "Good Enough Coding in Science"
@@ -29,6 +30,8 @@ website:
             href: sessions/testing.qmd
           - text: "Automation and Publication"
             href: sessions/automation.qmd
+          - text: "Agentic AI"
+            href: sessions/agentic-ai.qmd
       - text: "Slides"
         href: slides/index.qmd
       - section: "Reference"
