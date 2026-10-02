@@ -80,9 +80,11 @@ Antigravity 2.0 and CLI; support in the VS Code extension is unconfirmed.
 
 Create and open an empty `tic-tac-toe` folder. Ask your agent for a plain
 HTML/CSS/JavaScript project with a README, Node's built-in test runner, a local
-server command, and testable stubs. Review and commit this baseline, create the
-GitHub repository with the command in the setup card, then make a contribution
-branch. The starter must not contain the finished game.
+server command, and testable stubs. Include a `package.json` with a `test`
+script that runs `node --test`; this uses Node's built-in runner without adding
+a test-framework dependency. Review and commit this baseline, create the GitHub
+repository with the command in the setup card, then make a contribution branch.
+The starter must not contain the finished game.
 
 ### 2. Agree on the issue and tests
 
